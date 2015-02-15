@@ -1,8 +1,0 @@
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\bin\Host.exe
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\bin\Host.pdb
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.csprojResolveAssemblyReference.cache
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.Form1.resources
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.frmScript.resources
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.csproj.GenerateResource.Cache
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.exe
-C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Scripting\Host\obj\Debug\Host.pdb
