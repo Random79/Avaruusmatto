@@ -1,0 +1,5 @@
+C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\bin\Interfaces.dll
+C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\bin\Interfaces.pdb
+C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Interfaces\obj\Debug\Interfaces.csprojResolveAssemblyReference.cache
+C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Interfaces\obj\Debug\Interfaces.dll
+C:\Users\Tomi\Documents\CODE\scriptingcsharp\csharp\Interfaces\obj\Debug\Interfaces.pdb
