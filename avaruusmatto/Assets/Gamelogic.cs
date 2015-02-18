@@ -3,7 +3,10 @@ using System.Collections;
 
 public class Gamelogic : MonoBehaviour {
 
-	Vector3 mainv = new Vector3(0,0,0);
+	double myX=0;
+	double myY=0;
+	double myZ=0;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,13 +17,16 @@ public class Gamelogic : MonoBehaviour {
 	
 	}
 
-	public Vector3 GetMyCoordinates(Vector3 v)
+	public Vector3 GetMyCoordinates(double x, double y,double z)
 	{
-		return new Vector3 (v.x - mainv.x, v.y, v.z);
+		return new Vector3 ((float)(x - myX), (float)(y-myY),(float)(z-myZ));
 	}
 
-	public void SetMainCoordinates(Vector3 nv)
+	public void SetMainCoordinates(double[] coords)
 	{
-		mainv=nv;
+		myX = coords[0]; 
+		myY = coords[1];
+		myZ = coords[2];
+
 	}
 }

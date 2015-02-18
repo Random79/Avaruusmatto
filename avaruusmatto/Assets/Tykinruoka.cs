@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Tykinruoka : MonoBehaviour {
 
-	Vector3 position = new Vector3(0,0,0);
+	public double myX = 0;
+	public double myY = 0;
+	public double myZ = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -11,7 +13,7 @@ public class Tykinruoka : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 	/*	if (Input.GetKey (KeyCode.Keypad8)) {
 
@@ -21,8 +23,8 @@ public class Tykinruoka : MonoBehaviour {
 		// haetaan pelin koordinaatiston paikkatieto pelilogiikalta.
 		var gameObject = GameObject.Find("_Game");
 		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
-		var newcordinates = gl.GetMyCoordinates(position);
-		transform.position=(newcordinates);
+		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);
+		transform.position=newcoordinates;
 	
 	}
 
