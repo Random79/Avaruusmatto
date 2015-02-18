@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+[RequireComponent(typeof(Rigidbody))]
 public class SSAurora : MonoBehaviour {
 
 	// aluksen paikka koordinaatistossa. 
@@ -9,7 +11,6 @@ public class SSAurora : MonoBehaviour {
 	public double myZ = 0;
 
 	// aluksen massa (kg) 
-	public float myMass = 15000000; //TODO: linkkaa rigidbody mass:iin
 	// työntövoima (N) tämä on konventionaalinen työntövoima esim. dokkausta, väistöliikkeitä ja aluksen valtausta varten. 
 	public float myThrust = 1000000;
 	// warppi ei toimi Newtonimaisesti. 
@@ -30,7 +31,7 @@ public class SSAurora : MonoBehaviour {
 	void Start () {
 	//Time.fixedTime
 	}
-	
+
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
 
@@ -42,7 +43,7 @@ public class SSAurora : MonoBehaviour {
 		var rotZ = transform.localRotation.z;
 
 		if (Input.GetKey (KeyCode.Keypad8)) {
-			myVelX = myVelX + myThrust/myMass*Time.fixedDeltaTime;	
+			myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime;	
 		}
 		else if (Input.GetKey (KeyCode.Keypad0)){
 			myVelX = 0;
