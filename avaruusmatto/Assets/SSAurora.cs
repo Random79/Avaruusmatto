@@ -10,6 +10,7 @@ public class SSAurora : MonoBehaviour {
 	public double myY = 0;
 	public double myZ = 0;
   
+
 	// aluksen massa (kg) 
 	// työntövoima (N) tämä on konventionaalinen työntövoima esim. dokkausta, väistöliikkeitä ja aluksen valtausta varten. 
 	public float myThrust = 1000000;
@@ -43,26 +44,19 @@ public class SSAurora : MonoBehaviour {
 		var rotY = transform.localRotation.y;
 		var rotZ = transform.localRotation.z;
 
+			
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
 
 		if (Input.GetKey (KeyCode.R)) {
-
-			// koordinaatistotransformaatio lokaalista maailmakoordinaatistoon. aluksen Z-akseli edustaa nokan suuntaa. R on eteenpäin-nappi.
-			myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime*Mathf.Cos(rotX);
-			myVelY = myVelY + myThrust/rigidbody.mass*Time.fixedDeltaTime*Mathf.Cos(rotY);
-			myVelZ = myVelZ + myThrust/rigidbody.mass*Time.fixedDeltaTime*Mathf.Cos(rotY);
-			//myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime;	
-
-			myX += myVelX * Time.fixedDeltaTime;
-			myY += myVelY * Time.fixedDeltaTime;
-			myZ += myVelZ * Time.fixedDeltaTime;
-			
+			myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime;	
+			//rigidbody.AddRelativeForce (0, 0.1f, 0);
 		}
 		if (Input.GetKey (KeyCode.Q)){
 			myVelX = 0;
 		}
 
+		myX += myVelX * Time.fixedDeltaTime;
 
 		var param = new double[3];  //TODO tän vois nimetä myPositionVectoriksi. lisäks tähän vois laittaa loppuun rotaatiot. 
 		param [0] = myX;
