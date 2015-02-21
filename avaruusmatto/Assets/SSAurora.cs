@@ -1,6 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+		/*
+		 * 	tässä on R -kielellä matriisipyöritys.  tämä pitäis kääntää tarpvitavilta osin ceelle.
+		 * pointtina on, että x,y ja z ovat rotaatioita akselien suhteen. Rx,Ry ja Rz ovat rotaatiomatriiseja
+		 * velvec on aluksen lokaalin koordinaatiston liikesuunta. Esim. (0,0,10) on 10 liikettä z-akselin suuntaan, eli eteenpäin.
+		 * muista oikea matriisikertolaskun järjestys!!!
+		 * 
+		 * deg2Rad ja rad2Deg ovat jo Cllä olevia komentoja. r käyttää radiaaneja ja ilmeisesti unity aika mielellään asteita...
+		deg2Rad<-pi/180
+		rad2Deg<-180/pi
+
+		* tässä ovat rotaatiot 
+		x<-90*deg2Rad
+		y<-0
+		z<-0
+
+		* pyöräytysmatriisit
+		Rx<-matrix(c(1,0,0, 0,cos(x),-sin(x), 0,sin(x),cos(x)),nrow=3,byrow=TRUE)
+		Ry<-matrix(c(cos(y),0,sin(y), 0,1,0, -sin(y),0,cos(y)),nrow=3,byrow=TRUE)
+		Rz<-matrix(c(cos(z),-sin(z),0, sin(z),cos(z),0, 0,0,1),nrow=3,byrow=TRUE)
+
+		* alus kulkee 10 eteenpäin (z-akselin suuntaan)
+		velVec<-c(0,0,10)
+
+		*päivitetty sijainti maailman koordinaatistossa
+		worldpos<-velVec%*%Rz%*%Ry%*%Rx
+		worldpos
+		*/
+		
 
 [RequireComponent(typeof(Rigidbody))]
 public class SSAurora : MonoBehaviour {
@@ -49,7 +77,7 @@ public class SSAurora : MonoBehaviour {
 		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
 
 		if (Input.GetKey (KeyCode.R)) {
-			myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime;	
+			myVelX = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime*Mathf.Cos(rotX);	
 			//rigidbody.AddRelativeForce (0, 0.1f, 0);
 		}
 		if (Input.GetKey (KeyCode.Q)){
