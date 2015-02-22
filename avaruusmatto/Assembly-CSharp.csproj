@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Gamelogic.cs" />
      <Compile Include="Assets\SSAurora.cs" />
+     <Compile Include="Assets\SpaceObject.cs" />
      <Compile Include="Assets\Tykinruoka.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets\Projectors\Sources\Shaders\Projector Multiply.shader" />

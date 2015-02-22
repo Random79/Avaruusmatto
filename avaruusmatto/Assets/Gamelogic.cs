@@ -9,7 +9,8 @@ public class Gamelogic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		//var kap = Resources.Load ("Hatakapsuli") as GameObject;
+		//Instantiate (kap, new Vector3 (0, 1, 12), Quaternion.identity);
 	}
 	
 	// Update is called once per frame
