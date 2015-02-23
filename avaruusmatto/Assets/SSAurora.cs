@@ -54,6 +54,9 @@ public class SSAurora : MonoBehaviour {
 
 	GameObject ghost;
 
+	public Camera mainCam;
+	public Camera SecondaryCam;
+
 	//v = myThrust/myMass *Delta.time 
 
 	// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
@@ -64,7 +67,8 @@ public class SSAurora : MonoBehaviour {
 		ghost = new GameObject();
 		ghost.name = "Ghost";
 		ghost.transform.parent = gameObject.transform;
-		
+		SecondaryCam.enabled = false;
+		mainCam.enabled = true;
 	//Time.fixedTime
 	}
 
@@ -150,5 +154,16 @@ public class SSAurora : MonoBehaviour {
 
 
 		GameObject.Find ("_Game").SendMessage ("SetMainCoordinates", param);
+	
+	}
+
+	void Update()
+	{
+		// camera control
+		if(Input.GetKeyUp(KeyCode.F1))
+		{	
+			mainCam.enabled = mainCam.enabled==true ? false : true;
+			SecondaryCam.enabled = SecondaryCam.enabled == true ?  false : true;
+		}
 	}
 }
