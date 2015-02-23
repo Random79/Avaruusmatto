@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class Gamelogic : MonoBehaviour {
 
+	List <GameObject> kapsulit = new List<GameObject>();
 	double myX=0;
 	double myY=0;
 	double myZ=0;
@@ -10,10 +11,26 @@ public class Gamelogic : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		var kap = Resources.Load ("Hatakapsuli") as GameObject;
-		var kapsuli = Instantiate (kap) as GameObject;
-		var kapso = kapsuli.GetComponent<SpaceObject>();
-		kapso.SetPosition(2,1,12);
+		var dynObject = GameObject.Find("DynamicObjects");
+		for (int x = 0; x<1000;x++)
+		{
+			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
+			var kapsuli = Instantiate (kap) as GameObject;
+			kapsulit.Add(kapsuli);
+
+			var kapso = kapsuli.GetComponent<SpaceObject>();
+			kapso.transform.parent = dynObject.transform;
+			kapso.SetPosition(MyRandom(500,2),MyRandom(500,2),MyRandom(500,2));
+		}
+	}
+
+	float MyRandom(float range, float ExcludeRadius)
+	{
+		float r =0;
+		do{
+			r = Random.Range(0-range,range);
+		}while (r>(0-ExcludeRadius) && r<ExcludeRadius);
+		return r;
 	}
 	
 	// Update is called once per frame

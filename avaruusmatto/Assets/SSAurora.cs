@@ -62,6 +62,8 @@ public class SSAurora : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ghost = new GameObject();
+		ghost.name = "Ghost";
+		ghost.transform.parent = gameObject.transform;
 		
 	//Time.fixedTime
 	}
