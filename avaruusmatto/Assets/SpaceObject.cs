@@ -22,5 +22,12 @@ public class SpaceObject : MonoBehaviour {
 		
 	}
 
+	public void SetPosition(double x, double y,double z)
+	{
+		myX = x;
+		myZ = z;
+		myY = y;
+	}
+
 }
 

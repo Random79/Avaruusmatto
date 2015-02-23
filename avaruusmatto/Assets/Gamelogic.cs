@@ -9,8 +9,11 @@ public class Gamelogic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//var kap = Resources.Load ("Hatakapsuli") as GameObject;
-		//Instantiate (kap, new Vector3 (0, 1, 12), Quaternion.identity);
+
+		var kap = Resources.Load ("Hatakapsuli") as GameObject;
+		var kapsuli = Instantiate (kap) as GameObject;
+		var kapso = kapsuli.GetComponent<SpaceObject>();
+		kapso.SetPosition(2,1,12);
 	}
 	
 	// Update is called once per frame
