@@ -85,27 +85,77 @@ public class SSAurora : MonoBehaviour {
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
 
-		ghost.transform.rotation = gameObject.transform.rotation;
+		//ghost.transform.rotation = gameObject.transform.rotation;
 
 		if (Input.GetKey (KeyCode.R)) {
 
-
-			ghost.transform.Translate(Vector3.forward*myThrust/rigidbody.mass*Mathf.Pow(Time.fixedDeltaTime,2));
-			//myLocalVelZ = myVelX + myThrust/rigidbody.mass*Time.fixedDeltaTime;	
-			//rigidbody.AddRelativeForce (0, 0.1f, 0);
-			myVelX += ghost.transform.rotation.x;
-			myVelY += ghost.transform.rotation.y;
-			myVelZ += ghost.transform.rotation.z;
-		}
-		if (Input.GetKey (KeyCode.Q)){
-			myVelX = 0;
+			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
 		}
 
+		if (Input.GetKey (KeyCode.F)) {
+			
+			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1));
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
 
+		if (Input.GetKey (KeyCode.W)) {
+			
+			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime, 0);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
 
-		myX += myVelX;
-		myY += myVelY;
-		myZ += myVelZ;
+		if (Input.GetKey (KeyCode.S)) {
+
+			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1), 0);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+
+		if (Input.GetKey (KeyCode.A)) {
+			
+			Vector3 deltaVel = new Vector3(myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1), 0, 0);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+		
+		if (Input.GetKey (KeyCode.D)) {
+			
+			Vector3 deltaVel = new Vector3(myThrust/rigidbody.mass*Time.fixedDeltaTime, 0, 0);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+
+		myX += myVelX*Time.fixedDeltaTime;
+		myY += myVelY*Time.fixedDeltaTime;
+		myZ += myVelZ*Time.fixedDeltaTime;
 
 		var param = new double[3];  //TODO tän vois nimetä myPositionVectoriksi. lisäks tähän vois laittaa loppuun rotaatiot. 
 		param [0] = myX;
