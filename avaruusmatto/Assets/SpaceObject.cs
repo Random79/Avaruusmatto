@@ -19,7 +19,6 @@ public class SpaceObject : MonoBehaviour {
 		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
 		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);
 		transform.position=newcoordinates;
-		
 	}
 
 	public void SetPosition(double x, double y,double z)

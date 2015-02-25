@@ -1,35 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-		/*
-		 * 	tässä on R -kielellä matriisipyöritys.  tämä pitäis kääntää tarpvitavilta osin ceelle.
-		 * pointtina on, että x,y ja z ovat rotaatioita akselien suhteen. Rx,Ry ja Rz ovat rotaatiomatriiseja
-		 * velvec on aluksen lokaalin koordinaatiston liikesuunta. Esim. (0,0,10) on 10 liikettä z-akselin suuntaan, eli eteenpäin.
-		 * muista oikea matriisikertolaskun järjestys!!!
-		 * 
-		 * deg2Rad ja rad2Deg ovat jo Cllä olevia komentoja. r käyttää radiaaneja ja ilmeisesti unity aika mielellään asteita...
-		deg2Rad<-pi/180
-		rad2Deg<-180/pi
-
-		* tässä ovat rotaatiot 
-		x<-90*deg2Rad
-		y<-0
-		z<-0
-
-		* pyöräytysmatriisit
-		Rx<-matrix(c(1,0,0, 0,cos(x),-sin(x), 0,sin(x),cos(x)),nrow=3,byrow=TRUE)
-		Ry<-matrix(c(cos(y),0,sin(y), 0,1,0, -sin(y),0,cos(y)),nrow=3,byrow=TRUE)
-		Rz<-matrix(c(cos(z),-sin(z),0, sin(z),cos(z),0, 0,0,1),nrow=3,byrow=TRUE)
-
-		* alus kulkee 10 eteenpäin (z-akselin suuntaan)
-		velVec<-c(0,0,10)
-
-		*päivitetty sijainti maailman koordinaatistossa
-		worldpos<-velVec%*%Rz%*%Ry%*%Rx
-		worldpos
-		*/
-		
-
 [RequireComponent(typeof(Rigidbody))]
 public class SSAurora : MonoBehaviour {
 
@@ -52,7 +23,7 @@ public class SSAurora : MonoBehaviour {
 
 	public float maxAngularVel = 10f;
 
-	GameObject ghost;
+	//GameObject ghost;
 
 	public Camera mainCam;
 	public Camera SecondaryCam;
@@ -64,10 +35,10 @@ public class SSAurora : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ghost = new GameObject();
+	/*	ghost = new GameObject();
 		ghost.name = "Ghost";
 		ghost.transform.parent = gameObject.transform;
-		SecondaryCam.enabled = false;
+	*/	SecondaryCam.enabled = false;
 		mainCam.enabled = true;
 	//Time.fixedTime
 	}
@@ -153,14 +124,21 @@ public class SSAurora : MonoBehaviour {
 			myVelZ += deltaVelRotated.z;
 		}
 
+		if (Input.GetKeyUp (KeyCode.LeftShift)) {
+		
+			Vector3 deltaVel = new Vector3(0, 0, 300000000);
+			Quaternion rotations = rigidbody.rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+
 		myX += myVelX*Time.fixedDeltaTime;
 		myY += myVelY*Time.fixedDeltaTime;
 		myZ += myVelZ*Time.fixedDeltaTime;
 
-		var param = new double[3];  //TODO tän vois nimetä myPositionVectoriksi. lisäks tähän vois laittaa loppuun rotaatiot. 
-		param [0] = myX;
-		param [1] = myY;
-		param [2] = myZ;
 
 		if (Input.GetKey (KeyCode.Keypad9)) {
 			rigidbody.AddRelativeTorque (0, 0, -100000);
@@ -202,6 +180,10 @@ public class SSAurora : MonoBehaviour {
 			}
 		}
 
+		var param = new double[3];  //TODO tän vois nimetä myPositionVectoriksi. lisäks tähän vois laittaa loppuun rotaatiot. 
+		param [0] = myX;
+		param [1] = myY;
+		param [2] = myZ;
 
 		GameObject.Find ("_Game").SendMessage ("SetMainCoordinates", param);
 	

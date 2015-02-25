@@ -12,7 +12,7 @@ public class Gamelogic : MonoBehaviour {
 	void Start () {
 
 		var dynObject = GameObject.Find("DynamicObjects");
-		for (int x = 0; x<1000;x++)
+		for (int x = 0; x<500;x++)
 		{
 			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
 			var kapsuli = Instantiate (kap) as GameObject;
@@ -20,7 +20,7 @@ public class Gamelogic : MonoBehaviour {
 
 			var kapso = kapsuli.GetComponent<SpaceObject>();
 			kapso.transform.parent = dynObject.transform;
-			kapso.SetPosition(MyRandom(500,2),MyRandom(500,2),MyRandom(500,2));
+			kapso.SetPosition(MyRandom(100,2),MyRandom(100,2),MyRandom(100,2));
 		}
 	}
 
