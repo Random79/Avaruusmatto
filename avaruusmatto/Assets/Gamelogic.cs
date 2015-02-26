@@ -20,7 +20,8 @@ public class Gamelogic : MonoBehaviour {
 
 			var kapso = kapsuli.GetComponent<SpaceObject>();
 			kapso.transform.parent = dynObject.transform;
-			kapso.SetPosition(MyRandom(100,2),MyRandom(100,2),MyRandom(100,2));
+			//kapso.SetPosition(4,2,8);
+      		kapso.SetPosition(MyRandom(100,2),MyRandom(100,2),MyRandom(100,2));
 		}
 	}
 
@@ -32,11 +33,7 @@ public class Gamelogic : MonoBehaviour {
 		}while (r>(0-ExcludeRadius) && r<ExcludeRadius);
 		return r;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 
 	public Vector3 GetMyCoordinates(double x, double y,double z)
 	{

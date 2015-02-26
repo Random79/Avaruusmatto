@@ -21,7 +21,7 @@ public class SSAurora : MonoBehaviour {
 	public float myVelZ = 0f;
 	public float myVelocity = 0f;
 
-	public float maxAngularVel = 10f;
+	public float maxAngularVel = 0f;
 
 	//GameObject ghost;
 

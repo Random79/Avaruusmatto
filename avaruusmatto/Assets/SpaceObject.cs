@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody))]
 public class SpaceObject : MonoBehaviour {
 
 	public double myX = 0;
@@ -15,6 +16,11 @@ public class SpaceObject : MonoBehaviour {
 	void FixedUpdate () {
 		
 		// haetaan pelin koordinaatiston paikkatieto pelilogiikalta.
+		UpdatePosition();
+	}
+
+	public void UpdatePosition()
+	{
 		var gameObject = GameObject.Find("_Game");
 		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
 		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);
