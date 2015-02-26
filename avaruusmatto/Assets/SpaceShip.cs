@@ -30,7 +30,7 @@ public class SpaceShip : SpaceObject {
 
 	// Use this for initialization
 	void Start () {
-
+		myX=-5;
 		Waypoints.Add(new Waypoint(0,1,5));
 		if(Waypoints.Count>0)
 			SetDestination(Waypoints[0]);
@@ -59,7 +59,7 @@ public class SpaceShip : SpaceObject {
 
 	bool isAtWaypoint(Waypoint w)
 	{
-		double distance = Mathf.Sqrt (Mathf.Pow (w.X-myX,2) + Mathf.Pow (w.Y-myY,2) + Mathf.Pow (w.Z-myZ,2));
+		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
 		if(distance<0) distance = 0-distance;
 		if(distance < 2) return true;
 		return false;
