@@ -69,7 +69,8 @@ public class SpaceShip : SpaceObject {
 				var magnitude = System.Math.Sqrt (System.Math.Pow (deltaVector.X,2) + System.Math.Pow (deltaVector.Y,2) + System.Math.Pow (deltaVector.Z,2));
 				deltaVector = deltaVector/magnitude;
 
-				deltaRotation = Quaternion.FromToRotation(new Vector3 ((float)deltaVector.X,(float)deltaVector.Y,(float)deltaVector.Z), transform.rotation);
+				deltaRotation = Quaternion.FromToRotation(new Vector3 ((float)deltaVector.X,(float)deltaVector.Y,(float)deltaVector.Z), 
+				                                          new Vector3(transform.rotation.x,transform.rotation.y,transform.rotation.z));
 				// quaternioni euleriksi
  				
 				// tarkista onko deltarotation.x negatiivinen vai positiivinen
