@@ -50,8 +50,6 @@ public class SSAurora : MonoBehaviour {
 
 		// My velocity lasketaan joka updatella. kalle 16.2.2015.
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
-		
-		//  (0,0,10) transform -> (4,4,4) 
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);

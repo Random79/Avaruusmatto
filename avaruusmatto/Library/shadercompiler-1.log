@@ -1,16 +1,16 @@
 Base path: C:/Program Files (x86)/Unity/Editor/Data
-Pipe name: \\.\pipe\UnityShaderCompiler-1-8388
+Pipe name: \\.\pipe\UnityShaderCompiler-1-3268
 Cmd: getPlatforms
 Cmd: preprocess
-  insize=1651 outsize=2266 ok=1
+  insize=1651 outsize=2267 ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=8014 outsize=1298 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=8077 outsize=1298 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=8014 outsize=2704 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=8077 outsize=2704 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=2 insize=8014 outsize=7815 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=2 insize=8077 outsize=7815 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=3 insize=8014 outsize=5515 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=3 insize=8077 outsize=5515 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
   api=4 type=0 insize=5700 outsize=1298 kw=POINT ok=1
 Cmd: compileSnippet
@@ -28,13 +28,13 @@ Cmd: compileSnippet
 Cmd: compileSnippet
   api=4 type=3 insize=5510 outsize=4362 kw= ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=7515 outsize=1298 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=0 insize=7543 outsize=1298 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=7515 outsize=1534 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=1 insize=7543 outsize=1534 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=2 insize=7515 outsize=7815 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=2 insize=7543 outsize=7815 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=3 insize=7515 outsize=4207 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=3 insize=7543 outsize=4207 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
   api=4 type=0 insize=4813 outsize=1298 kw=SHADOWS_DEPTH ok=1
 Cmd: compileSnippet
@@ -46,13 +46,13 @@ Cmd: compileSnippet
 Cmd: preprocess
   insize=1486 outsize=2211 ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=8182 outsize=1298 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=8245 outsize=1298 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=8182 outsize=2704 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=8245 outsize=2704 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=2 insize=8182 outsize=7750 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=2 insize=8245 outsize=7750 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=3 insize=8182 outsize=6482 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
+  api=4 type=3 insize=8245 outsize=6482 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
   api=4 type=0 insize=5868 outsize=1298 kw=POINT ok=1
 Cmd: compileSnippet
@@ -70,13 +70,13 @@ Cmd: compileSnippet
 Cmd: compileSnippet
   api=4 type=3 insize=5678 outsize=5328 kw= ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=7683 outsize=1298 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=0 insize=7711 outsize=1298 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=7683 outsize=1534 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=1 insize=7711 outsize=1534 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=2 insize=7683 outsize=7750 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=2 insize=7711 outsize=7750 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=3 insize=7683 outsize=5174 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
+  api=4 type=3 insize=7711 outsize=5174 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF ok=1
 Cmd: compileSnippet
   api=4 type=0 insize=4981 outsize=1298 kw=SHADOWS_DEPTH ok=1
 Cmd: compileSnippet
@@ -119,7 +119,3 @@ Cmd: compileSnippet
   api=4 type=2 insize=5700 outsize=7815 kw=DIRECTIONAL ok=1
 Cmd: compileSnippet
   api=4 type=3 insize=5700 outsize=4386 kw=DIRECTIONAL ok=1
-Unhandled exception: Readfile from pipe failed. GLE=The pipe has been ended.
-
-
-Quitting shader compiler process

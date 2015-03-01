@@ -46,6 +46,7 @@ public class SpaceShip : SpaceObject {
 				SetDestination(Waypoints[currentWaypoint]);
 			else Stop();
 		}
+
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
 		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
@@ -67,8 +68,27 @@ public class SpaceShip : SpaceObject {
 
 	void SetDestination(Waypoint w)
 	{
-		myVelX = 1;
-		// TODO; tee jotain järkevää
+	
+		//var magnitude = System.Math.Sqrt (System.Math.Pow (w.X,2) + System.Math.Pow (w.Y,2) + System.Math.Pow (w.Z,2));
+
+		//Vector3 waypointUnitDirection = new Vector3 (w.X/magnitude, w.Y/magnitude, w.Z/magnitude);
+
+		// tehdään deltaRotation
+		//float deltaRotation = Vector3.Angle(waypointUnitDirection, transform.forward);
+
+	
+		// while (transform.forward.x != deltaRotation.x +-toleranssi && transform.forward.y != deltaRotation.y +-toleranssi ) {
+
+		// pyöräytetään X ja Y rotaatioo erikseen komennolla rigidbody.AddRelativeTorque (-100000, 0, 0); rotaation määrä*0.4 asti. 
+		// annetaan olla rotaation määrä*0.6 asti vapaasti ja sitten hidastetaan vastakkaiseen suuntaan rotaation määrä*1 asti
+	
+	
+	
+		//}
+
+	
+
+
 	}
 
 	void Stop()
