@@ -9,6 +9,19 @@ public class Waypoint {
 		Y=y;
 		Z=z;
 	}
+	public static Waypoint operator +(Waypoint a, Waypoint b)
+	{
+		return new Waypoint(a.X+b.X,a.Y+b.Y,a.Z+b.Z);
+	}
+	public static Waypoint operator -(Waypoint a, Waypoint b)
+	{
+		return new Waypoint(a.X-b.X,a.Y-b.Y,a.Z-b.Z);
+	}
+	public static Waypoint operator /(Waypoint a, double b)
+	{
+		return new Waypoint(a.X/b,a.Y/b,a.Z/b);
+	}
+
 	public double X;
 	public double Y;
 	public double Z;
@@ -20,20 +33,24 @@ public class SpaceShip : SpaceObject {
 
 	int currentWaypoint = 0;
 	public float myThrust = 1000000;
-	public float myVelX = 10f;
+	public float myVelX = 0f;
 	public float myVelY = 0f;
 	public float myVelZ = 0f;
 	public float myVelocity = 0f;
 	
 	public float maxAngularVel = 10f;
-
+	bool IsTurning = false;
+	Waypoint deltaVector;
+	public Quaternion deltaRotation;
 
 	// Use this for initialization
 	void Start () {
 		myX=-5;
-		Waypoints.Add(new Waypoint(0,1,5));
+		Waypoints.Add(new Waypoint(myX,myY,myZ));
+		Waypoints.Add(new Waypoint(6,7,8));
 		if(Waypoints.Count>0)
 			SetDestination(Waypoints[0]);
+		Stop ();
 	}
 	
 	void FixedUpdate() {
@@ -42,10 +59,30 @@ public class SpaceShip : SpaceObject {
 		if(isAtWaypoint(Waypoints[currentWaypoint]))
 		{
 			currentWaypoint++;
-			if(Waypoints.Count>currentWaypoint)
-				SetDestination(Waypoints[currentWaypoint]);
-			else Stop();
+			Stop ();
+			
+			if(currentWaypoint<Waypoints.Count)
+			{
+				IsTurning=true;
+				var currentWp=Waypoints[currentWaypoint];
+				deltaVector = Waypoints[currentWaypoint] - new Waypoint(myX,myY,myZ);
+				var magnitude = System.Math.Sqrt (System.Math.Pow (deltaVector.X,2) + System.Math.Pow (deltaVector.Y,2) + System.Math.Pow (deltaVector.Z,2));
+				deltaVector = deltaVector/magnitude;
+
+				deltaRotation = Quaternion.FromToRotation(new Vector3 ((float)deltaVector.X,(float)deltaVector.Y,(float)deltaVector.Z), transform.rotation);
+				// quaternioni euleriksi
+ 				
+				// tarkista onko deltarotation.x negatiivinen vai positiivinen
+				// jos negatiivinen
+				//   
+				//transform.forward < deltaRotation/2;
+
+
+			}
 		}
+		if(IsTurning) 
+			SetDestination(Waypoints[currentWaypoint]);
+
 
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
@@ -69,24 +106,31 @@ public class SpaceShip : SpaceObject {
 	void SetDestination(Waypoint w)
 	{
 	
-		//var magnitude = System.Math.Sqrt (System.Math.Pow (w.X,2) + System.Math.Pow (w.Y,2) + System.Math.Pow (w.Z,2));
+		if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.forward.x ) < 0.001 && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) < 0.001)
+		{
+			IsTurning=false;
+			return;
+		}
+		if (deltaRotation.eulerAngles.x < 0){
+			if (transform.forward.x < deltaRotation.eulerAngles.x/2){
+				rigidbody.AddRelativeTorque (100000, 0, 0);
+			}
+			if (transform.forward.x > deltaRotation.eulerAngles.x/2){
+				rigidbody.AddRelativeTorque (-100000, 0, 0);
+			}
+			
+		} 
+		
+		if (deltaRotation.eulerAngles.x > 0){
+			if (transform.forward.x > deltaRotation.eulerAngles.x/2){
+				rigidbody.AddRelativeTorque (-100000, 0, 0);
+			}
+			if (transform.forward.x > deltaRotation.eulerAngles.x/2){
+				rigidbody.AddRelativeTorque (100000, 0, 0);
+			}
+			
+		} 
 
-		//Vector3 waypointUnitDirection = new Vector3 (w.X/magnitude, w.Y/magnitude, w.Z/magnitude);
-
-		// tehdään deltaRotation
-		//float deltaRotation = Vector3.Angle(waypointUnitDirection, transform.forward);
-
-	
-		// while (transform.forward.x != deltaRotation.x +-toleranssi && transform.forward.y != deltaRotation.y +-toleranssi ) {
-
-		// pyöräytetään X ja Y rotaatioo erikseen komennolla rigidbody.AddRelativeTorque (-100000, 0, 0); rotaation määrä*0.4 asti. 
-		// annetaan olla rotaation määrä*0.6 asti vapaasti ja sitten hidastetaan vastakkaiseen suuntaan rotaation määrä*1 asti
-	
-	
-	
-		//}
-
-	
 
 
 	}
