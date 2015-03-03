@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
+
+/**
+ * Waypoint Class
+ */
 public class Waypoint {
 	public Waypoint(double x, double y, double z)
 	{
@@ -27,6 +31,9 @@ public class Waypoint {
 	public double Z;
 }
 
+/**
+ * Spaceship class
+ */
 public class SpaceShip : SpaceObject {
 
 	public List<Waypoint> Waypoints = new List<Waypoint>();
@@ -51,23 +58,26 @@ public class SpaceShip : SpaceObject {
 
 	// Use this for initialization
 	void Start () {
-		myX=-5;
-		Waypoints.Add(new Waypoint(myX,myY,myZ));
-		Waypoints.Add(new Waypoint(6,7,8));
+		myX = 0;
+		myY = 0;
+		myZ = 5;
+		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
+		Waypoints.Add(new Waypoint(6,7,8));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		if(Waypoints.Count>0)
 			SetDestination(Waypoints[0]);
 		Stop ();
 	}
 	
 	void FixedUpdate() {
-
+	
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
 
-		//TODO: if at waypoint, SetDestination
+		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
 		if(isAtWaypoint(Waypoints[currentWaypoint]))
 		{
-			currentWaypoint++;
+			if(currentWaypoint<Waypoints.Count)
+				currentWaypoint++;
 			Stop ();
 			
 			if(currentWaypoint<Waypoints.Count)
@@ -85,6 +95,7 @@ public class SpaceShip : SpaceObject {
 
 			}
 		}
+
 		if(IsTurning) 
 			SetDestination(Waypoints[currentWaypoint]);
 
@@ -106,6 +117,8 @@ public class SpaceShip : SpaceObject {
 		if(distance < 2) return true;
 		return false;
 	}
+
+
 	//TODO pitääkö tällanen voidi olla fixedupdatessa, vai toimiiko ilman?
 	void SetDestination(Waypoint w)
 	{
@@ -115,23 +128,25 @@ public class SpaceShip : SpaceObject {
 			stopRotation();
 		}
 		//kun rotaatio on pysähtynyt, niin mennään seuraavaan tilaan
-		if(IsTurning==true && turningState==0 && localAngularVelocity.magnitude >= 0.01) 
+		if(IsTurning==true && turningState==0 && localAngularVelocity.magnitude == 0) 
 		{
 			turningState=1;
 		}
-		// tilassa 1 alustetaan parametrit kääntymmistä varten
+		// tilassa 1 alustetaan parametrit kääntymistä varten
 		if(turningState==1)
 		{
 			//vektori omasta pisteestä waypointille
-			deltaVector = Waypoints[currentWaypoint] - new Waypoint(myX,myY,myZ);
+			deltaVector = w - new Waypoint(myX,myY,myZ);
 			// yksikkövektori. eli komponentien neliösumman neliöjuuri on 1. 
 			var magnitude = System.Math.Sqrt (System.Math.Pow (deltaVector.X,2) + 
 							System.Math.Pow (deltaVector.Y,2) + System.Math.Pow (deltaVector.Z,2));
 			// tämä on yhden pituinen vektori, joka osoittaa waypointin suuntaan.
 			deltaVector = deltaVector/magnitude;
 			// tämä on quaternioni muodossa oleva pyörähdysjuttu waypointin suuntaan
-			deltaRotation = Quaternion.FromToRotation(new Vector3 ((float)deltaVector.X,(float)deltaVector.Y,(float)deltaVector.Z), 
-			                                          new Vector3(transform.rotation.x,transform.rotation.y,transform.rotation.z));
+			Vector3 from = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+			Vector3 to = new Vector3((float)deltaVector.X, (float)deltaVector.Y, (float)deltaVector.Z);
+
+			deltaRotation = Quaternion.FromToRotation(from, to);
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
 			if (deltaRotation.eulerAngles.x > 0) turnXToPos = false; 
