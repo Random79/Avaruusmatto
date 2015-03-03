@@ -58,12 +58,11 @@ public class SpaceShip : SpaceObject {
 			SetDestination(Waypoints[0]);
 		Stop ();
 	}
-	
-	void FixedUpdate() {
 
+	void FixedUpdate() {
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
-
+		
 		//TODO: if at waypoint, SetDestination
 		if(isAtWaypoint(Waypoints[currentWaypoint]))
 		{
@@ -74,28 +73,28 @@ public class SpaceShip : SpaceObject {
 			{
 				IsTurning=true;
 				var currentWp=Waypoints[currentWaypoint];
-
+				
 				// quaternioni euleriksi
- 				
+				
 				// tarkista onko deltarotation.x negatiivinen vai positiivinen
 				// jos negatiivinen
 				//   
 				//transform.forward < deltaRotation/2;
-
-
+				
+				
 			}
 		}
 		if(IsTurning) 
 			SetDestination(Waypoints[currentWaypoint]);
-
-
+		
+		
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 		
-
+		
 		myX += myVelX*Time.fixedDeltaTime;
 		myY += myVelY*Time.fixedDeltaTime;
 		myZ += myVelZ*Time.fixedDeltaTime;
-
+		
 		UpdatePosition();
 	}
 
@@ -239,5 +238,7 @@ public class SpaceShip : SpaceObject {
 			rigidbody.AddRelativeTorque (0, 0, -100000); 
 		}
 	}
+
+
 
 }
