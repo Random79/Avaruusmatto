@@ -53,6 +53,7 @@ public class SpaceShip : SpaceObject {
 
 	Waypoint deltaVector;
 	public Quaternion deltaRotation;
+	
 
 	public Vector3 localAngularVelocity;
 
@@ -150,28 +151,28 @@ public class SpaceShip : SpaceObject {
 			deltaRotation = Quaternion.FromToRotation(transform.forward, to);
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
-			if (deltaRotation.eulerAngles.x > 0) turnXToPos = false; 
-			if (deltaRotation.eulerAngles.y > 0) turnYToPos = false; 
+			if (deltaRotation.x > 0) turnXToPos = false; 
+			if (deltaRotation.y > 0) turnYToPos = false; 
 			turningState=2;
 		}
 		// tila 2 tekee käännökset
 		if(turningState==2)
 		{
 			if (turnXToPos){
-				if (transform.eulerAngles.x < deltaRotation.eulerAngles.x*0.4){
+				if (transform.rotation.x < deltaRotation.x*0.6){
 					rigidbody.AddRelativeTorque (100, 0, 0);
 				}
-				if (transform.eulerAngles.x > deltaRotation.eulerAngles.x*0.6){
+				if (transform.rotation.x > deltaRotation.x*0.4){
 					rigidbody.AddRelativeTorque (-100, 0, 0);
 				}
 				
 			} 
 			
 			if (turnXToPos==false){
-				if (transform.eulerAngles.x > deltaRotation.eulerAngles.x*0.4){
+				if (transform.rotation.x > deltaRotation.x*0.4){
 					rigidbody.AddRelativeTorque (-100, 0, 0);
 				}
-				if (transform.eulerAngles.x < deltaRotation.eulerAngles.x*0.6){
+				if (transform.rotation.x < deltaRotation.x*0.6){
 					rigidbody.AddRelativeTorque (100, 0, 0);
 				}
 				
@@ -204,11 +205,11 @@ public class SpaceShip : SpaceObject {
 			}
 		}
 		// pysäytetään rotaatio vielä varmuuden vuoksi
-		if (turningState == 3 && localAngularVelocity.magnitude >= 0.000001)
+		if (turningState == 3 && localAngularVelocity.magnitude >= 0.001)
 		{
 			stopRotation();
 		}
-		if (turningState == 3 && localAngularVelocity.magnitude < 0.0000001)
+		if (turningState == 3 && localAngularVelocity.magnitude < 0.001)
 		{
 			turningState=4;
 
@@ -217,7 +218,7 @@ public class SpaceShip : SpaceObject {
 		if (turningState == 4)
 		{
 			// jos ei ole oikea, niin mennään uudestaan tilaan 0 ja aloitetaan alusta
-			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.forward.x ) > 0.001
+			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.forward.x ) > 0.01
 			   /*&& Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) > 0.001*/)
 			{
 				turningState=0;
@@ -240,22 +241,22 @@ public class SpaceShip : SpaceObject {
 	void stopRotation()
 	{
 		if (localAngularVelocity.x < 0) {
-			rigidbody.AddRelativeTorque (100, 0, 0); 
+			rigidbody.AddRelativeTorque (1000, 0, 0); 
 		}
 		if (localAngularVelocity.x > 0) {
-			rigidbody.AddRelativeTorque (-100, 0, 0); 
+			rigidbody.AddRelativeTorque (-1000, 0, 0); 
 		}
 		if (localAngularVelocity.y < 0) {
-			rigidbody.AddRelativeTorque (0, 100, 0); 
+			rigidbody.AddRelativeTorque (0, 1000, 0); 
 		}
 		if (localAngularVelocity.y > 0) {
-			rigidbody.AddRelativeTorque (0, -100, 0); 
+			rigidbody.AddRelativeTorque (0, -1000, 0); 
 		}
 		if (localAngularVelocity.z < 0) {
-			rigidbody.AddRelativeTorque (0, 0, 100); 
+			rigidbody.AddRelativeTorque (0, 0, 1000); 
 		}
 		if (localAngularVelocity.z > 0) {
-			rigidbody.AddRelativeTorque (0, 0, -100); 
+			rigidbody.AddRelativeTorque (0, 0, -1000); 
 		}
 	}
 
