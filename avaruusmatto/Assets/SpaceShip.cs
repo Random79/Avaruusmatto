@@ -53,7 +53,12 @@ public class SpaceShip : SpaceObject {
 
 	Waypoint deltaVector;
 	public Quaternion deltaRotation;
-	
+	public Quaternion toDirQ;
+	public Vector3 toDir;
+	public float DeltadirX;
+	public float accX;
+	public float decX;
+	public float updateDirX;
 
 	public Vector3 localAngularVelocity;
 
@@ -149,14 +154,65 @@ public class SpaceShip : SpaceObject {
 			Vector3 to = new Vector3((float)deltaVector.X, (float)deltaVector.Y, (float)deltaVector.Z);
 
 			deltaRotation = Quaternion.FromToRotation(transform.forward, to);
+			toDirQ = Quaternion.FromToRotation(Vector3.forward, to);
+			toDir = toDirQ.eulerAngles;
+			// tähän jäin. Ei pitäis olla negatiivinen... johtuu 360 ylityksestä
+
+			/*
+			 * Tällanen pitää laittaa c sharpille. h on transform.forward ja d on toDir.X
+			Ddir<-d-h
+			Ddir
+
+			if((Ddir<=180 && Ddir>=0) || (Ddir>=-180 && Ddir<=0)){
+				
+				kiihdytys<-Ddir/2
+				stop<-Ddir
+			}
+			if(Ddir>180){ 
+				Ddir<-Ddir-360
+				kiihdytys<-Ddir/2
+				stop<-Ddir
+			} 
+
+			if(Ddir<(-180)){
+				Ddir<-Ddir+360
+				kiihdytys<-Ddir/2
+				stop<-Ddir
+			}
+
+			*/
+
+			DeltadirX = transform.forward.x - toDir.x;
+			accX = DeltadirX*0.45f;
+			decX = DeltadirX*0.65f;
+
+			updateDirX = 0;
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
 			if (deltaRotation.x > 0) turnXToPos = false; 
 			if (deltaRotation.y > 0) turnYToPos = false; 
+
 			turningState=2;
 		}
 		// tila 2 tekee käännökset
 		if(turningState==2)
+		{
+			updateDirX = updateDirX + (transform.forward.x - updateDirX);
+			if (turnXToPos)
+			{
+				if (updateDirX<=accX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+				if (updateDirX>=decX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
+			}
+			if (turnXToPos==false)
+			{
+				if (updateDirX>=accX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
+				if (updateDirX<=decX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+			}
+
+		}
+
+
+		/*
 		{
 			if (turnXToPos){
 				if (transform.rotation.x < deltaRotation.x*0.6){
@@ -177,7 +233,7 @@ public class SpaceShip : SpaceObject {
 				}
 				
 			} 
-			/*
+
 			if (turnYToPos){
 				if (transform.eulerAngles.y > deltaRotation.eulerAngles.y/2){
 					rigidbody.AddRelativeTorque (0, 100, 0);
@@ -199,11 +255,11 @@ public class SpaceShip : SpaceObject {
 			}
 			*/
 			// sit, kun ollaan päästy oikeaan suuntaan, vaihdetaan tila
-			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 1)// && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) < 0.001)
+			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.01)// && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) < 0.001)
 			{
 				turningState=3;
 			}
-		}
+		//}
 		// pysäytetään rotaatio vielä varmuuden vuoksi
 		if (turningState == 3 && localAngularVelocity.magnitude >= 0.001)
 		{
