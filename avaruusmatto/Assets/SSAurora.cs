@@ -56,7 +56,7 @@ public class SSAurora : MonoBehaviour {
 
 		//ghost.transform.rotation = gameObject.transform.rotation;
 
-		if (Input.GetKey (KeyCode.R)) {
+		if (Input.GetKey (KeyCode.W)) {
 
 			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime);
 			Quaternion rotations = rigidbody.rotation;
@@ -67,7 +67,7 @@ public class SSAurora : MonoBehaviour {
 			myVelZ += deltaVelRotated.z;
 		}
 
-		if (Input.GetKey (KeyCode.F)) {
+		if (Input.GetKey (KeyCode.S)) {
 			
 			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1));
 			Quaternion rotations = rigidbody.rotation;
@@ -78,7 +78,7 @@ public class SSAurora : MonoBehaviour {
 			myVelZ += deltaVelRotated.z;
 		}
 
-		if (Input.GetKey (KeyCode.W)) {
+		if (Input.GetKey (KeyCode.R)) {
 			
 			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime, 0);
 			Quaternion rotations = rigidbody.rotation;
@@ -89,7 +89,7 @@ public class SSAurora : MonoBehaviour {
 			myVelZ += deltaVelRotated.z;
 		}
 
-		if (Input.GetKey (KeyCode.S)) {
+		if (Input.GetKey (KeyCode.F)) {
 
 			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1), 0);
 			Quaternion rotations = rigidbody.rotation;
