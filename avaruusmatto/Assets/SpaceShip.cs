@@ -80,7 +80,7 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(8,10,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(-8,-10,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		if(Waypoints.Count>0)
 			SetDestination(Waypoints[0]);
 		Stop ();
@@ -226,12 +226,12 @@ public class SpaceShip : SpaceObject {
 				if (turnXToPos)
 				{
 					if (updateDirX<=accX) {rigidbody.AddRelativeTorque (100, 0, 0);}
-					if (updateDirX>=decX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
+					if (updateDirX>=decX) {subState2X=2;}
 				}
 				if (turnXToPos==false)
 				{
 					if (updateDirX>=accX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
-					if (updateDirX<=decX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+					if (updateDirX<=decX) {subState2X=2;}
 				}
 				if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)
 				{
@@ -255,12 +255,12 @@ public class SpaceShip : SpaceObject {
 				if (turnYToPos)
 				{
 					if (updateDirY<=accY) {rigidbody.AddRelativeTorque (0, 100, 0);}
-					if (updateDirY>=decY) {rigidbody.AddRelativeTorque (0, -100, 0);}
+					if (updateDirY>=decY) {subState2Y=2;}
 				}
 				if (turnYToPos==false)
 				{
 					if (updateDirY>=accY) {rigidbody.AddRelativeTorque (0, -100, 0);}
-					if (updateDirY<=decY) {rigidbody.AddRelativeTorque (0, 100, 0);}
+					if (updateDirY<=decY) {subState2Y=2;}
 				}
 				if( Mathf.Abs( deltaRotation.eulerAngles.y - transform.eulerAngles.y ) < 0.1)
 				{
@@ -353,20 +353,20 @@ public class SpaceShip : SpaceObject {
 	void stopRotationX()
 	{
 		if (localAngularVelocity.x < 0) {
-			rigidbody.AddRelativeTorque (10, 0, 0); 
+			rigidbody.AddRelativeTorque (100, 0, 0); 
 		}
 		if (localAngularVelocity.x > 0) {
-			rigidbody.AddRelativeTorque (-10, 0, 0); 
+			rigidbody.AddRelativeTorque (-100, 0, 0); 
 		}
 	}
 
 	void stopRotationY()
 	{
 		if (localAngularVelocity.y < 0) {
-			rigidbody.AddRelativeTorque (0, 10, 0); 
+			rigidbody.AddRelativeTorque (0, 100, 0); 
 		}
 		if (localAngularVelocity.y > 0) {
-			rigidbody.AddRelativeTorque (0, -10, 0); 
+			rigidbody.AddRelativeTorque (0, -100, 0); 
 		}
 	}
 
