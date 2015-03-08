@@ -39,15 +39,27 @@ public class SpaceShip : SpaceObject {
 	public List<Waypoint> Waypoints = new List<Waypoint>();
 
 	int currentWaypoint = 0;
-	public float myThrust = 1000000;
+	double originalDistanceToDestination = 0;
+	double distanceToDestination = 0;
+	public float myThrust = 50;
 	public float myVelX = 0f;
 	public float myVelY = 0f;
 	public float myVelZ = 0f;
 	public float myVelocity = 0f;
 	
 	public float maxAngularVel = 10f;
-	bool IsTurning = false;
-	public byte turningState = 0; 
+
+	public enum autoPilotStates
+	{
+		idle = 0,
+		setDirection,
+		prograde,
+		retrograde
+	}
+
+	public autoPilotStates autopilotState = autoPilotStates.idle;
+	public byte turningState = 0;
+
 	public bool turnXToPos = true;
 	public bool turnYToPos = true;
 
@@ -80,9 +92,10 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(-8,-10,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(80,-100,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
 		if(Waypoints.Count>0)
-			SetDestination(Waypoints[0]);
+			SetDirection(Waypoints[0]);
 		Stop ();
 	}
 	
@@ -94,19 +107,46 @@ public class SpaceShip : SpaceObject {
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
 		if(isAtWaypoint(Waypoints[currentWaypoint]))
 		{
+			
 			if(currentWaypoint<Waypoints.Count)
 				currentWaypoint++;
 			Stop ();
+			autopilotState=autoPilotStates.idle;
 			
 			if(currentWaypoint<Waypoints.Count)
 			{
-				IsTurning=true;
+				autopilotState=autoPilotStates.setDirection;
 				var currentWp=Waypoints[currentWaypoint];
+				originalDistanceToDestination = distanceToDestination = Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
 			}
 		}
 
-		if(IsTurning) 
-			SetDestination(Waypoints[currentWaypoint]);
+		switch(autopilotState)
+		{
+		case autoPilotStates.setDirection:
+			if(SetDirection(Waypoints[currentWaypoint])==true)
+				autopilotState = autoPilotStates.prograde;
+			break;
+		
+		case autoPilotStates.prograde:
+			var currentWp=Waypoints[currentWaypoint];
+			distanceToDestination =  Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
+			if(distanceToDestination<(originalDistanceToDestination/2))
+				autopilotState = autoPilotStates.retrograde;
+			else
+				addThrust(Vector3.forward);
+
+			break;
+
+		case autoPilotStates.retrograde:
+			 addThrust(Vector3.back);
+			break;
+
+		case autoPilotStates.idle:
+		default:
+			break;
+		}
+	
 
 
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
@@ -122,23 +162,42 @@ public class SpaceShip : SpaceObject {
 	bool isAtWaypoint(Waypoint w)
 	{
 		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
-		if(distance<0) distance = 0-distance;
-		if(distance < 2) return true;
+		Debug.Log("Distance: " + distance);
+		if(distance < 10) 
+			return true;
 		return false;
 	}
 
+	void addThrust(Vector3 dir)
+	{
+		// TODO: kalle pistää vectorisuunnan kuosiin. dir %*% matriisi(deltavel, jonka diagonaalilla on mythrust/... )
+		Vector3 deltaVel;
+		if(dir==Vector3.forward)
+		{
+			deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime);
+		}
+		else deltaVel = new Vector3(0, 0, -1*(myThrust/rigidbody.mass*Time.fixedDeltaTime));
+
+		Quaternion rotations = rigidbody.rotation;
+		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+		Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+		myVelX += deltaVelRotated.x;
+		myVelY += deltaVelRotated.y;
+		myVelZ += deltaVelRotated.z;
+	}
 
 	//TODO pitääkö tällanen voidi olla fixedupdatessa, vai toimiiko ilman?
-	void SetDestination(Waypoint w)
+	bool SetDirection(Waypoint w)
 	{
 		//pysäytetään rotaatio
-		if(IsTurning==true && turningState==0 && localAngularVelocity.magnitude > 0.01) 
+		if( turningState==0 && localAngularVelocity.magnitude > 0.01) 
 		{
 			stopRotation();
 		}
 		//kun rotaatio on pysähtynyt, niin mennään seuraavaan tilaan
-		if(IsTurning==true && turningState==0 && localAngularVelocity.magnitude == 0) 
+		if( turningState==0 && localAngularVelocity.magnitude <= 0.01) 
 		{
+			rigidbody.angularVelocity = Vector3.zero;
 			turningState=1;
 		}
 		// tilassa 1 alustetaan parametrit kääntymistä varten
@@ -296,31 +355,31 @@ public class SpaceShip : SpaceObject {
 		}
 
 		// pysäytetään rotaatio vielä varmuuden vuoksi
-		if (turningState == 3 && localAngularVelocity.magnitude >= 0.001)
+		if (turningState == 3 && localAngularVelocity.magnitude >= 0.01)
 		{
 			stopRotation();
 		}
-		if (turningState == 3 && localAngularVelocity.magnitude < 0.001)
+		if (turningState == 3 && localAngularVelocity.magnitude < 0.01)
 		{
 			turningState=4;
-
+			rigidbody.angularVelocity = Vector3.zero;
 		}
 		// tarkistetaan vielä, onko suunta oikea
 		if (turningState == 4)
 		{
 			// jos ei ole oikea, niin mennään uudestaan tilaan 0 ja aloitetaan alusta
-			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.rotation.eulerAngles.x) > 0.1 && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) > 0.1)
+			if( Mathf.Abs( toDir.x - transform.rotation.eulerAngles.x) > 0.1 && Mathf.Abs( toDir.y - transform.rotation.eulerAngles.y) > 0.1)
 			{
-				turningState=0;
+				turningState=1;
 			}
 			// muuten lopetetaan kääntyminen
 			else 
 			{
-				IsTurning=false;
 				turningState=0;
+				return true;
 			}
 		}
-		return;
+		return false;
 	}
 	
 	void Stop()
