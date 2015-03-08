@@ -55,12 +55,22 @@ public class SpaceShip : SpaceObject {
 	public Quaternion deltaRotation;
 	public Quaternion toDirQ;
 	public Vector3 toDir;
+
 	public float DeltadirX;
 	public float accX;
 	public float decX;
 	public float updateDirX;
 	public float updateDirStepX;
 	public float updateDirLagStepX;
+	public byte subState2X = 0;
+
+	public float DeltadirY;
+	public float accY;
+	public float decY;
+	public float updateDirY;
+	public float updateDirStepY;
+	public float updateDirLagStepY;
+	public byte subState2Y = 0;
 
 	public Vector3 localAngularVelocity;
 
@@ -70,7 +80,7 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(6,7,8));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(8,10,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		if(Waypoints.Count>0)
 			SetDestination(Waypoints[0]);
 		Stop ();
@@ -92,15 +102,6 @@ public class SpaceShip : SpaceObject {
 			{
 				IsTurning=true;
 				var currentWp=Waypoints[currentWaypoint];
-
-				// quaternioni euleriksi
- 				
-				// tarkista onko deltarotation.x negatiivinen vai positiivinen
-				// jos negatiivinen
-				//   
-				//transform.forward < deltaRotation/2;
-
-
 			}
 		}
 
@@ -159,66 +160,138 @@ public class SpaceShip : SpaceObject {
 			toDirQ = Quaternion.FromToRotation(Vector3.forward, to);
 			toDir = toDirQ.eulerAngles;
 			DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
+			DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
 
 			if((DeltadirX<=180 && DeltadirX>=0) || (DeltadirX>=-180 && DeltadirX<=0))
 			{
 				
-				accX = DeltadirX *0.45f;
-				decX = DeltadirX *0.55f;
+				accX = DeltadirX *0.3f;
+				decX = DeltadirX *0.7f;
 			}
 			if(DeltadirX>180)
 			{
 				DeltadirX = DeltadirX-360f;
-				accX = DeltadirX *0.45f;
-				decX = DeltadirX *0.55f;
+				accX = DeltadirX *0.3f;
+				decX = DeltadirX *0.7f;
 			}
 			if(DeltadirX<(-180))
 			{
 				DeltadirX = DeltadirX+360f;
-				accX = DeltadirX *0.45f;
-				decX = DeltadirX *0.55f;
+				accX = DeltadirX *0.3f;
+				decX = DeltadirX *0.7f;
 			}
 			updateDirX = 0f;
 			updateDirStepX = transform.rotation.eulerAngles.x;
 			updateDirLagStepX = transform.rotation.eulerAngles.x;
+
+			// y-akselille sama. alustuksen voisi yhdistää yhteen metodiin, olle vain annettaisiin tarvittava koordinaattiakseli.
+			
+			if((DeltadirY<=180 && DeltadirY>=0) || (DeltadirY>=-180 && DeltadirY<=0))
+			{
+				
+				accY = DeltadirY *0.3f;
+				decY = DeltadirY *0.7f;
+			}
+			if(DeltadirY>180)
+			{
+				DeltadirY = DeltadirY-360f;
+				accY = DeltadirY *0.3f;
+				decY = DeltadirY *0.7f;
+			}
+			if(DeltadirY<(-180))
+			{
+				DeltadirY = DeltadirY+360f;
+				accY = DeltadirY *0.3f;
+				decY = DeltadirY *0.7f;
+			}
+			updateDirY = 0f;
+			updateDirStepY = transform.rotation.eulerAngles.y;
+			updateDirLagStepY = transform.rotation.eulerAngles.y;
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
 			if (deltaRotation.x < 0) turnXToPos = false; 
 			if (deltaRotation.y < 0) turnYToPos = false; 
 
 			turningState=2;
+			subState2X = 1;
+			subState2Y = 1;
 		}
 		// tila 2 tekee käännökset
 		if(turningState==2)
 		{
-
-			updateDirStepX = transform.rotation.eulerAngles.x;
-
-
-			if (turnXToPos)
+			if (subState2X==1)
 			{
-				updateDirX = updateDirX + (updateDirLagStepX - updateDirStepX);
-				if (updateDirX<=accX) {rigidbody.AddRelativeTorque (100, 0, 0);}
-				if (updateDirX>=decX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
-			}
-			if (turnXToPos==false)
-			{
+				updateDirStepX = transform.rotation.eulerAngles.x;
 				updateDirX = updateDirX - (updateDirLagStepX - updateDirStepX);
-				if (updateDirX>=accX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
-				if (updateDirX<=decX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+				if (turnXToPos)
+				{
+					if (updateDirX<=accX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+					if (updateDirX>=decX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
+				}
+				if (turnXToPos==false)
+				{
+					if (updateDirX>=accX) {rigidbody.AddRelativeTorque (-100, 0, 0);}
+					if (updateDirX<=decX) {rigidbody.AddRelativeTorque (100, 0, 0);}
+				}
+				if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)
+				{
+					subState2X=2;
+				}
+
+				if(updateDirStepX>359 && updateDirLagStepX<1) 
+				{
+					updateDirLagStepX=+360 + transform.rotation.eulerAngles.x;
+				}
+				else
+				{
+					updateDirLagStepX = transform.rotation.eulerAngles.x;
+				}
 			}
-			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)// && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) < 0.001)
+			// y-akselille sama
+			if (subState2Y==1)
+			{
+				updateDirStepY = transform.rotation.eulerAngles.y;
+				updateDirY = updateDirY - (updateDirLagStepY - updateDirStepY);
+				if (turnYToPos)
+				{
+					if (updateDirY<=accY) {rigidbody.AddRelativeTorque (0, 100, 0);}
+					if (updateDirY>=decY) {rigidbody.AddRelativeTorque (0, -100, 0);}
+				}
+				if (turnYToPos==false)
+				{
+					if (updateDirY>=accY) {rigidbody.AddRelativeTorque (0, -100, 0);}
+					if (updateDirY<=decY) {rigidbody.AddRelativeTorque (0, 100, 0);}
+				}
+				if( Mathf.Abs( deltaRotation.eulerAngles.y - transform.eulerAngles.y ) < 0.1)
+				{
+					subState2Y=2;
+				}
+				
+				if(updateDirStepY>359 && updateDirLagStepY<1) 
+				{
+					updateDirLagStepY=+360 + transform.rotation.eulerAngles.y;
+				}
+				else
+				{
+					updateDirLagStepY = transform.rotation.eulerAngles.y;
+				}
+			}
+
+			if (subState2X == 2)
+			{
+				stopRotationX();
+			}
+
+			if (subState2Y == 2)
+			{
+				stopRotationY();
+			}
+
+			if (subState2X==2 && subState2Y==2)
 			{
 				turningState=3;
-			}
-
-			if(updateDirStepX>359 && updateDirLagStepX<1) 
-			{
-				updateDirLagStepX=+360 + transform.rotation.eulerAngles.x;
-			}
-			else
-			{
-				updateDirLagStepX = transform.rotation.eulerAngles.x;
+				subState2X=0;
+				subState2Y=0;
 			}
 		}
 
@@ -236,8 +309,7 @@ public class SpaceShip : SpaceObject {
 		if (turningState == 4)
 		{
 			// jos ei ole oikea, niin mennään uudestaan tilaan 0 ja aloitetaan alusta
-			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.rotation.eulerAngles.x ) > 0.1
-			   /*&& Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) > 0.001*/)
+			if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.rotation.eulerAngles.x) > 0.1 && Mathf.Abs( deltaRotation.eulerAngles.y - transform.forward.y) > 0.1)
 			{
 				turningState=0;
 			}
@@ -259,22 +331,42 @@ public class SpaceShip : SpaceObject {
 	void stopRotation()
 	{
 		if (localAngularVelocity.x < 0) {
-			rigidbody.AddRelativeTorque (1000, 0, 0); 
+			rigidbody.AddRelativeTorque (100, 0, 0); 
 		}
 		if (localAngularVelocity.x > 0) {
-			rigidbody.AddRelativeTorque (-1000, 0, 0); 
+			rigidbody.AddRelativeTorque (-100, 0, 0); 
 		}
 		if (localAngularVelocity.y < 0) {
-			rigidbody.AddRelativeTorque (0, 1000, 0); 
+			rigidbody.AddRelativeTorque (0, 100, 0); 
 		}
 		if (localAngularVelocity.y > 0) {
-			rigidbody.AddRelativeTorque (0, -1000, 0); 
+			rigidbody.AddRelativeTorque (0, -100, 0); 
 		}
 		if (localAngularVelocity.z < 0) {
-			rigidbody.AddRelativeTorque (0, 0, 1000); 
+			rigidbody.AddRelativeTorque (0, 0, 100); 
 		}
 		if (localAngularVelocity.z > 0) {
-			rigidbody.AddRelativeTorque (0, 0, -1000); 
+			rigidbody.AddRelativeTorque (0, 0, -100); 
+		}
+	}
+
+	void stopRotationX()
+	{
+		if (localAngularVelocity.x < 0) {
+			rigidbody.AddRelativeTorque (10, 0, 0); 
+		}
+		if (localAngularVelocity.x > 0) {
+			rigidbody.AddRelativeTorque (-10, 0, 0); 
+		}
+	}
+
+	void stopRotationY()
+	{
+		if (localAngularVelocity.y < 0) {
+			rigidbody.AddRelativeTorque (0, 10, 0); 
+		}
+		if (localAngularVelocity.y > 0) {
+			rigidbody.AddRelativeTorque (0, -10, 0); 
 		}
 	}
 
