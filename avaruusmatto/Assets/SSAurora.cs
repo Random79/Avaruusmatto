@@ -52,14 +52,14 @@ public class SSAurora : MonoBehaviour {
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
-		Vector3 localAngularVelocity = rigidbody.transform.InverseTransformDirection(rigidbody.angularVelocity);
+		Vector3 localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
 		//ghost.transform.rotation = gameObject.transform.rotation;
 
 		if (Input.GetKey (KeyCode.W)) {
 
-			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime);
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -69,8 +69,8 @@ public class SSAurora : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.S)) {
 			
-			Vector3 deltaVel = new Vector3(0, 0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1));
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1));
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -80,8 +80,8 @@ public class SSAurora : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.R)) {
 			
-			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime, 0);
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -91,8 +91,8 @@ public class SSAurora : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.F)) {
 
-			Vector3 deltaVel = new Vector3(0, myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1), 0);
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -102,8 +102,8 @@ public class SSAurora : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.A)) {
 			
-			Vector3 deltaVel = new Vector3(myThrust/rigidbody.mass*Time.fixedDeltaTime*(-1), 0, 0);
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -113,8 +113,8 @@ public class SSAurora : MonoBehaviour {
 		
 		if (Input.GetKey (KeyCode.D)) {
 			
-			Vector3 deltaVel = new Vector3(myThrust/rigidbody.mass*Time.fixedDeltaTime, 0, 0);
-			Quaternion rotations = rigidbody.rotation;
+			Vector3 deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -125,7 +125,7 @@ public class SSAurora : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.LeftShift)) {
 		
 			Vector3 deltaVel = new Vector3(0, 0, 300000000);
-			Quaternion rotations = rigidbody.rotation;
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
 			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
 			myVelX += deltaVelRotated.x;
@@ -139,42 +139,42 @@ public class SSAurora : MonoBehaviour {
 
 
 		if (Input.GetKey (KeyCode.Keypad9)) {
-			rigidbody.AddRelativeTorque (0, 0, -100000);
+			GetComponent<Rigidbody>().AddRelativeTorque (0, 0, -100000);
 		}
 		if (Input.GetKey (KeyCode.Keypad7)) {
-			rigidbody.AddRelativeTorque (0, 0, 100000); 
+			GetComponent<Rigidbody>().AddRelativeTorque (0, 0, 100000); 
 		}
 		if (Input.GetKey (KeyCode.Keypad4)) {
-			rigidbody.AddRelativeTorque (0, -100000, 0); 
+			GetComponent<Rigidbody>().AddRelativeTorque (0, -100000, 0); 
 		}
 		if (Input.GetKey (KeyCode.Keypad6)) {
-			rigidbody.AddRelativeTorque (0, 100000, 0); 
+			GetComponent<Rigidbody>().AddRelativeTorque (0, 100000, 0); 
 		}
 		if (Input.GetKey (KeyCode.Keypad8)) {
-			rigidbody.AddRelativeTorque (100000, 0, 0); 
+			GetComponent<Rigidbody>().AddRelativeTorque (100000, 0, 0); 
 		}
 		if (Input.GetKey (KeyCode.Keypad2)) {
-			rigidbody.AddRelativeTorque (-100000, 0, 0); 
+			GetComponent<Rigidbody>().AddRelativeTorque (-100000, 0, 0); 
 		}
 		if (Input.GetKey (KeyCode.Keypad5)) {
 
 			if (localAngularVelocity.x < 0) {
-				rigidbody.AddRelativeTorque (100000, 0, 0); 
+				GetComponent<Rigidbody>().AddRelativeTorque (100000, 0, 0); 
 			}
 			if (localAngularVelocity.x > 0) {
-				rigidbody.AddRelativeTorque (-100000, 0, 0); 
+				GetComponent<Rigidbody>().AddRelativeTorque (-100000, 0, 0); 
 			}
 			if (localAngularVelocity.y < 0) {
-				rigidbody.AddRelativeTorque (0, 100000, 0); 
+				GetComponent<Rigidbody>().AddRelativeTorque (0, 100000, 0); 
 			}
 			if (localAngularVelocity.y > 0) {
-				rigidbody.AddRelativeTorque (0, -100000, 0); 
+				GetComponent<Rigidbody>().AddRelativeTorque (0, -100000, 0); 
 			}
 			if (localAngularVelocity.z < 0) {
-				rigidbody.AddRelativeTorque (0, 0, 100000); 
+				GetComponent<Rigidbody>().AddRelativeTorque (0, 0, 100000); 
 			}
 			if (localAngularVelocity.z > 0) {
-				rigidbody.AddRelativeTorque (0, 0, -100000); 
+				GetComponent<Rigidbody>().AddRelativeTorque (0, 0, -100000); 
 			}
 		}
 
