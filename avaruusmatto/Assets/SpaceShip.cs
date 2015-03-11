@@ -86,6 +86,7 @@ public class SpaceShip : SpaceObject {
 
 	public Vector3 localAngularVelocity;
 
+
 	// Use this for initialization
 	void Start () {
 		myX = 0;
@@ -97,10 +98,12 @@ public class SpaceShip : SpaceObject {
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
 		Stop ();
+
 	}
 	
 	void FixedUpdate() {
-	
+		var x= MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Random(3,3);
+		var y = x.At(0,0);
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
