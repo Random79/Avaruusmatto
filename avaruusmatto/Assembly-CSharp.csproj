@@ -62,10 +62,10 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="MathNet.Numerics">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
  </Reference>
  <Reference Include="System.Threading">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

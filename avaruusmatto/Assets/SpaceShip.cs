@@ -102,8 +102,8 @@ public class SpaceShip : SpaceObject {
 	}
 	
 	void FixedUpdate() {
-		var x= MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Random(3,3);
-		var y = x.At(0,0);
+
+
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
@@ -175,9 +175,11 @@ public class SpaceShip : SpaceObject {
 	{
 		// TODO: kalle pistää vectorisuunnan kuosiin. dir %*% matriisi(deltavel, jonka diagonaalilla on mythrust/... )
 		Vector3 deltaVel;
-		//Vector3 deltaVel4 = new Vector4(dir.x , dir.y, dir.z, 0);
-		// öh ei oo matriisialgebraa unityssä... Mä luulen, että me tullaan tartteen sitä melko paljon, joten pitää ettiä joku kirjasto tms...
-		//Matrix4x4 thrustMatrix = Matrix4x4.identity*(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime); 
+
+		var thrustMatrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Diagonal(3, 3, (myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime));
+		var dirVec = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(new[] {(double)dir.x, (double)dir.y, (double)dir.z});
+		//var thrustDirection = dirVec.Multiply(thrustMatrix,thrustDirection);
+
 		if(dir==Vector3.forward)
 		{
 			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
