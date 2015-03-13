@@ -103,6 +103,7 @@ public class SpaceShip : SpaceObject {
 	
 	void FixedUpdate() {
 
+		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
@@ -134,15 +135,27 @@ public class SpaceShip : SpaceObject {
 		case autoPilotStates.prograde:
 			var currentWp=Waypoints[currentWaypoint];
 			distanceToDestination =  Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
-			if(distanceToDestination<(originalDistanceToDestination*0.75))
-				autopilotState = autoPilotStates.retrograde;
-			else
+			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
+			var retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
+
+			if(distanceToDestination>(originalDistanceToDestination*0.75))
 				addThrust(Vector3.forward);
+
+			if(distanceToDestination<=retroStartDist)
+				autopilotState = autoPilotStates.retrograde;
 
 			break;
 
 		case autoPilotStates.retrograde:
+			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
+			retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
+
+			if(distanceToDestination<=retroStartDist && myVelocity>0.1 && isAtWaypoint(Waypoints[currentWaypoint])==false)
 			 addThrust(Vector3.back);
+			else
+			{
+				autopilotState = autoPilotStates.idle;
+			}
 			break;
 
 		case autoPilotStates.idle:
@@ -150,11 +163,6 @@ public class SpaceShip : SpaceObject {
 			break;
 		}
 	
-
-
-		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
-		
-
 		myX += myVelX*Time.fixedDeltaTime;
 		myY += myVelY*Time.fixedDeltaTime;
 		myZ += myVelZ*Time.fixedDeltaTime;
@@ -166,26 +174,20 @@ public class SpaceShip : SpaceObject {
 	{
 		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
 		Debug.Log("Distance: " + distance);
-		if(distance < 10) 
+		if(distance < 5) 
 			return true;
 		return false;
 	}
 
 	void addThrust(Vector3 dir)
 	{
-		// TODO: kalle pistää vectorisuunnan kuosiin. dir %*% matriisi(deltavel, jonka diagonaalilla on mythrust/... )
 		Vector3 deltaVel;
 
 		var thrustMatrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Diagonal(3, 3, (myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime));
 		var dirVec = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(new[] {(double)dir.x, (double)dir.y, (double)dir.z});
-		//var thrustDirection = dirVec.Multiply(thrustMatrix,thrustDirection);
+		var thrustDirection = dirVec * thrustMatrix;
 
-		if(dir==Vector3.forward)
-		{
-			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
-		}
-		else deltaVel = new Vector3(0, 0, -1*(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime));
-
+		deltaVel = new Vector3 ((float)thrustDirection.At(1), (float)thrustDirection.At(2), (float)thrustDirection.At(2));
 		Quaternion rotations = GetComponent<Rigidbody>().rotation;
 		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 		Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
@@ -375,10 +377,11 @@ public class SpaceShip : SpaceObject {
 		// tarkistetaan vielä, onko suunta oikea
 		if (turningState == 4)
 		{
-			// jos ei ole oikea, niin mennään uudestaan tilaan 0 ja aloitetaan alusta
-			if( Mathf.Abs( toDir.x - transform.rotation.eulerAngles.x) > 0.1 && Mathf.Abs( toDir.y - transform.rotation.eulerAngles.y) > 0.1)
+			// jos ei ole oikea, niin mennään uudestaan tilaan 1 ja aloitetaan alusta
+			if( Mathf.Abs( toDir.x - transform.rotation.eulerAngles.x) > 0.1 || Mathf.Abs( toDir.y - transform.rotation.eulerAngles.y) > 0.1)
 			{
 				turningState=1;
+
 			}
 			// muuten lopetetaan kääntyminen
 			else 
