@@ -93,7 +93,7 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(80,-100,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(0,80,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
@@ -286,7 +286,7 @@ public class SpaceShip : SpaceObject {
 			subState2Y = 1;
 		}
 		// tila 2 tekee käännökset
-		if(turningState==2)
+		else if(turningState==2)
 		{
 			if (subState2X==1)
 			{
@@ -365,17 +365,17 @@ public class SpaceShip : SpaceObject {
 		}
 
 		// pysäytetään rotaatio vielä varmuuden vuoksi
-		if (turningState == 3 && localAngularVelocity.magnitude >= 0.01)
+		else if (turningState == 3 && localAngularVelocity.magnitude >= 0.01)
 		{
 			stopRotation();
 		}
-		if (turningState == 3 && localAngularVelocity.magnitude < 0.01)
+		else if (turningState == 3 && localAngularVelocity.magnitude < 0.01)
 		{
 			turningState=4;
 			GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		}
 		// tarkistetaan vielä, onko suunta oikea
-		if (turningState == 4)
+		else if (turningState == 4)
 		{
 			// jos ei ole oikea, niin mennään uudestaan tilaan 1 ja aloitetaan alusta
 			if( Mathf.Abs( toDir.x - transform.rotation.eulerAngles.x) > 0.1 || Mathf.Abs( toDir.y - transform.rotation.eulerAngles.y) > 0.1)
