@@ -72,16 +72,16 @@ public class SpaceShip : SpaceObject {
 	public float accX;
 	public float decX;
 	public float updateDirX;
-	public float updateDirStepX;
-	public float updateDirLagStepX;
+	float updateDirStepX;
+	float updateDirLagStepX;
 	public byte subState2X = 0;
 
 	public float DeltadirY;
 	public float accY;
 	public float decY;
 	public float updateDirY;
-	public float updateDirStepY;
-	public float updateDirLagStepY;
+	float updateDirStepY;
+	float updateDirLagStepY;
 	public byte subState2Y = 0;
 
 	public Vector3 localAngularVelocity;
@@ -93,7 +93,7 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(0,80,6));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(1000,1000,106));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
@@ -205,13 +205,14 @@ public class SpaceShip : SpaceObject {
 			stopRotation();
 		}
 		//kun rotaatio on pysähtynyt, niin mennään seuraavaan tilaan
-		if( turningState==0 && localAngularVelocity.magnitude <= 0.01) 
+		else if( turningState==0 && localAngularVelocity.magnitude <= 0.01) 
 		{
+			// angularvelocity taitaa olla vaan luku,. sitä ei voi asettaa tällä tavalla... ehkä...
 			GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			turningState=1;
 		}
 		// tilassa 1 alustetaan parametrit kääntymistä varten
-		if(turningState==1)
+		else if(turningState==1)
 		{
 			//vektori omasta pisteestä waypointille
 			deltaVector = w - new Waypoint(myX,myY,myZ);
@@ -231,7 +232,7 @@ public class SpaceShip : SpaceObject {
 			DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
 			DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
 
-			if((DeltadirX<=180 && DeltadirX>=0) || (DeltadirX>=-180 && DeltadirX<=0))
+			if(DeltadirX<=180 && DeltadirX>=-180)
 			{
 				
 				accX = DeltadirX *0.3f;
@@ -255,7 +256,7 @@ public class SpaceShip : SpaceObject {
 
 			// y-akselille sama. alustuksen voisi yhdistää yhteen metodiin, olle vain annettaisiin tarvittava koordinaattiakseli.
 			
-			if((DeltadirY<=180 && DeltadirY>=0) || (DeltadirY>=-180 && DeltadirY<=0))
+			if(DeltadirY<=180 && DeltadirY>=-180)
 			{
 				
 				accY = DeltadirY *0.3f;
@@ -278,6 +279,7 @@ public class SpaceShip : SpaceObject {
 			updateDirLagStepY = transform.rotation.eulerAngles.y;
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
+			// TODO tämä ei toimi
 			if (deltaRotation.x < 0) turnXToPos = false; 
 			if (deltaRotation.y < 0) turnYToPos = false; 
 
@@ -302,12 +304,12 @@ public class SpaceShip : SpaceObject {
 					if (updateDirX>=accX) {GetComponent<Rigidbody>().AddRelativeTorque (-100, 0, 0);}
 					if (updateDirX<=decX) {subState2X=2;}
 				}
-				if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)
+				/*if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)
 				{
 					subState2X=2;
-				}
+				}*/
 
-				if(updateDirStepX>359 && updateDirLagStepX<1) 
+				if(updateDirStepX>350 && updateDirLagStepX<10) 
 				{
 					updateDirLagStepX=+360 + transform.rotation.eulerAngles.x;
 				}
@@ -331,12 +333,12 @@ public class SpaceShip : SpaceObject {
 					if (updateDirY>=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, -100, 0);}
 					if (updateDirY<=decY) {subState2Y=2;}
 				}
-				if( Mathf.Abs( deltaRotation.eulerAngles.y - transform.eulerAngles.y ) < 0.1)
+				/*if( Mathf.Abs( deltaRotation.eulerAngles.y - transform.eulerAngles.y ) < 0.1)
 				{
 					subState2Y=2;
 				}
-				
-				if(updateDirStepY>359 && updateDirLagStepY<1) 
+				*/
+				if(updateDirStepY>350 && updateDirLagStepY<10) 
 				{
 					updateDirLagStepY=+360 + transform.rotation.eulerAngles.y;
 				}
@@ -375,10 +377,13 @@ public class SpaceShip : SpaceObject {
 			GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		}
 		// tarkistetaan vielä, onko suunta oikea
+
 		else if (turningState == 4)
 		{
+			var diffX = toDir.x - transform.rotation.eulerAngles.x;
+			var diffY = toDir.y - transform.rotation.eulerAngles.y;
 			// jos ei ole oikea, niin mennään uudestaan tilaan 1 ja aloitetaan alusta
-			if( Mathf.Abs( toDir.x - transform.rotation.eulerAngles.x) > 0.1 || Mathf.Abs( toDir.y - transform.rotation.eulerAngles.y) > 0.1)
+			if( Mathf.Abs(diffX) > 0.1 || Mathf.Abs(diffY) > 0.1)
 			{
 				turningState=1;
 

@@ -59,16 +59,16 @@
      <None Include="Assets\Standard Assets\Projectors\Sources\Shaders\Projector Light.shader" />
      <None Include="Assets\Standard Assets\Tessellation Shaders\BumpedSpecularDisplacement.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="MathNet.Numerics">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
  </Reference>
  <Reference Include="System.Threading">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
