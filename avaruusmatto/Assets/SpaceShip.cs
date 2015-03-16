@@ -226,7 +226,7 @@ public class SpaceShip : SpaceObject {
 			Vector3 to = new Vector3((float)deltaVector.X, (float)deltaVector.Y, (float)deltaVector.Z);
 
 			deltaRotation = Quaternion.FromToRotation(transform.forward, to);
-			toDirQ = Quaternion.FromToRotation(Vector3.forward, to);
+			toDirQ = Quaternion.FromToRotation(transform.forward, to);
 			toDir = toDirQ.eulerAngles;
 			DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
 			DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
