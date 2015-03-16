@@ -1,18 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SpaceShip.cs">
     <Files>
-      <File FileName="Assets\SpaceShip.cs" Line="292" Column="4" />
-      <File FileName="Assets\SpaceObject.cs" Line="39" Column="1" />
+      <File FileName="Assets\SpaceShip.cs" Line="322" Column="1" />
+      <File FileName="Assets\SpaceObject.cs" Line="1" Column="1" />
       <File FileName="Assets\SSAurora.cs" Line="1" Column="1" />
       <File FileName="Assets\Gamelogic.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="386" />
-      <Breakpoint file="C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="219" />
-      <Breakpoint file="C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="293" />
+      <Breakpoint file="C:\Users\Tomi\Documents\githubrepository\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="390" />
+      <Breakpoint file="C:\Users\Tomi\Documents\githubrepository\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="142" />
+      <Breakpoint file="C:\Users\Tomi\Documents\githubrepository\Avaruusmatto\avaruusmatto\Assets\SpaceShip.cs" line="184" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
