@@ -295,7 +295,21 @@ public class SpaceShip : SpaceObject {
 			if (subState2X==1)
 			{
 				updateDirStepX = transform.rotation.eulerAngles.x;
-				updateDirX = updateDirX - (updateDirLagStepX - updateDirStepX);
+				var stepX = updateDirLagStepX - updateDirStepX;
+
+
+				if (turnXToPos == false && stepX > 180)
+				{
+					stepX = updateDirLagStepX - (updateDirStepX + 360);
+				}
+
+				if (turnXToPos == true && stepX < -180)
+				{
+					stepX = updateDirLagStepX - (updateDirStepX - 360);
+				}
+				
+
+				updateDirX = updateDirX - stepX;
 				if (turnXToPos)
 				{
 					if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (100, 0, 0);}
@@ -311,20 +325,29 @@ public class SpaceShip : SpaceObject {
 					subState2X=2;
 				}*/
 				// 
-				if(updateDirStepX>355 && updateDirLagStepX<5) 
-				{
-					updateDirLagStepX=+360 + transform.rotation.eulerAngles.x;
-				}
-				else
-				{
-					updateDirLagStepX = transform.rotation.eulerAngles.x;
-				}
+
+				updateDirLagStepX = transform.rotation.eulerAngles.x;
+
 			}
 			// y-akselille sama
 			if (subState2Y==1)
 			{
 				updateDirStepY = transform.rotation.eulerAngles.y;
-				updateDirY = updateDirY - (updateDirLagStepY - updateDirStepY);
+
+				var stepY = updateDirLagStepY - updateDirStepY;
+				
+				
+				if (turnYToPos == false && stepY > 180)
+				{
+					stepY = updateDirLagStepY - (updateDirStepY + 360);
+				}
+				
+				if (turnYToPos == true && stepY < -180)
+				{
+					stepY = updateDirLagStepY - (updateDirStepY - 360);
+				}
+
+				updateDirY = updateDirY - stepY;
 				if (turnYToPos)
 				{
 					if (updateDirY<=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, 100, 0);}
@@ -340,14 +363,9 @@ public class SpaceShip : SpaceObject {
 					subState2Y=2;
 				}
 				*/
-				if(updateDirStepY>355 && updateDirLagStepY<5) 
-				{
-					updateDirLagStepY=+360 + transform.rotation.eulerAngles.y;
-				}
-				else
-				{
-					updateDirLagStepY = transform.rotation.eulerAngles.y;
-				}
+
+				updateDirLagStepY = transform.rotation.eulerAngles.y;
+
 			}
 
 			if (subState2X == 2)
