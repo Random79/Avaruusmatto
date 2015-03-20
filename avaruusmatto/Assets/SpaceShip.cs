@@ -93,7 +93,7 @@ public class SpaceShip : SpaceObject {
 		myY = 0;
 		myZ = 5;
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(1000,1000,106));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(10,10,16));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
@@ -183,11 +183,13 @@ public class SpaceShip : SpaceObject {
 	{
 		Vector3 deltaVel;
 
+		// diagonaalimatriisi. diagonaalilla on työntövoima
 		var thrustMatrix = MathNet.Numerics.LinearAlgebra.Matrix<double>.Build.Diagonal(3, 3, (myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime));
 		var dirVec = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(new[] {(double)dir.x, (double)dir.y, (double)dir.z});
 		var thrustDirection = dirVec * thrustMatrix;
 
-		deltaVel = new Vector3 ((float)thrustDirection.At(1), (float)thrustDirection.At(2), (float)thrustDirection.At(2));
+		// tässä oli kans äsken viä bugi... noi
+		deltaVel = new Vector3 ((float)thrustDirection.At(0), (float)thrustDirection.At(1), (float)thrustDirection.At(2));
 		Quaternion rotations = GetComponent<Rigidbody>().rotation;
 		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 		Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
@@ -279,9 +281,9 @@ public class SpaceShip : SpaceObject {
 			updateDirLagStepY = transform.rotation.eulerAngles.y;
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
-			// TODO tämä ei toimi
-			if (deltaRotation.x < 0) turnXToPos = false; 
-			if (deltaRotation.y < 0) turnYToPos = false; 
+			// tähän lisättiin elset, ja sit alkoi toimia :)
+			if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
+			if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
 
 			turningState=2;
 			subState2X = 1;
@@ -308,8 +310,8 @@ public class SpaceShip : SpaceObject {
 				{
 					subState2X=2;
 				}*/
-
-				if(updateDirStepX>350 && updateDirLagStepX<10) 
+				// 
+				if(updateDirStepX>355 && updateDirLagStepX<5) 
 				{
 					updateDirLagStepX=+360 + transform.rotation.eulerAngles.x;
 				}
@@ -338,7 +340,7 @@ public class SpaceShip : SpaceObject {
 					subState2Y=2;
 				}
 				*/
-				if(updateDirStepY>350 && updateDirLagStepY<10) 
+				if(updateDirStepY>355 && updateDirLagStepY<5) 
 				{
 					updateDirLagStepY=+360 + transform.rotation.eulerAngles.y;
 				}
