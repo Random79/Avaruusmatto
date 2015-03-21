@@ -5,12 +5,6 @@ using System.Collections;
 [RequireComponent(typeof(SpaceObject))]
 public class SSAurora : SpaceObject {
 
-	// aluksen paikka koordinaatistossa.  Spaceobjectista
-	//public double myX = 0;
-	//public double myY = 0;
-	//public double myZ = 0;
-  
-
 	// aluksen massa (kg) 
 	// työntövoima (N) tämä on konventionaalinen työntövoima esim. dokkausta, väistöliikkeitä ja aluksen valtausta varten. 
 	public float myThrust = 1000000;

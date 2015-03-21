@@ -104,12 +104,7 @@ public class SpaceShip : SpaceObject {
 
 	}
 
-	/*void OnDestroy()
-	{
-		RegisterToGame(true);
-		Destroy(this.gameObject);
-	}
-	*/
+
 	void FixedUpdate() {
 
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
