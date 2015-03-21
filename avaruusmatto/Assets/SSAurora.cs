@@ -2,12 +2,13 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SSAurora : MonoBehaviour {
+[RequireComponent(typeof(SpaceObject))]
+public class SSAurora : SpaceObject {
 
-	// aluksen paikka koordinaatistossa. 
-	public double myX = 0;
-	public double myY = 0;
-	public double myZ = 0;
+	// aluksen paikka koordinaatistossa.  Spaceobjectista
+	//public double myX = 0;
+	//public double myY = 0;
+	//public double myZ = 0;
   
 
 	// aluksen massa (kg) 
@@ -40,7 +41,13 @@ public class SSAurora : MonoBehaviour {
 		ghost.transform.parent = gameObject.transform;
 	*/	SecondaryCam.enabled = false;
 		mainCam.enabled = true;
+		RegisterToGame(false);
 	//Time.fixedTime
+	}
+
+	void OnDestroy()
+	{
+		RegisterToGame(true);
 	}
 
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
-
+[RequireComponent(typeof(SpaceObject))]
 /**
  * Waypoint Class
  */
@@ -92,6 +92,9 @@ public class SpaceShip : SpaceObject {
 		myX = 0;
 		myY = 0;
 		myZ = 5;
+
+		RegisterToGame(false);
+
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
 		Waypoints.Add(new Waypoint(10,10,16));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
@@ -100,7 +103,13 @@ public class SpaceShip : SpaceObject {
 		Stop ();
 
 	}
-	
+
+	/*void OnDestroy()
+	{
+		RegisterToGame(true);
+		Destroy(this.gameObject);
+	}
+	*/
 	void FixedUpdate() {
 
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
@@ -173,7 +182,7 @@ public class SpaceShip : SpaceObject {
 	bool isAtWaypoint(Waypoint w)
 	{
 		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
-		Debug.Log("Distance: " + distance);
+		//Debug.Log("Distance: " + distance);
 		if(distance < 5) 
 			return true;
 		return false;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Gamelogic : MonoBehaviour {
 
 	List <GameObject> kapsulit = new List<GameObject>();
+	public List <SpaceObject> SpaceObjects = new List<SpaceObject>(); 
 	double myX=0;
 	double myY=0;
 	double myZ=0;
@@ -12,7 +13,7 @@ public class Gamelogic : MonoBehaviour {
 	void Start () {
 
 		var dynObject = GameObject.Find("DynamicObjects");
-		for (int x = 0; x<500;x++)
+		for (int x = 0; x<100;x++)
 		{
 			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
 			var kapsuli = Instantiate (kap) as GameObject;
@@ -21,8 +22,9 @@ public class Gamelogic : MonoBehaviour {
 			var kapso = kapsuli.GetComponent<SpaceObject>();
 			kapso.transform.parent = dynObject.transform;
 			//kapso.SetPosition(4,2,8);
-      		kapso.SetPosition(MyRandom(100,2),MyRandom(100,2),MyRandom(100,2));
+      		kapso.SetPosition(MyRandom(40,2),MyRandom(40,2),MyRandom(40,2));
 		}
+
 	}
 
 	float MyRandom(float range, float ExcludeRadius)
@@ -46,5 +48,15 @@ public class Gamelogic : MonoBehaviour {
 		myY = coords[1];
 		myZ = coords[2];
 
+	}
+
+	public void RegisterSpaceObject(SpaceObject so)
+	{
+		SpaceObjects.Add(so);
+	}
+
+	public void DeregisterSpaceObject(SpaceObject so)
+	{
+		SpaceObjects.Remove(so);
 	}
 }
