@@ -4,14 +4,22 @@ using System.Collections.Generic;
 /**
  * Degree struct
  */
-public struct Degree {
-	public int Angle;
-	
-	public Degree(int a)
+[System.Serializable]
+public class Degree {
+	public float Angle;
+	public float GetRotation()
+	{
+		float ret = Angle;
+		while(ret >= 180) ret-=360;
+		while(ret<-180) ret+=360; 
+		return ret;
+	}
+
+	public Degree(float a)
 	{
 		this.Angle = a;
 	}
-	
+
 	private void normalize()
 	{
 		while(this.Angle >= 360) this.Angle-=360;
@@ -19,33 +27,62 @@ public struct Degree {
 	}
 	public static Degree operator +(Degree a, Degree b)
 	{
-		var c = new Degree();
+		var c = new Degree(0);
 		c.Angle = a.Angle + b.Angle;
 		c.normalize();
 		return c;
 	}
 	public static Degree operator -(Degree a, Degree b)
 	{
-		var c = new Degree();
+		var c = new Degree(0);
 		c.Angle = a.Angle-b.Angle;
 		c.normalize();
 		return c;
 	}
 	public static Degree operator /(Degree a, Degree b)
 	{
-		var c = new Degree();
+		var c = new Degree(0);
 		c.Angle = a.Angle/b.Angle;
 		c.normalize();
 		return c;
 	}
 	public static Degree operator *(Degree a, Degree b)
 	{
-		var c = new Degree();
+		var c = new Degree(0);
 		c.Angle = a.Angle*b.Angle;
 		c.normalize();
 		return c;
 	}
-	
+
+	public static Degree operator /(Degree a, float b)
+	{
+		var c = new Degree(0);
+		c.Angle = a.Angle/b;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator *(Degree a, float b)
+	{
+		var c = new Degree(0);
+		c.Angle = a.Angle*b;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator +(Degree a, float b)
+	{
+		var c = new Degree(0);
+		c.Angle = a.Angle + b;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator -(Degree a, float b)
+	{
+		var c = new Degree(0);
+		c.Angle = a.Angle-b;
+		c.normalize();
+		return c;
+	}
+
 }
 
 public class Gamelogic : MonoBehaviour {

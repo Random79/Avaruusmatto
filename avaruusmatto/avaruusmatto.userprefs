@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SpaceShip.cs">
     <Files>
-      <File FileName="Assets\SpaceShip.cs" Line="81" Column="20" />
-      <File FileName="Assets\Gamelogic.cs" Line="63" Column="1" />
       <File FileName="Assets\SpaceObject.cs" Line="99" Column="1" />
-      <File FileName="Assets\SSAurora.cs" Line="36" Column="34" />
+      <File FileName="Assets\SpaceShip.cs" Line="337" Column="28" />
+      <File FileName="Assets\Gamelogic.cs" Line="89" Column="2" />
+      <File FileName="Assets\SSAurora.cs" Line="201" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

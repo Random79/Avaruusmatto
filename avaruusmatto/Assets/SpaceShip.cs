@@ -72,8 +72,8 @@ public class SpaceShip : SpaceObject {
 	public float accX;
 	public float decX;
 	public float updateDirX;
-	float updateDirStepX;
-	float updateDirLagStepX;
+	Degree updateDirStepX= new Degree(0);
+	Degree updateDirLagStepX= new Degree(0);
 	public byte subState2X = 0;
 
 	public float DeltadirY;
@@ -93,11 +93,11 @@ public class SpaceShip : SpaceObject {
 		// Just testing the Degree struct
 		var k1 = new Degree(10);
 		var k2 = new Degree(90);
-		var k3 = new Degree();
+		var k3 = new Degree(0);
 
 		k3 = k1 - k2;
-
-		k1.Angle = 100;
+		var x = k2.GetRotation();
+		k1.Angle = x;
 		k2.Angle = 300;
 
 		k3 = k1 + k2;
@@ -186,6 +186,7 @@ public class SpaceShip : SpaceObject {
 		myZ += myVelZ*Time.fixedDeltaTime;
 
 		UpdatePosition();
+
 	}
 
 	bool isAtWaypoint(Waypoint w)
@@ -254,25 +255,26 @@ public class SpaceShip : SpaceObject {
 
 			if(DeltadirX<=180 && DeltadirX>=-180)
 			{
-				
+
 				accX = DeltadirX *0.3f;
 				decX = DeltadirX *0.7f;
 			}
 			if(DeltadirX>180)
 			{
-				DeltadirX = DeltadirX-360f;
+				DeltadirX =- -360f;
 				accX = DeltadirX *0.3f;
 				decX = DeltadirX *0.7f;
 			}
 			if(DeltadirX<(-180))
 			{
-				DeltadirX = DeltadirX+360f;
+				DeltadirX =+ +360f;
 				accX = DeltadirX *0.3f;
 				decX = DeltadirX *0.7f;
 			}
+
 			updateDirX = 0f;
-			updateDirStepX = transform.rotation.eulerAngles.x;
-			updateDirLagStepX = transform.rotation.eulerAngles.x;
+			updateDirStepX.Angle = transform.rotation.eulerAngles.x;
+			updateDirLagStepX.Angle = transform.rotation.eulerAngles.x;
 
 			// y-akselille sama. alustuksen voisi yhdistää yhteen metodiin, olle vain annettaisiin tarvittava koordinaattiakseli.
 			
@@ -312,22 +314,10 @@ public class SpaceShip : SpaceObject {
 		{
 			if (subState2X==1)
 			{
-				updateDirStepX = transform.rotation.eulerAngles.x;
+				updateDirStepX.Angle = transform.rotation.eulerAngles.x;
 				var stepX = updateDirLagStepX - updateDirStepX;
 
-
-				if (turnXToPos == false && stepX > 180)
-				{
-					stepX = updateDirLagStepX - (updateDirStepX + 360);
-				}
-
-				if (turnXToPos == true && stepX < -180)
-				{
-					stepX = updateDirLagStepX - (updateDirStepX - 360);
-				}
-				
-
-				updateDirX = updateDirX - stepX;
+				updateDirX =- -stepX.Angle;
 				if (turnXToPos)
 				{
 					if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (100, 0, 0);}
@@ -344,7 +334,7 @@ public class SpaceShip : SpaceObject {
 				}*/
 				// 
 
-				updateDirLagStepX = transform.rotation.eulerAngles.x;
+				updateDirLagStepX.Angle = transform.rotation.eulerAngles.x;
 
 			}
 			// y-akselille sama
