@@ -1,6 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+/**
+ * Degree struct
+ */
+public struct Degree {
+	public int Angle;
+	
+	public Degree(int a)
+	{
+		this.Angle = a;
+	}
+	
+	private void normalize()
+	{
+		while(this.Angle >= 360) this.Angle-=360;
+		while(this.Angle<0) this.Angle+=360;
+	}
+	public static Degree operator +(Degree a, Degree b)
+	{
+		var c = new Degree();
+		c.Angle = a.Angle + b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator -(Degree a, Degree b)
+	{
+		var c = new Degree();
+		c.Angle = a.Angle-b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator /(Degree a, Degree b)
+	{
+		var c = new Degree();
+		c.Angle = a.Angle/b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static Degree operator *(Degree a, Degree b)
+	{
+		var c = new Degree();
+		c.Angle = a.Angle*b.Angle;
+		c.normalize();
+		return c;
+	}
+	
+}
+
 public class Gamelogic : MonoBehaviour {
 
 	List <GameObject> kapsulit = new List<GameObject>();
