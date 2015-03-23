@@ -80,8 +80,8 @@ public class SpaceShip : SpaceObject {
 	public float accY;
 	public float decY;
 	public float updateDirY;
-	float updateDirStepY;
-	float updateDirLagStepY;
+	Degree updateDirStepY = new Degree(0);
+	Degree updateDirLagStepY = new Degree(0);
 	public byte subState2Y = 0;
 
 	public Vector3 localAngularVelocity;
@@ -261,13 +261,13 @@ public class SpaceShip : SpaceObject {
 			}
 			if(DeltadirX>180)
 			{
-				DeltadirX =- -360f;
+				DeltadirX =DeltadirX - 360f;
 				accX = DeltadirX *0.3f;
 				decX = DeltadirX *0.7f;
 			}
-			if(DeltadirX<(-180))
+			if(DeltadirX<-180)
 			{
-				DeltadirX =+ +360f;
+				DeltadirX =DeltadirX + 360f;
 				accX = DeltadirX *0.3f;
 				decX = DeltadirX *0.7f;
 			}
@@ -290,15 +290,15 @@ public class SpaceShip : SpaceObject {
 				accY = DeltadirY *0.3f;
 				decY = DeltadirY *0.7f;
 			}
-			if(DeltadirY<(-180))
+			if(DeltadirY<-180)
 			{
 				DeltadirY = DeltadirY+360f;
 				accY = DeltadirY *0.3f;
 				decY = DeltadirY *0.7f;
 			}
 			updateDirY = 0f;
-			updateDirStepY = transform.rotation.eulerAngles.y;
-			updateDirLagStepY = transform.rotation.eulerAngles.y;
+			updateDirStepY.Angle = transform.rotation.eulerAngles.y;
+			updateDirLagStepY.Angle = transform.rotation.eulerAngles.y;
 
 			// tarkistetaan, kumpaan suuntaan pitää kääntyä x ja y akselien suhteen
 			// tähän lisättiin elset, ja sit alkoi toimia :)
@@ -316,8 +316,8 @@ public class SpaceShip : SpaceObject {
 			{
 				updateDirStepX.Angle = transform.rotation.eulerAngles.x;
 				var stepX = updateDirLagStepX - updateDirStepX;
+				updateDirX = updateDirX - stepX.Angle;
 
-				updateDirX =- -stepX.Angle;
 				if (turnXToPos)
 				{
 					if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (100, 0, 0);}
@@ -340,22 +340,11 @@ public class SpaceShip : SpaceObject {
 			// y-akselille sama
 			if (subState2Y==1)
 			{
-				updateDirStepY = transform.rotation.eulerAngles.y;
-
+				updateDirStepY.Angle = transform.rotation.eulerAngles.y;
 				var stepY = updateDirLagStepY - updateDirStepY;
-				
-				
-				if (turnYToPos == false && stepY > 180)
-				{
-					stepY = updateDirLagStepY - (updateDirStepY + 360);
-				}
-				
-				if (turnYToPos == true && stepY < -180)
-				{
-					stepY = updateDirLagStepY - (updateDirStepY - 360);
-				}
+				//TODO stepYhyn pitäis laittaa stepY.GetRotation. tämä ei toimi
+				updateDirY = stepY.Angle + updateDirY;
 
-				updateDirY = updateDirY - stepY;
 				if (turnYToPos)
 				{
 					if (updateDirY<=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, 100, 0);}
@@ -372,7 +361,7 @@ public class SpaceShip : SpaceObject {
 				}
 				*/
 
-				updateDirLagStepY = transform.rotation.eulerAngles.y;
+				updateDirLagStepY.Angle = transform.rotation.eulerAngles.y;
 
 			}
 

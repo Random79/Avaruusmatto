@@ -85,6 +85,87 @@ public class Degree {
 
 }
 
+
+public class SDegree {
+	public float Angle;
+	
+	public SDegree(float a)
+	{
+		this.Angle = a;
+	}
+	
+	private void normalize()
+	{
+		while(this.Angle >= 180) this.Angle-=360;
+		while(this.Angle<-180) this.Angle+=360;
+	}
+	public static SDegree operator +(SDegree a, SDegree b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle + b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator -(SDegree a, SDegree b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle-b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator +(Degree a, SDegree b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle-b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator /(SDegree a, SDegree b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle/b.Angle;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator *(SDegree a, SDegree b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle*b.Angle;
+		c.normalize();
+		return c;
+	}
+	
+	public static SDegree operator /(SDegree a, float b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle/b;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator *(SDegree a, float b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle*b;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator +(SDegree a, float b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle + b;
+		c.normalize();
+		return c;
+	}
+	public static SDegree operator -(SDegree a, float b)
+	{
+		var c = new SDegree(0);
+		c.Angle = a.Angle-b;
+		c.normalize();
+		return c;
+	}
+	
+}
+
 public class Gamelogic : MonoBehaviour {
 
 	List <GameObject> kapsulit = new List<GameObject>();
