@@ -72,16 +72,16 @@ public class SpaceShip : SpaceObject {
 	public float accX;
 	public float decX;
 	public float updateDirX;
-	Degree updateDirStepX= new Degree(0);
-	Degree updateDirLagStepX= new Degree(0);
+	SDegree updateDirStepX= new SDegree(0);
+	SDegree updateDirLagStepX= new SDegree(0);
 	public byte subState2X = 0;
 
 	public float DeltadirY;
 	public float accY;
 	public float decY;
 	public float updateDirY;
-	Degree updateDirStepY = new Degree(0);
-	Degree updateDirLagStepY = new Degree(0);
+	SDegree updateDirStepY = new SDegree(0);
+	SDegree updateDirLagStepY = new SDegree(0);
 	public byte subState2Y = 0;
 
 	public Vector3 localAngularVelocity;
@@ -110,8 +110,8 @@ public class SpaceShip : SpaceObject {
 		RegisterToGame(false);
 
 		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(10,10,16));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
-		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
+		Waypoints.Add(new Waypoint(-1000,-100,-160));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
+		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne	
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
 		Stop ();
@@ -315,8 +315,8 @@ public class SpaceShip : SpaceObject {
 			if (subState2X==1)
 			{
 				updateDirStepX.Angle = transform.rotation.eulerAngles.x;
-				var stepX = updateDirLagStepX - updateDirStepX;
-				updateDirX = updateDirX - stepX.Angle;
+				var stepX =  updateDirStepX - updateDirLagStepX;
+				updateDirX = updateDirX + stepX.Angle;
 
 				if (turnXToPos)
 				{
@@ -341,9 +341,9 @@ public class SpaceShip : SpaceObject {
 			if (subState2Y==1)
 			{
 				updateDirStepY.Angle = transform.rotation.eulerAngles.y;
-				var stepY = updateDirLagStepY - updateDirStepY;
+				var stepY = updateDirStepY - updateDirLagStepY;
 				//TODO stepYhyn pitäis laittaa stepY.GetRotation. tämä ei toimi
-				updateDirY = stepY.Angle + updateDirY;
+				updateDirY = updateDirY + stepY.Angle;
 
 				if (turnYToPos)
 				{
@@ -368,11 +368,19 @@ public class SpaceShip : SpaceObject {
 			if (subState2X == 2)
 			{
 				stopRotationX();
+				if (GetComponent<Rigidbody>().angularVelocity.x < 0.001)
+				{
+					localAngularVelocity.x = 0;
+				}
 			}
 
 			if (subState2Y == 2)
 			{
 				stopRotationY();
+				if (GetComponent<Rigidbody>().angularVelocity.y < 0.001)
+				{
+					localAngularVelocity.y = 0;
+				}
 			}
 
 			if (subState2X==2 && subState2Y==2)
