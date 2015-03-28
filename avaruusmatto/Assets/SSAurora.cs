@@ -19,6 +19,10 @@ public class SSAurora : SpaceObject {
 	public float maxAngularVel = 0f;
 	Vector3 localAngularVelocity;
 
+	// xy-suunta kohteeseen;
+	public Vector2 targetBearing;
+	public double targetDistance;
+
 	//GameObject ghost;
 
 	public Camera mainCam;
@@ -78,6 +82,14 @@ public class SSAurora : SpaceObject {
 		param [0] = myX;
 		param [1] = myY;
 		param [2] = myZ;
+
+		/*
+		var heading = target.position - player.position;
+		targetDistance = heading.magnitude; magnitude ei välttämättä toimi doublella. 
+		//funktio on Mathf.Sqrt(Mathf.pow(heading.x,2)+Mathf.pow(heading.y,2)+Mathf.pow(heading.z,2))
+		var direction = heading / distance; 
+		targetBearing = direction.eulerangles.x, direction.eulerangles.y;
+		*/
 
 		GameObject.Find ("_Game").SendMessage ("SetMainCoordinates", param);
 	
