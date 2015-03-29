@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -82,6 +83,7 @@ public class SSAurora : SpaceObject {
 		param [0] = myX;
 		param [1] = myY;
 		param [2] = myZ;
+		GameObject.Find ("_Game").SendMessage("SetMainCoordinates",param);
 
 		/*
 		var heading = target.position - player.position;
@@ -90,9 +92,27 @@ public class SSAurora : SpaceObject {
 		var direction = heading / distance; 
 		targetBearing = direction.eulerangles.x, direction.eulerangles.y;
 		*/
+		var gameObject = GameObject.Find("Cylinder");
+		if(gameObject!= null)
+		{
+			SpaceShip ship = (SpaceShip) gameObject.GetComponent(typeof(SpaceShip));
+			if(ship!=null)
+			{
+				var x = ship.myX;
+			}
 
-		GameObject.Find ("_Game").SendMessage ("SetMainCoordinates", param);
-	
+
+		}
+		var spdMeter = GameObject.Find("spdMeter");
+		if(spdMeter!= null)
+		{
+			var spdText= (Text) spdMeter.GetComponent(typeof(Text));
+			if(spdText!=null)
+			{
+				spdText.text = myVelocity.ToString("F2");
+			}
+		}
+
 	}
 
 	public Vector3 GetDirection()

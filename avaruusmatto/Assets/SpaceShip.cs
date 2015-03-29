@@ -90,7 +90,9 @@ public class SpaceShip : SpaceObject {
 	// Use this for initialization
 	void Start () {
 
-		// Just testing the Degree struct
+
+		// Just testing the Degree struct 
+		/*
 		var k1 = new Degree(10);
 		var k2 = new Degree(90);
 		var k3 = new Degree(0);
@@ -102,6 +104,7 @@ public class SpaceShip : SpaceObject {
 
 		k3 = k1 + k2;
 		// End test
+		*/
 
 		myX = 0;
 		myY = 0;
