@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Gamelogic.cs" />
-     <Compile Include="Assets\RotateCamera.cs" />
      <Compile Include="Assets\SSAurora.cs" />
      <Compile Include="Assets\SpaceObject.cs" />
      <Compile Include="Assets\SpaceShip.cs" />

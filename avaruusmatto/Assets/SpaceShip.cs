@@ -144,8 +144,6 @@ public class SpaceShip : SpaceObject {
 				var currentWp=Waypoints[currentWaypoint];
 				originalDistanceToDestination = distanceToDestination = Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
 			}
-			else 
-				currentWaypoint =0;
 		}
 
 		switch(autopilotState)
