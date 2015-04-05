@@ -10,38 +10,39 @@ public class RotateCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 dir = Vector3.zero;
-		var amount = 0;
+
 		if(Input.GetKey("up"))
 		{
-			dir += transform.right;
-			amount = 1;
+			this.transform.Rotate(new Vector3(-1,0,0));
 		}
 		if(Input.GetKey("down"))
 		{
-			dir += transform.forward;
-			amount = -1;
+			this.transform.Rotate(new Vector3(1,0,0));
 		}
 		if(Input.GetKey("left"))
 		{
-			dir += transform.up;
-			amount = 1;
+			this.transform.Rotate(new Vector3(0,-1,0));
 		}
 		if(Input.GetKey("right"))
 		{
-			dir += transform.up;
-			amount = -1;
+			this.transform.Rotate(new Vector3(0,1,0));
 		}
-
-		if(dir != Vector3.zero)
-			transform.RotateAround(Vector3.zero,dir,amount);
-
-		if(Input.GetKey(KeyCode.H))
+		if(Input.GetKey(KeyCode.Home))
 		{
-			var newcoordinates = transform.position;
-			newcoordinates.y += 1;
-			transform.position = newcoordinates;
-
+			this.transform.Rotate(new Vector3(0,0,1));
 		}
+		if(Input.GetKey(KeyCode.End))
+		{
+			this.transform.Rotate(new Vector3(0,0,-1));
+		}
+		if(Input.GetKey(KeyCode.PageUp))
+		{
+			this.transform.Translate(Vector3.forward*Time.deltaTime*100);
+		}
+		if(Input.GetKey(KeyCode.PageDown))
+		{
+			this.transform.Translate(new Vector3(0,0,-1)*Time.deltaTime*100);
+		}
+
 	}
 }
