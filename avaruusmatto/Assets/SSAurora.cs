@@ -26,8 +26,7 @@ public class SSAurora : SpaceObject {
 
 	//GameObject ghost;
 
-	public Camera mainCam;
-	public Camera SecondaryCam;
+
 
 	//v = myThrust/myMass *Delta.time 
 
@@ -39,8 +38,7 @@ public class SSAurora : SpaceObject {
 	/*	ghost = new GameObject();
 		ghost.name = "Ghost";
 		ghost.transform.parent = gameObject.transform;
-	*/	SecondaryCam.enabled = false;
-		mainCam.enabled = true;
+	*/	
 		RegisterToGame(false);
 	//Time.fixedTime
 	}
@@ -190,11 +188,6 @@ public class SSAurora : SpaceObject {
 
 	void Update()
 	{
-		// camera control
-		if(Input.GetKeyUp(KeyCode.F1))
-		{	
-			mainCam.enabled = mainCam.enabled==true ? false : true;
-			SecondaryCam.enabled = SecondaryCam.enabled == true ?  false : true;
-		}
+
 	}
 }

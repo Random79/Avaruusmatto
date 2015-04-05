@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\RotateCamera.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Gamelogic.cs">
     <Files>
+      <File FileName="Assets\Gamelogic.cs" Line="236" Column="4" />
       <File FileName="Assets\SpaceObject.cs" Line="1" Column="1" />
-      <File FileName="Assets\SpaceShip.cs" Line="148" Column="7" />
-      <File FileName="Assets\SSAurora.cs" Line="134" Column="100" />
-      <File FileName="Assets\Gamelogic.cs" Line="1" Column="1" />
-      <File FileName="Assets\RotateCamera.cs" Line="36" Column="43" />
+      <File FileName="Assets\SpaceShip.cs" Line="1" Column="1" />
+      <File FileName="Assets\SSAurora.cs" Line="191" Column="1" />
+      <File FileName="Assets\RotateCamera.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
