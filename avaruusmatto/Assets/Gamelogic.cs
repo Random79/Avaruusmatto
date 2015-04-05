@@ -13,7 +13,8 @@ public class Gamelogic : MonoBehaviour {
 
 	public List<Camera> cameras;
 	public GameObject activeKeyHandler;
-
+	public GameObject Helm;
+	public GameObject Science;
 
 	// Use this for initialization
 	void Start () {
@@ -73,5 +74,17 @@ public class Gamelogic : MonoBehaviour {
 			cam.enabled = false;
 		}
 		cameras[c].enabled = true;
+	}
+
+	public void SwitchToHelm(bool thirdPerson)
+	{
+		if(thirdPerson) ChangeCamera(1);
+		else ChangeCamera(0);
+		activeKeyHandler = Helm;
+	}
+	public void SwitchToScience()
+	{
+		ChangeCamera(2);
+		activeKeyHandler = Science;
 	}
 }

@@ -64,21 +64,6 @@ public class SSAurora : SpaceObject {
 
 		//ghost.transform.rotation = gameObject.transform.rotation;
 
-		Vector3 deltaVel = GetDirection();
-
-		Quaternion rotations = GetComponent<Rigidbody>().rotation;
-		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
-		Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
-		myVelX += deltaVelRotated.x;
-		myVelY += deltaVelRotated.y;
-		myVelZ += deltaVelRotated.z;
-
-		myX += myVelX*Time.fixedDeltaTime;
-		myY += myVelY*Time.fixedDeltaTime;
-		myZ += myVelZ*Time.fixedDeltaTime;
-
-		var dir = GetRotation();
-		GetComponent<Rigidbody>().AddRelativeTorque(dir);
 
 		var param = new double[3];  //TODO tän vois nimetä myPositionVectoriksi. lisäks tähän vois laittaa loppuun rotaatiot. 
 		param [0] = myX;
@@ -116,7 +101,28 @@ public class SSAurora : SpaceObject {
 
 	}
 
-	public Vector3 GetDirection()
+	public void HandleAxis(AxisEventParam p)
+	{
+
+		Vector3 deltaVel = GetDirection(p);
+		
+		Quaternion rotations = GetComponent<Rigidbody>().rotation;
+		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+		Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+		myVelX += deltaVelRotated.x;
+		myVelY += deltaVelRotated.y;
+		myVelZ += deltaVelRotated.z;
+		
+		myX += myVelX*Time.fixedDeltaTime;
+		myY += myVelY*Time.fixedDeltaTime;
+		myZ += myVelZ*Time.fixedDeltaTime;
+		
+		var dir = GetRotation(p);
+		GetComponent<Rigidbody>().AddRelativeTorque(dir);
+	
+	}
+
+	public Vector3 GetDirection(AxisEventParam p)
 	{
 		var retValue = new Vector3(0,0,0);
 		if (Input.GetKey (KeyCode.W)) {
@@ -144,7 +150,7 @@ public class SSAurora : SpaceObject {
 		return retValue;
 	}
 
-	public Vector3 GetRotation()
+	public Vector3 GetRotation(AxisEventParam p)
 	{
 		var retValue = new Vector3(0,0,0);
 		if (Input.GetKey (KeyCode.Keypad9)) {
@@ -159,12 +165,18 @@ public class SSAurora : SpaceObject {
 		if (Input.GetKey (KeyCode.Keypad6)) {
 			retValue += new Vector3 (0, 100000, 0); 
 		}
-		if (Input.GetKey (KeyCode.Keypad8)) {
-			retValue += new Vector3 (100000, 0, 0); 
+
+		if(p.axis == KeyAxis.vertical)
+		{
+			if (p.amount>0) {
+				retValue += new Vector3 (100000, 0, 0); 
+			}
+			if (p.amount<0) {
+				retValue += new Vector3 (-100000, 0, 0); 
+			}
 		}
-		if (Input.GetKey (KeyCode.Keypad2)) {
-			retValue += new Vector3 (-100000, 0, 0); 
-		}
+
+
 		if (Input.GetKey (KeyCode.Keypad5)) {
 			
 			if (localAngularVelocity.x < 0) {
