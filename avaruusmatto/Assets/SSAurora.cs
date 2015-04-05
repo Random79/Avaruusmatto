@@ -24,6 +24,8 @@ public class SSAurora : SpaceObject {
 	public Vector2 targetBearing;
 	public double targetDistance;
 
+	GameObject game;
+
 	//GameObject ghost;
 
 
@@ -39,6 +41,7 @@ public class SSAurora : SpaceObject {
 		ghost.name = "Ghost";
 		ghost.transform.parent = gameObject.transform;
 	*/	
+		game = GameObject.Find ("_Game");
 		RegisterToGame(false);
 	//Time.fixedTime
 	}
@@ -81,7 +84,7 @@ public class SSAurora : SpaceObject {
 		param [0] = myX;
 		param [1] = myY;
 		param [2] = myZ;
-		GameObject.Find ("_Game").SendMessage("SetMainCoordinates",param);
+		game.SendMessage("SetMainCoordinates",param);
 
 		/*
 		var heading = target.position - player.position;

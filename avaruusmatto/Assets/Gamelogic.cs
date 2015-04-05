@@ -12,6 +12,7 @@ public class Gamelogic : MonoBehaviour {
 	double myZ=0;
 
 	public List<Camera> cameras;
+	public GameObject activeKeyHandler;
 
 
 	// Use this for initialization

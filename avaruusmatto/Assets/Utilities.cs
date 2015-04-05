@@ -163,5 +163,18 @@ public class SDegree {
 		c.normalize();
 		return c;
 	}
-	
+}
+
+// parameter for handleaxis
+
+public enum KeyAxis
+{
+	horizontal,
+	vertical
+}
+
+[System.Serializable]
+public struct AxisEventParam {
+	public KeyAxis axis;
+	public float amount;
 }
