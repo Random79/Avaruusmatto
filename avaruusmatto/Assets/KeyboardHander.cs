@@ -14,15 +14,20 @@ public class KeyboardHander : MonoBehaviour {
 	void FixedUpdate () {
 		if(Input.GetKey(KeyCode.F1))
 		{
-			game.ChangeCamera(1);
+			game.ChangeCamera(0);
 		}
 		if(Input.GetKey(KeyCode.F2))
 		{
-			game.ChangeCamera(2);
+			game.ChangeCamera(1);
 		}
 		if(Input.GetKey(KeyCode.F3))
 		{
-			game.ChangeCamera(3);
+			game.ChangeCamera(2);
+		}
+		var v = Input.GetAxis("Vertical");
+		if(v !=0)
+		{
+			var x = "test";
 		}
 	}
 }
