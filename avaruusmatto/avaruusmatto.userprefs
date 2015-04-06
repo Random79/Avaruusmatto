@@ -1,14 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SSAurora.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Starfield.cs">
     <Files>
-      <File FileName="Assets\RotateCamera.cs" Line="62" Column="3" />
-      <File FileName="Assets\KeyboardHander.cs" Line="16" Column="29" />
-      <File FileName="Assets\Gamelogic.cs" Line="82" Column="5" />
+      <File FileName="Assets\Starfield.cs" Line="46" Column="126" />
+      <File FileName="Assets\Gamelogic.cs" Line="34" Column="25" />
       <File FileName="Assets\SpaceObject.cs" Line="1" Column="1" />
       <File FileName="Assets\SpaceShip.cs" Line="1" Column="1" />
-      <File FileName="Assets\SSAurora.cs" Line="174" Column="18" />
-      <File FileName="Assets\Utilities.cs" Line="173" Column="10" />
+      <File FileName="Assets\SSAurora.cs" Line="95" Column="60" />
+      <File FileName="Assets\Utilities.cs" Line="180" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
