@@ -20,7 +20,7 @@ public class Gamelogic : MonoBehaviour {
 	void Start () {
 
 		var dynObject = GameObject.Find("DynamicObjects");
-		for (int x = 0; x<100;x++)
+/*		for (int x = 0; x<100;x++)
 		{
 			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
 			var kapsuli = Instantiate (kap) as GameObject;
@@ -31,7 +31,7 @@ public class Gamelogic : MonoBehaviour {
 			//kapso.SetPosition(4,2,8);
       		kapso.SetPosition(MyRandom(40,2),MyRandom(40,2),MyRandom(40,2));
 		}
-
+*/		SwitchToHelm(false);
 	}
 
 	float MyRandom(float range, float ExcludeRadius)

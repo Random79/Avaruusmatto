@@ -52,6 +52,7 @@
      <Compile Include="Assets\SSAurora.cs" />
      <Compile Include="Assets\SpaceObject.cs" />
      <Compile Include="Assets\SpaceShip.cs" />
+     <Compile Include="Assets\Starfield.cs" />
      <Compile Include="Assets\Tykinruoka.cs" />
      <Compile Include="Assets\Utilities.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
@@ -65,10 +66,10 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="MathNet.Numerics">
- <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
+ <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/MathNet.Numerics.dll</HintPath>
  </Reference>
  <Reference Include="System.Threading">
- <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
+ <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto/Assets/plugins/System.Threading.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
