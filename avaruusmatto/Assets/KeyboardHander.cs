@@ -41,14 +41,36 @@ public class KeyboardHander : MonoBehaviour {
 		}*/
 		AxisEventParam p = new AxisEventParam();
 		p.amount = 1;
-		if(Input.GetKey("8"))
+		if(Input.GetKey(KeyCode.Keypad8))
 		{
 			p.axis = KeyAxis.vertical;
 		}
-		if(Input.GetKey("2"))
+		if(Input.GetKey(KeyCode.Keypad2))
 		{
 			p.axis = KeyAxis.vertical;
 			p.amount =-1;
+		}
+		if(Input.GetKey(KeyCode.Keypad6))
+		{
+			p.axis = KeyAxis.horizontal;
+		}
+		if(Input.GetKey(KeyCode.Keypad4))
+		{
+			p.axis = KeyAxis.horizontal;
+			p.amount =-1;
+		}
+		if(Input.GetKey(KeyCode.Keypad9))
+		{
+			p.axis = KeyAxis.roll;
+		}
+		if(Input.GetKey(KeyCode.Keypad7))
+		{
+			p.axis = KeyAxis.roll;
+			p.amount =-1;
+		}
+		if(Input.GetKey(KeyCode.Keypad5))
+		{
+			p.axis = KeyAxis.stopRot;
 		}
 		game.activeKeyHandler.SendMessage("HandleAxis",p);
 	}

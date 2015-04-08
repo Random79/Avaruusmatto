@@ -169,8 +169,10 @@ public class SDegree {
 
 public enum KeyAxis
 {
-	horizontal,
-	vertical
+	horizontal=1,
+	vertical,
+	roll, // + right, - left.
+	stopRot
 }
 
 [System.Serializable]

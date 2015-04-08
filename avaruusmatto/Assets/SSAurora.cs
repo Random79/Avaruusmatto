@@ -146,6 +146,11 @@ public class SSAurora : SpaceObject {
 		if (Input.GetKeyUp (KeyCode.LeftShift)) {	
 			retValue += new Vector3(0, 0, 300000000);
 		}
+		if (Input.GetKeyUp (KeyCode.LeftControl)) {	
+			myVelX = 0;
+			myVelY = 0;
+			myVelZ = 0;
+		}
 
 		return retValue;
 	}
@@ -153,18 +158,6 @@ public class SSAurora : SpaceObject {
 	public Vector3 GetRotation(AxisEventParam p)
 	{
 		var retValue = new Vector3(0,0,0);
-		if (Input.GetKey (KeyCode.Keypad9)) {
-			retValue += new Vector3 (0, 0, -100000);
-		}
-		if (Input.GetKey (KeyCode.Keypad7)) {
-			retValue += new Vector3 (0, 0, 100000); 
-		}
-		if (Input.GetKey (KeyCode.Keypad4)) {
-			retValue += new Vector3 (0, -100000, 0); 
-		}
-		if (Input.GetKey (KeyCode.Keypad6)) {
-			retValue += new Vector3 (0, 100000, 0); 
-		}
 
 		if(p.axis == KeyAxis.vertical)
 		{
@@ -176,7 +169,46 @@ public class SSAurora : SpaceObject {
 			}
 		}
 
-
+		if(p.axis == KeyAxis.horizontal)
+		{
+			if (p.amount>0) {
+				retValue += new Vector3 (0, 100000, 0);  
+			}
+			if (p.amount<0) {
+				retValue += new Vector3 (0, -100000, 0); 
+			}
+		}
+		if(p.axis == KeyAxis.roll)
+		{
+			if (p.amount>0) {
+				retValue += new Vector3 (0, 0, -100000);  
+			}
+			if (p.amount<0) {
+				retValue += new Vector3 (0, 0, 100000); 
+			}
+		}
+		if(p.axis == KeyAxis.stopRot)
+		{
+			if (localAngularVelocity.x < 0) {
+				retValue += new Vector3 (100000, 0, 0); 
+			}
+			if (localAngularVelocity.x > 0) {
+				retValue += new Vector3 (-100000, 0, 0); 
+			}
+			if (localAngularVelocity.y < 0) {
+				retValue += new Vector3 (0, 100000, 0); 
+			}
+			if (localAngularVelocity.y > 0) {
+				retValue += new Vector3 (0, -100000, 0); 
+			}
+			if (localAngularVelocity.z < 0) {
+				retValue += new Vector3 (0, 0, 100000); 
+			}
+			if (localAngularVelocity.z > 0) {
+				retValue += new Vector3 (0, 0, -100000); 
+			}
+		}
+		/*
 		if (Input.GetKey (KeyCode.Keypad5)) {
 			
 			if (localAngularVelocity.x < 0) {
@@ -197,7 +229,7 @@ public class SSAurora : SpaceObject {
 			if (localAngularVelocity.z > 0) {
 				retValue += new Vector3 (0, 0, -100000); 
 			}
-		}
+		}*/
 		return retValue;
 	}
 

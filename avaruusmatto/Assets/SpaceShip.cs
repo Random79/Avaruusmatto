@@ -90,22 +90,6 @@ public class SpaceShip : SpaceObject {
 	// Use this for initialization
 	void Start () {
 
-
-		// Just testing the Degree struct 
-		/*
-		var k1 = new Degree(10);
-		var k2 = new Degree(90);
-		var k3 = new Degree(0);
-
-		k3 = k1 - k2;
-		var x = k2.GetRotation();
-		k1.Angle = x;
-		k2.Angle = 300;
-
-		k3 = k1 + k2;
-		// End test
-		*/
-
 		myX = 0;
 		myY = 0;
 		myZ = 5;
