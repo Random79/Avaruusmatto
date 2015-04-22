@@ -40,38 +40,101 @@ public class KeyboardHander : MonoBehaviour {
 			active.SendMessage("HandleAxis",p);
 		}*/
 		AxisEventParam p = new AxisEventParam();
-		p.amount = 1;
-		if(Input.GetKey(KeyCode.Keypad8))
-		{
-			p.axis = KeyAxis.vertical;
-		}
+
 		if(Input.GetKey(KeyCode.Keypad2))
 		{
 			p.axis = KeyAxis.vertical;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.Keypad8))
+		{
+			p.axis = KeyAxis.vertical;
 			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
 		if(Input.GetKey(KeyCode.Keypad6))
 		{
 			p.axis = KeyAxis.horizontal;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
 		if(Input.GetKey(KeyCode.Keypad4))
 		{
 			p.axis = KeyAxis.horizontal;
 			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
 		if(Input.GetKey(KeyCode.Keypad9))
 		{
 			p.axis = KeyAxis.roll;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
 		if(Input.GetKey(KeyCode.Keypad7))
 		{
 			p.axis = KeyAxis.roll;
 			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
 		if(Input.GetKey(KeyCode.Keypad5))
 		{
 			p.axis = KeyAxis.stopRot;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
 		}
-		game.activeKeyHandler.SendMessage("HandleAxis",p);
+
+
+		if(Input.GetKey(KeyCode.W))
+		{
+			p.axis = KeyAxis.translateFw;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.S))
+		{
+			p.axis = KeyAxis.translateFw;
+			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.A))
+		{
+			p.axis = KeyAxis.translateSide;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.D))
+		{
+			p.axis = KeyAxis.translateSide;
+			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.R))
+		{
+			p.axis = KeyAxis.translateUp;
+			p.amount = 1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.F))
+		{
+			p.axis = KeyAxis.translateUp;
+			p.amount =-1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+
+		if(Input.GetKey(KeyCode.LeftShift))
+		{
+			p.axis = KeyAxis.lightSpeed;
+			p.amount =1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		if(Input.GetKey(KeyCode.LeftControl))
+		{
+			p.axis = KeyAxis.stop;
+			p.amount =1;
+			game.activeKeyHandler.SendMessage("HandleAxis",p);
+		}
+		
+		
 	}
 }

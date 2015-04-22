@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(SpaceObject))]
-public class SSAurora : SpaceObject {
+[RequireComponent(typeof(SpaceShip))]
+public class SSAurora : SpaceShip {
 
 	// aluksen massa (kg) 
 	// työntövoima (N) tämä on konventionaalinen työntövoima esim. dokkausta, väistöliikkeitä ja aluksen valtausta varten. 
-	public float myThrust = 1000000;
+/*	public float myThrust = 1000000;
 	// warppi ei toimi Newtonimaisesti. 
 
 	// nopeus maailman kolmen akselin suhteen ja totaalinopeus 
@@ -16,9 +15,9 @@ public class SSAurora : SpaceObject {
 	public float myVelY = 0f;
 	public float myVelZ = 0f;
 	public float myVelocity = 0f;
-
-	public float maxAngularVel = 0f;
-	Vector3 localAngularVelocity;
+*/
+	//public float maxAngularVel = 0f;
+	//Vector3 localAngularVelocity;
 
 	// xy-suunta kohteeseen;
 	public Vector2 targetBearing;
@@ -71,6 +70,10 @@ public class SSAurora : SpaceObject {
 		param [2] = myZ;
 		game.SendMessage("SetMainCoordinates",param);
 
+		myX += myVelX*Time.fixedDeltaTime;
+		myY += myVelY*Time.fixedDeltaTime;
+		myZ += myVelZ*Time.fixedDeltaTime;
+		
 		/*
 		var heading = target.position - player.position;
 		targetDistance = heading.magnitude; magnitude ei välttämättä toimi doublella. 
@@ -78,6 +81,7 @@ public class SSAurora : SpaceObject {
 		var direction = heading / distance; 
 		targetBearing = direction.eulerangles.x, direction.eulerangles.y;
 		*/
+		/*
 		var gameObject = GameObject.Find("Cylinder");
 		if(gameObject!= null)
 		{
@@ -86,19 +90,8 @@ public class SSAurora : SpaceObject {
 			{
 				var x = ship.myX;
 			}
-
-
 		}
-		var spdMeter = GameObject.Find("spdMeter");
-		if(spdMeter!= null)
-		{
-			var spdText= (Text) spdMeter.GetComponent(typeof(Text));
-			if(spdText!=null)
-			{
-				spdText.text = myVelocity.ToString("F2");
-			}
-		}
-
+*/
 	}
 
 	public void HandleAxis(AxisEventParam p)
@@ -113,9 +106,7 @@ public class SSAurora : SpaceObject {
 		myVelY += deltaVelRotated.y;
 		myVelZ += deltaVelRotated.z;
 		
-		myX += myVelX*Time.fixedDeltaTime;
-		myY += myVelY*Time.fixedDeltaTime;
-		myZ += myVelZ*Time.fixedDeltaTime;
+
 		
 		var dir = GetRotation(p);
 		GetComponent<Rigidbody>().AddRelativeTorque(dir);
@@ -125,28 +116,35 @@ public class SSAurora : SpaceObject {
 	public Vector3 GetDirection(AxisEventParam p)
 	{
 		var retValue = new Vector3(0,0,0);
-		if (Input.GetKey (KeyCode.W)) {
-			retValue += new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
+		if (p.axis == KeyAxis.translateFw) {
+			if (p.amount>0) {
+				retValue += new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
+			}
+			if(p.amount<0) {
+				retValue += new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1));
+			}
 		}
-		if (Input.GetKey (KeyCode.S)) {
-			retValue += new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1));
+		if (p.axis == KeyAxis.translateUp) {
+			if (p.amount>0) {
+				retValue += new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0);
+			}
+			if(p.amount<0) {
+				retValue += new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0);
+			}
 		}
-		if (Input.GetKey (KeyCode.R)) {			
-			retValue += new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0);
+		if (p.axis == KeyAxis.translateSide) {
+			if (p.amount>0) {
+				retValue += new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0, 0);
+			}
+			if(p.amount<0) {
+				retValue += new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0, 0);
+			}
 		}
-		if (Input.GetKey (KeyCode.F)) {
-			retValue += new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0);
-		}
-		if (Input.GetKey (KeyCode.A)) {	
-			retValue += new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0, 0);
-		}
-		if (Input.GetKey (KeyCode.D)) {	
-			retValue += new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0, 0);
-		}
-		if (Input.GetKeyUp (KeyCode.LeftShift)) {	
+
+		if (p.axis == KeyAxis.lightSpeed) {	
 			retValue += new Vector3(0, 0, 300000000);
 		}
-		if (Input.GetKeyUp (KeyCode.LeftControl)) {	
+		if (p.axis == KeyAxis.stop) {	
 			myVelX = 0;
 			myVelY = 0;
 			myVelZ = 0;

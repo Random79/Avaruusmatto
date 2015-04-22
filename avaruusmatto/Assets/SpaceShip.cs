@@ -119,7 +119,7 @@ public class SpaceShip : SpaceObject {
 			
 			if(currentWaypoint<Waypoints.Count)
 				currentWaypoint++;
-			Stop ();
+			//Stop ();
 			autopilotState=autoPilotStates.idle;
 			
 			if(currentWaypoint<Waypoints.Count)

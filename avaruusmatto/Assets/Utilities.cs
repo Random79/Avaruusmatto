@@ -172,7 +172,12 @@ public enum KeyAxis
 	horizontal=1,
 	vertical,
 	roll, // + right, - left.
-	stopRot
+	stopRot,
+	translateFw,
+	translateSide,
+	translateUp,
+	lightSpeed,
+	stop
 }
 
 [System.Serializable]

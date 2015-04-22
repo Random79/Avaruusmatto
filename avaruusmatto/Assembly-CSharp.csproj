@@ -55,6 +55,7 @@
      <Compile Include="Assets\Starfield.cs" />
      <Compile Include="Assets\Tykinruoka.cs" />
      <Compile Include="Assets\Utilities.cs" />
+     <Compile Include="Assets\helmPanelScript.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets\Projectors\Sources\Shaders\Projector Multiply.shader" />
      <None Include="Assets\Standard Assets\Tessellation Shaders\BumpedSpecularSmooth.shader" />
