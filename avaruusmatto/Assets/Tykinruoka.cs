@@ -10,6 +10,7 @@ public class Tykinruoka : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myZ = 10;
+
 	}
 	
 	// Update is called once per frame

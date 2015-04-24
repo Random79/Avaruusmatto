@@ -48,7 +48,9 @@ public class SpaceShip : SpaceObject {
 	public float myVelocity = 0f;
 	
 	public float maxAngularVel = 10f;
-
+	
+	public Vector3 myLocalVel;
+	
 	public enum autoPilotStates
 	{
 		idle = 0,
@@ -91,14 +93,14 @@ public class SpaceShip : SpaceObject {
 	void Start () {
 
 		myX = 0;
-		myY = 0;
-		myZ = 5;
+		myY = 10;
+		myZ = 10;
 
 		RegisterToGame(false);
 
-		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne
-		Waypoints.Add(new Waypoint(-1000,-100,-160));		// Tämä pitäisi kai olla suunta mihin veny katsoo?
-		Waypoints.Add(new Waypoint(0,0,myZ));	// Veny menee tänne	
+		Waypoints.Add(new Waypoint(0,10,10));	
+		Waypoints.Add(new Waypoint(10,10,1000));		
+		Waypoints.Add(new Waypoint(0,10,10));	
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
 		Stop ();
@@ -114,7 +116,7 @@ public class SpaceShip : SpaceObject {
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
-		if(isAtWaypoint(Waypoints[currentWaypoint]))
+		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) // autoPilotStates.idle.Equals(autoPilotStates.idle))
 		{
 			
 			if(currentWaypoint<Waypoints.Count)
@@ -145,7 +147,7 @@ public class SpaceShip : SpaceObject {
 			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
 			var retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
 
-			if(distanceToDestination>(originalDistanceToDestination*0.75))
+			if(distanceToDestination>(originalDistanceToDestination*0.65))
 				addThrust(Vector3.forward);
 
 			if(distanceToDestination<=retroStartDist)
@@ -155,11 +157,16 @@ public class SpaceShip : SpaceObject {
 
 		case autoPilotStates.retrograde:
 			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
-			retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
+			//retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
 
-			if(distanceToDestination<=retroStartDist && myVelocity>0.1 && isAtWaypoint(Waypoints[currentWaypoint])==false)
-			 addThrust(Vector3.back);
-			else
+			if(myVelocity>0.1) //&& isAtWaypoint(Waypoints[currentWaypoint])==false)
+				Stop();
+				//addThrust(Vector3.back);
+			else if(isAtWaypoint(Waypoints[currentWaypoint])==false)
+			{
+				autopilotState = autoPilotStates.setDirection;
+			}
+			else 
 			{
 				autopilotState = autoPilotStates.idle;
 			}
@@ -170,6 +177,13 @@ public class SpaceShip : SpaceObject {
 			break;
 		}
 	
+
+		Vector3 refVelVec = new Vector3 (myVelX, myVelY, myVelZ);
+		Quaternion rotations = GetComponent<Rigidbody>().rotation;
+		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+		myLocalVel = m.MultiplyPoint3x4(refVelVec);
+
+
 		myX += myVelX*Time.fixedDeltaTime;
 		myY += myVelY*Time.fixedDeltaTime;
 		myZ += myVelZ*Time.fixedDeltaTime;
@@ -182,7 +196,7 @@ public class SpaceShip : SpaceObject {
 	{
 		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
 		//Debug.Log("Distance: " + distance);
-		if(distance < 5) 
+		if(distance < 100) 
 			return true;
 		return false;
 	}
@@ -411,12 +425,83 @@ public class SpaceShip : SpaceObject {
 		}
 		return false;
 	}
-	
+
+	void Stop()
+	{
+		Vector3 deltaVel;
+
+		if (myLocalVel.x>0.1f)
+		{
+			deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+
+		}
+		if (myLocalVel.x<-0.1f)
+		{
+			deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+		if (myLocalVel.y>0.1f)
+		{
+			deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+			
+		}
+		if (myLocalVel.y<-0.1f)
+		{
+			deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+
+		if (myLocalVel.z>0.1f)
+		{
+			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1));
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+			
+		}
+		if (myLocalVel.z<-0.1f)
+		{
+			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
+			Quaternion rotations = GetComponent<Rigidbody>().rotation;
+			Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+			Vector3 deltaVelRotated = m.MultiplyPoint3x4(deltaVel);
+			myVelX += deltaVelRotated.x;
+			myVelY += deltaVelRotated.y;
+			myVelZ += deltaVelRotated.z;
+		}
+
+	}
+	/*
 	void Stop()
 	{
 		myVelX =  myVelY = myVelZ = 0;
 	}
-
+	*/
 	void stopRotation()
 	{
 		if (localAngularVelocity.x < 0) {
