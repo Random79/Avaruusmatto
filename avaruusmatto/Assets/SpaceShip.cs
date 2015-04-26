@@ -40,7 +40,8 @@ public class SpaceShip : SpaceObject {
 
 	int currentWaypoint = 0;
 	double originalDistanceToDestination = 0;
-	double distanceToDestination = 0;
+	Vector3 distanceToDestination;
+	Vector3 retroStartDist;
 	public float myThrust = 50;
 	public float myVelX = 0f;
 	public float myVelY = 0f;
@@ -99,11 +100,12 @@ public class SpaceShip : SpaceObject {
 		RegisterToGame(false);
 
 		Waypoints.Add(new Waypoint(0,10,10));	
-		Waypoints.Add(new Waypoint(10,10,1000));		
-		Waypoints.Add(new Waypoint(0,10,10));	
+		Waypoints.Add(new Waypoint(-100,-100,-500));
+		Waypoints.Add(new Waypoint(0,100,1000));
+		Waypoints.Add(new Waypoint(0,10,10));
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
-		Stop ();
+		//StopX(); StopY(); StopZ();
 
 	}
 
@@ -116,7 +118,7 @@ public class SpaceShip : SpaceObject {
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
-		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) // autoPilotStates.idle.Equals(autoPilotStates.idle))
+		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) 
 		{
 			
 			if(currentWaypoint<Waypoints.Count)
@@ -128,7 +130,8 @@ public class SpaceShip : SpaceObject {
 			{
 				autopilotState=autoPilotStates.setDirection;
 				var currentWp=Waypoints[currentWaypoint];
-				originalDistanceToDestination = distanceToDestination = Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
+				originalDistanceToDestination =  Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
+				distanceToDestination = new Vector3 ((float)(currentWp.X-myX), (float)(currentWp.Y-myY), (float)(currentWp.Z-myZ));
 			}
 			else 
 				currentWaypoint =0;
@@ -143,14 +146,16 @@ public class SpaceShip : SpaceObject {
 		
 		case autoPilotStates.prograde:
 			var currentWp=Waypoints[currentWaypoint];
-			distanceToDestination =  Mathf.Sqrt (Mathf.Pow ((float)(currentWp.X-myX),2) + Mathf.Pow ((float)(currentWp.Y-myY),2) + Mathf.Pow ((float)(currentWp.Z-myZ),2));
+			distanceToDestination = new Vector3 ((float)(currentWp.X-myX), (float)(currentWp.Y-myY), (float)(currentWp.Z-myZ));
 			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
-			var retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
+			retroStartDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(myVelX, 2) ) / (2 * myThrust),
+			                          (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelY, 2) ) / (2 * myThrust),
+			                          (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelZ, 2) ) / (2 * myThrust));
 
-			if(distanceToDestination>(originalDistanceToDestination*0.65))
+			if(distanceToDestination.magnitude>(originalDistanceToDestination*0.65))
 				addThrust(Vector3.forward);
 
-			if(distanceToDestination<=retroStartDist)
+			if(distanceToDestination.magnitude<=retroStartDist.magnitude)
 				autopilotState = autoPilotStates.retrograde;
 
 			break;
@@ -159,14 +164,18 @@ public class SpaceShip : SpaceObject {
 			// retroStartDist on maksimietäisyys, jolla pystytään pysäyttämään alus.
 			//retroStartDist = (GetComponent<Rigidbody>().mass * Mathf.Pow(myVelocity, 2) ) / (2 * myThrust);
 
-			if(myVelocity>0.1) //&& isAtWaypoint(Waypoints[currentWaypoint])==false)
-				Stop();
-				//addThrust(Vector3.back);
-			else if(isAtWaypoint(Waypoints[currentWaypoint])==false)
+			if(distanceToDestination.x <= retroStartDist.x && Mathf.Abs(myVelX) > 0.1)
+				StopX();
+			if(distanceToDestination.y <= retroStartDist.y && Mathf.Abs(myVelY) > 0.1)
+				StopY();
+			   if(distanceToDestination.z <= retroStartDist.z && Mathf.Abs(myVelZ) > 0.1)
+				StopZ();
+
+			else if(isAtWaypoint(Waypoints[currentWaypoint])==false && myVelocity < 0.2)
 			{
 				autopilotState = autoPilotStates.setDirection;
 			}
-			else 
+			if (isAtWaypoint(Waypoints[currentWaypoint])==true && myVelocity < 0.2) 
 			{
 				autopilotState = autoPilotStates.idle;
 			}
@@ -177,12 +186,14 @@ public class SpaceShip : SpaceObject {
 			break;
 		}
 	
-
+		/*
 		Vector3 refVelVec = new Vector3 (myVelX, myVelY, myVelZ);
 		Quaternion rotations = GetComponent<Rigidbody>().rotation;
 		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
 		myLocalVel = m.MultiplyPoint3x4(refVelVec);
-
+		*/
+		Vector3 refVelVec = new Vector3 (myVelX, myVelY, myVelZ);
+		myLocalVel = GetComponent<Rigidbody>().transform.InverseTransformDirection(refVelVec);
 
 		myX += myVelX*Time.fixedDeltaTime;
 		myY += myVelY*Time.fixedDeltaTime;
@@ -196,7 +207,7 @@ public class SpaceShip : SpaceObject {
 	{
 		double distance = Mathf.Sqrt (Mathf.Pow ((float)(w.X-myX),2) + Mathf.Pow ((float)(w.Y-myY),2) + Mathf.Pow ((float)(w.Z-myZ),2));
 		//Debug.Log("Distance: " + distance);
-		if(distance < 100) 
+		if(distance < 300) 
 			return true;
 		return false;
 	}
@@ -321,21 +332,35 @@ public class SpaceShip : SpaceObject {
 				var stepX =  updateDirStepX - updateDirLagStepX;
 				updateDirX = updateDirX + stepX.Angle;
 
-				if (turnXToPos)
+				if (Mathf.Abs(DeltadirX)>=1)
 				{
-					if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (100, 0, 0);}
-					if (updateDirX>=decX) {subState2X=2;}
+					if (turnXToPos)
+					{
+						if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (100, 0, 0);}
+						if (updateDirX>=decX) {subState2X=2;}
+					}
+					if (turnXToPos==false && DeltadirX < 1)
+					{
+						if (updateDirX>=accX) {GetComponent<Rigidbody>().AddRelativeTorque (-100, 0, 0);}
+						if (updateDirX<=decX) {subState2X=2;}
+					}
 				}
-				if (turnXToPos==false)
+
+				if (Mathf.Abs(DeltadirX)<1)
 				{
-					if (updateDirX>=accX) {GetComponent<Rigidbody>().AddRelativeTorque (-100, 0, 0);}
-					if (updateDirX<=decX) {subState2X=2;}
+					if (turnXToPos)
+					{
+						if (updateDirX<=accX) {GetComponent<Rigidbody>().AddRelativeTorque (10, 0, 0);}
+						if (updateDirX>=decX) {subState2X=2;}
+					}
+					if (turnXToPos==false && DeltadirX < 1)
+					{
+						if (updateDirX>=accX) {GetComponent<Rigidbody>().AddRelativeTorque (-10, 0, 0);}
+						if (updateDirX<=decX) {subState2X=2;}
+					}
 				}
-				/*if( Mathf.Abs( deltaRotation.eulerAngles.x - transform.eulerAngles.x ) < 0.1)
-				{
-					subState2X=2;
-				}*/
-				// 
+
+
 
 				updateDirLagStepX.Angle = transform.rotation.eulerAngles.x;
 
@@ -348,21 +373,33 @@ public class SpaceShip : SpaceObject {
 				//TODO stepYhyn pitäis laittaa stepY.GetRotation. tämä ei toimi
 				updateDirY = updateDirY + stepY.Angle;
 
-				if (turnYToPos)
+				if(Mathf.Abs(DeltadirY)>=1)
 				{
-					if (updateDirY<=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, 100, 0);}
-					if (updateDirY>=decY) {subState2Y=2;}
+					if (turnYToPos)
+					{
+						if (updateDirY<=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, 100, 0);}
+						if (updateDirY>=decY) {subState2Y=2;}
+					}
+					if (turnYToPos==false)
+					{
+						if (updateDirY>=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, -100, 0);}
+						if (updateDirY<=decY) {subState2Y=2;}
+					}
 				}
-				if (turnYToPos==false)
+				if(Mathf.Abs(DeltadirY)<1)
 				{
-					if (updateDirY>=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, -100, 0);}
-					if (updateDirY<=decY) {subState2Y=2;}
+					if (turnYToPos)
+					{
+						if (updateDirY<=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, 10, 0);}
+						if (updateDirY>=decY) {subState2Y=2;}
+					}
+					if (turnYToPos==false)
+					{
+						if (updateDirY>=accY) {GetComponent<Rigidbody>().AddRelativeTorque (0, -10, 0);}
+						if (updateDirY<=decY) {subState2Y=2;}
+					}
 				}
-				/*if( Mathf.Abs( deltaRotation.eulerAngles.y - transform.eulerAngles.y ) < 0.1)
-				{
-					subState2Y=2;
-				}
-				*/
+
 
 				updateDirLagStepY.Angle = transform.rotation.eulerAngles.y;
 
@@ -411,7 +448,7 @@ public class SpaceShip : SpaceObject {
 			var diffX = toDir.x - transform.rotation.eulerAngles.x;
 			var diffY = toDir.y - transform.rotation.eulerAngles.y;
 			// jos ei ole oikea, niin mennään uudestaan tilaan 1 ja aloitetaan alusta
-			if( Mathf.Abs(diffX) > 0.1 || Mathf.Abs(diffY) > 0.1)
+			if( Mathf.Abs(diffX) > 0.001 || Mathf.Abs(diffY) > 0.001)
 			{
 				turningState=1;
 
@@ -426,11 +463,11 @@ public class SpaceShip : SpaceObject {
 		return false;
 	}
 
-	void Stop()
+	void StopX()
 	{
 		Vector3 deltaVel;
 
-		if (myLocalVel.x>0.1f)
+		if (myLocalVel.x > 0.1f)
 		{
 			deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0, 0);
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
@@ -441,7 +478,7 @@ public class SpaceShip : SpaceObject {
 			myVelZ += deltaVelRotated.z;
 
 		}
-		if (myLocalVel.x<-0.1f)
+		if (myLocalVel.x < -0.1f)
 		{
 			deltaVel = new Vector3(myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0, 0);
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
@@ -451,7 +488,13 @@ public class SpaceShip : SpaceObject {
 			myVelY += deltaVelRotated.y;
 			myVelZ += deltaVelRotated.z;
 		}
-		if (myLocalVel.y>0.1f)
+	}
+
+	void StopY()
+	{
+		Vector3 deltaVel;
+
+		if (myLocalVel.y > 0.1f)
 		{
 			deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime, 0);
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
@@ -462,7 +505,7 @@ public class SpaceShip : SpaceObject {
 			myVelZ += deltaVelRotated.z;
 			
 		}
-		if (myLocalVel.y<-0.1f)
+		if (myLocalVel.y < -0.1f)
 		{
 			deltaVel = new Vector3(0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1), 0);
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
@@ -472,8 +515,13 @@ public class SpaceShip : SpaceObject {
 			myVelY += deltaVelRotated.y;
 			myVelZ += deltaVelRotated.z;
 		}
+	}
+		
+	void StopZ()
+	{
+		Vector3 deltaVel;
 
-		if (myLocalVel.z>0.1f)
+		if (myLocalVel.z > 0.1f)
 		{
 			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime*(-1));
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
@@ -484,7 +532,7 @@ public class SpaceShip : SpaceObject {
 			myVelZ += deltaVelRotated.z;
 			
 		}
-		if (myLocalVel.z<-0.1f)
+		if (myLocalVel.z < -0.1f)
 		{
 			deltaVel = new Vector3(0, 0, myThrust/GetComponent<Rigidbody>().mass*Time.fixedDeltaTime);
 			Quaternion rotations = GetComponent<Rigidbody>().rotation;
