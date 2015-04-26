@@ -10,6 +10,8 @@ public class helmPanelScript : MonoBehaviour {
 	private Text spdText;
 	private Text positionText;
 
+	private InputField setRotationXText, setRotationYText, setRotationZText;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,8 +33,34 @@ public class helmPanelScript : MonoBehaviour {
 		{
 			positionText = (Text) posMeter.GetComponent(typeof(Text));
 		}
+		
+		var srotxt = GameObject.Find("helmPanel/setRotationXText");
+		if(srotxt!= null)
+		{
+			setRotationXText = (InputField) srotxt.GetComponent(typeof(InputField));
+		}
+		var srotyt = GameObject.Find("helmPanel/setRotationYText");
+		if(srotyt!= null)
+		{
+			setRotationYText = (InputField) srotyt.GetComponent(typeof(InputField));
+		}
+		var srotzt = GameObject.Find("helmPanel/setRotationZText");
+		if(srotzt!= null)
+		{
+			setRotationZText = (InputField) srotzt.GetComponent(typeof(InputField));
+		}
 	}
-	
+
+	public void setRotation()
+	{
+		float rotationXInput, rotationYInput, rotationZInput;
+
+		if(float.TryParse(setRotationXText.text, out rotationXInput)) return;
+		if(float.TryParse(setRotationYText.text, out rotationYInput)) return;
+		if(float.TryParse(setRotationZText.text, out rotationZInput)) return;
+		Debug.Log("seRotation:"+rotationXInput.ToString()+" "+rotationYInput.ToString()+" "+rotationZInput.ToString());
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 

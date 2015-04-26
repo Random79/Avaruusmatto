@@ -186,25 +186,30 @@ public class SSAurora : SpaceShip {
 			}
 		}
 		if(p.axis == KeyAxis.stopRot)
-		{
-			if (localAngularVelocity.x < 0) {
-				retValue += new Vector3 (100000, 0, 0); 
+			if (localAngularVelocity.magnitude < 0.001)
+			{
+				GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			}
-			if (localAngularVelocity.x > 0) {
-				retValue += new Vector3 (-100000, 0, 0); 
-			}
-			if (localAngularVelocity.y < 0) {
-				retValue += new Vector3 (0, 100000, 0); 
-			}
-			if (localAngularVelocity.y > 0) {
-				retValue += new Vector3 (0, -100000, 0); 
-			}
-			if (localAngularVelocity.z < 0) {
-				retValue += new Vector3 (0, 0, 100000); 
-			}
-			if (localAngularVelocity.z > 0) {
-				retValue += new Vector3 (0, 0, -100000); 
-			}
+			else
+			{
+				if (localAngularVelocity.x < 0) {
+					retValue += new Vector3 (100000, 0, 0); 
+				}
+				if (localAngularVelocity.x > 0) {
+					retValue += new Vector3 (-100000, 0, 0); 
+				}
+				if (localAngularVelocity.y < 0) {
+					retValue += new Vector3 (0, 100000, 0); 
+				}
+				if (localAngularVelocity.y > 0) {
+					retValue += new Vector3 (0, -100000, 0); 
+				}
+				if (localAngularVelocity.z < 0) {
+					retValue += new Vector3 (0, 0, 100000); 
+				}
+				if (localAngularVelocity.z > 0) {
+					retValue += new Vector3 (0, 0, -100000); 
+				}
 		}
 		/*
 		if (Input.GetKey (KeyCode.Keypad5)) {
