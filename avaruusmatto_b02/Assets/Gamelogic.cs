@@ -16,11 +16,13 @@ public class Gamelogic : MonoBehaviour {
 	public GameObject Helm;
 	public GameObject Science;
 
+	public Rigidbody droneShip;
+
 	// Use this for initialization
 	void Start () {
 
-		var dynObject = GameObject.Find("DynamicObjects");
-/*		for (int x = 0; x<100;x++)
+/*		var dynObject = GameObject.Find("DynamicObjects");
+		for (int x = 0; x<100;x++)
 		{
 			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
 			var kapsuli = Instantiate (kap) as GameObject;
@@ -31,8 +33,24 @@ public class Gamelogic : MonoBehaviour {
 			//kapso.SetPosition(4,2,8);
       		kapso.SetPosition(MyRandom(40,2),MyRandom(40,2),MyRandom(40,2));
 		}
-*/		SwitchToHelm(false);
+*/		
+		var dynObject = GameObject.Find("Drones");
+		var rb = Instantiate(droneShip) as Rigidbody;
+		if(rb!=null)
+		{ 
+			rb.transform.parent = dynObject.transform;
+			var ss = rb.gameObject.GetComponentInChildren(typeof(SpaceShip)) as SpaceShip;
+			if(ss!=null)
+			{
+				ss.SetPosition(0,0,15);
+				ss.Waypoints.Add(new Waypoint(ss.myX,ss.myY,ss.myZ));
+				ss.Waypoints.Add(new Waypoint(-100,-100,-500));
+				ss.Waypoints.Add(new Waypoint(0,0,15));
+				//ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
+			}
+		}
 	}
+
 
 	float MyRandom(float range, float ExcludeRadius)
 	{

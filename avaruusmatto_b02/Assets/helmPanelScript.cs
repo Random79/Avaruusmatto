@@ -67,7 +67,8 @@ public class helmPanelScript : MonoBehaviour {
 		rotationXInput = float.Parse(setRotationXText.text);
 		rotationYInput = float.Parse(setRotationYText.text);
 		rotationZInput = float.Parse(setRotationZText.text);
-		Debug.Log("seRotation:"+rotationXInput.ToString()+" "+rotationYInput.ToString()+" "+rotationZInput.ToString());
+		sourceShip.SetRotation(rotationXInput,rotationYInput,rotationZInput);
+		//Debug.Log("seRotation:"+rotationXInput.ToString()+" "+rotationYInput.ToString()+" "+rotationZInput.ToString());
 	}
 
 	// Update is called once per frame

@@ -93,20 +93,27 @@ public class SpaceShip : SpaceObject {
 	// Use this for initialization
 	void Start () {
 
-		myX = 0;
+	/*	myX = 0;
 		myY = 0;
 		myZ = 10;
-
+*/
 		RegisterToGame(false);
 
-		Waypoints.Add(new Waypoint(0,0,10));	
+		Waypoints.Add(new Waypoint(myX,myY,myZ));	
+		/*
 		Waypoints.Add(new Waypoint(-100,-100,-500));
 		Waypoints.Add(new Waypoint(0,100,1000));
 		Waypoints.Add(new Waypoint(0,0,10));
+		*/
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
 		//StopX(); StopY(); StopZ();
 
+	}
+
+	public void SetRotation(float x, float y, float z)
+	{
+		Debug.Log("SetRotation: "+ x.ToString() + "," + y.ToString() + "," +z.ToString());
 	}
 
 
