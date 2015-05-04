@@ -12,6 +12,13 @@ public class helmPanelScript : MonoBehaviour {
 
 	private InputField setRotationXText, setRotationYText, setRotationZText;
 
+	private Quaternion deltaRotation;
+	private Quaternion toDirQ;
+	private Vector3 toDir;
+	private float DeltadirX;
+	private float DeltadirY;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -69,6 +76,16 @@ public class helmPanelScript : MonoBehaviour {
 		rotationZInput = float.Parse(setRotationZText.text);
 		sourceShip.SetRotation(rotationXInput,rotationYInput,rotationZInput);
 		//Debug.Log("seRotation:"+rotationXInput.ToString()+" "+rotationYInput.ToString()+" "+rotationZInput.ToString());
+
+		// Tähän laitetaan Bearing käännös. elikkäs ny on väärä...
+		Vector3 to = new Vector3(rotationXInput, rotationYInput, rotationZInput);
+		
+		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
+		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
+		toDir = toDirQ.eulerAngles;
+		DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
+		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
+		
 	}
 
 	// Update is called once per frame
