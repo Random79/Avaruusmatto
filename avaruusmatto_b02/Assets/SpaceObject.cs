@@ -13,6 +13,7 @@ public class SpaceObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		RegisterToGame(false);
+		DontDestroyOnLoad(this.gameObject);
 	}
 
 	void OnDestroy()

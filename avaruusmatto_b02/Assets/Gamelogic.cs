@@ -17,6 +17,16 @@ public class Gamelogic : MonoBehaviour {
 	public GameObject Science;
 
 	public Rigidbody droneShip;
+	private static bool created=false;
+	void Awake()
+	{
+		if(!created)
+		{
+			DontDestroyOnLoad(this.gameObject);
+			created=true;
+		}
+		else Destroy(this.gameObject);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -34,12 +44,14 @@ public class Gamelogic : MonoBehaviour {
       		kapso.SetPosition(MyRandom(40,2),MyRandom(40,2),MyRandom(40,2));
 		}
 */		
-		var dynObject = GameObject.Find("Drones");
+		var dynObject =  new GameObject("Drones");
+		DontDestroyOnLoad(dynObject);
 		var rb = Instantiate(droneShip) as Rigidbody;
 		if(rb!=null)
 		{ 
 			rb.transform.parent = dynObject.transform;
 			var ss = rb.gameObject.GetComponentInChildren(typeof(SpaceShip)) as SpaceShip;
+
 			if(ss!=null)
 			{
 				ss.SetPosition(0,0,15);

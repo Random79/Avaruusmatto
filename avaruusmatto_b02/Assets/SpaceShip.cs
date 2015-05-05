@@ -98,6 +98,7 @@ public class SpaceShip : SpaceObject {
 		myZ = 10;
 */
 		RegisterToGame(false);
+		DontDestroyOnLoad(this.gameObject);
 
 		Waypoints.Add(new Waypoint(myX,myY,myZ));	
 		/*

@@ -24,7 +24,7 @@ public class SSAurora : SpaceShip {
 	public double targetDistance;
 
 	GameObject game;
-
+	private static bool created = false;
 	//GameObject ghost;
 
 
@@ -42,7 +42,18 @@ public class SSAurora : SpaceShip {
 	*/	
 		game = GameObject.Find ("_Game");
 		RegisterToGame(false);
+
 	//Time.fixedTime
+	}
+
+	void Awake()
+	{
+		if(!created)
+		{
+			DontDestroyOnLoad(this.gameObject);
+			created=true;
+		}
+		else Destroy(this.gameObject);
 	}
 
 	void OnDestroy()

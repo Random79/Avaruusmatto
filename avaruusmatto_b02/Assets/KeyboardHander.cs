@@ -17,7 +17,8 @@ public class KeyboardHander : MonoBehaviour {
 	void FixedUpdate () {
 		if(Input.GetKey(KeyCode.F1))
 		{
-			game.SwitchToHelm(false);
+			//game.SwitchToHelm(false);
+			Application.LoadLevel ("helm");
 		}
 		if(Input.GetKey(KeyCode.F2))
 		{
@@ -25,7 +26,8 @@ public class KeyboardHander : MonoBehaviour {
 		}
 		if(Input.GetKey(KeyCode.F3))
 		{
-			game.SwitchToScience();
+			//game.SwitchToScience();
+			Application.LoadLevel ("testscene");
 		}
 
 		// forward axis info to active element.
