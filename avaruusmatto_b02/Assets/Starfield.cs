@@ -13,7 +13,7 @@ public class Starfield : MonoBehaviour {
 	private SSAurora player;
 	// Use this for initialization
 	void Start () {
-		tx = transform;
+		//tx = transform;
 		StarDistanceSqr = StarDistance*StarDistance;
 		StarClipDistanceSqr = StarClipDistance * StarClipDistance;
 
