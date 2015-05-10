@@ -61,10 +61,10 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="MathNet.Numerics">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto_b02/Assets/plugins/MathNet.Numerics.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/Assets/plugins/MathNet.Numerics.dll</HintPath>
  </Reference>
  <Reference Include="System.Threading">
- <HintPath>C:/Users/Tomi/Documents/githubrepository/Avaruusmatto/avaruusmatto_b02/Assets/plugins/System.Threading.dll</HintPath>
+ <HintPath>C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/Assets/plugins/System.Threading.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iossupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

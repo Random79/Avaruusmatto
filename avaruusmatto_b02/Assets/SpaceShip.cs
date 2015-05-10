@@ -71,6 +71,13 @@ public class SpaceShip : SpaceObject {
 	public Quaternion toDirQ;
 	public Vector3 toDir;
 
+
+
+	Vector3 stopRotAngDist;
+	// rotaation thrustereiden maximivoima
+	private float torq = 100;
+
+
 	public float DeltadirX;
 	public float accX;
 	public float decX;
@@ -86,6 +93,8 @@ public class SpaceShip : SpaceObject {
 	SDegree updateDirStepY = new SDegree(0);
 	SDegree updateDirLagStepY = new SDegree(0);
 	public byte subState2Y = 0;
+
+	public float DeltadirZ;
 
 	public Vector3 localAngularVelocity;
 
@@ -112,9 +121,35 @@ public class SpaceShip : SpaceObject {
 
 	}
 
-	public void SetRotation(float x, float y, float z)
+	public void SetBearing(float x, float y, float z)
 	{
-		Debug.Log("SetRotation: "+ x.ToString() + "," + y.ToString() + "," +z.ToString());
+		//Debug.Log("SetRotation: "+ x.ToString() + "," + y.ToString() + "," +z.ToString());
+
+		// Tähän laitetaan Bearing käännös. elikkäs ny on väärä...
+
+		Vector3 to = new Vector3(x, y, z);
+
+
+		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
+		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
+		toDir = toDirQ.eulerAngles;
+		DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
+		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
+		DeltadirZ = toDir.z - transform.rotation.eulerAngles.z;
+
+		float vax = GetComponent<Rigidbody>().angularVelocity.x;
+		float vay = GetComponent<Rigidbody>().angularVelocity.y;
+		float vaz = GetComponent<Rigidbody>().angularVelocity.z;
+		
+		stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
+		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vay, 2) ) / (2 * torq),
+		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vaz, 2) ) / (2 * torq));
+
+		if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
+		if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
+
+
+
 	}
 
 
