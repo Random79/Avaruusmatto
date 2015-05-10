@@ -10,20 +10,15 @@ public class helmPanelScript : MonoBehaviour {
 	private Text spdText;
 	private Text positionText;
 
-	private InputField setRotationXText, setRotationYText, setRotationZText;
+	private InputField setBearingXText, setBearingYText, setBearingZText;
 
-	private Quaternion deltaRotation;
-	private Quaternion toDirQ;
-	private Vector3 toDir;
-	private float DeltadirX;
-	private float DeltadirY;
 
 
 
 	// Use this for initialization
 	void Start () {
 		sourceShip = (SpaceShip) sourceObject.GetComponent( typeof(SpaceShip));
-		var spdMeter = GameObject.Find("helmPanel/spdMeter");
+		var spdMeter = GameObject.Find("helmPanel/velocityValue");
 		if(spdMeter!= null)
 		{
 			spdText= (Text) spdMeter.GetComponent(typeof(Text));
@@ -44,50 +39,42 @@ public class helmPanelScript : MonoBehaviour {
 		var srotxt = GameObject.Find("helmPanel/setRotationXText");
 		if(srotxt!= null)
 		{
-			setRotationXText = (InputField) srotxt.GetComponent(typeof(InputField));
+			setBearingXText = (InputField) srotxt.GetComponent(typeof(InputField));
 		}
 		var srotyt = GameObject.Find("helmPanel/setRotationYText");
 		if(srotyt!= null)
 		{
-			setRotationYText = (InputField) srotyt.GetComponent(typeof(InputField));
+			setBearingYText = (InputField) srotyt.GetComponent(typeof(InputField));
 		}
 		var srotzt = GameObject.Find("helmPanel/setRotationZText");
 		if(srotzt!= null)
 		{
-			setRotationZText = (InputField) srotzt.GetComponent(typeof(InputField));
+			setBearingZText = (InputField) srotzt.GetComponent(typeof(InputField));
 		}
 	}
 
-	public void setRotation()
+	public void setBearing()
 	{
-		float rotationXInput, rotationYInput, rotationZInput;
+		float BearingXInput, BearingYInput, BearingZInput;
 		/*
 		if(float.TryParse(setRotationXText.text, out rotationXInput)) return;
 		if(float.TryParse(setRotationYText.text, out rotationYInput)) return;
 		if(float.TryParse(setRotationZText.text, out rotationZInput)) return;
 		*/
-		if(string.IsNullOrEmpty(setRotationXText.text) 
-		   || string.IsNullOrEmpty(setRotationYText.text) 
-		   || string.IsNullOrEmpty(setRotationZText.text))
+		if(string.IsNullOrEmpty(setBearingXText.text) 
+		   || string.IsNullOrEmpty(setBearingYText.text) 
+		   || string.IsNullOrEmpty(setBearingZText.text))
 			return;
 
-		rotationXInput = float.Parse(setRotationXText.text);
-		rotationYInput = float.Parse(setRotationYText.text);
-		rotationZInput = float.Parse(setRotationZText.text);
-		sourceShip.SetRotation(rotationXInput,rotationYInput,rotationZInput);
+		BearingXInput = float.Parse(setBearingXText.text);
+		BearingYInput = float.Parse(setBearingYText.text);
+		BearingZInput = float.Parse(setBearingZText.text);
+		sourceShip.SetBearing(BearingXInput,BearingYInput,BearingZInput);
 		//Debug.Log("seRotation:"+rotationXInput.ToString()+" "+rotationYInput.ToString()+" "+rotationZInput.ToString());
 
-		// Tähän laitetaan Bearing käännös. elikkäs ny on väärä...
-		Vector3 to = new Vector3(rotationXInput, rotationYInput, rotationZInput);
-		
-		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
-		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
-		toDir = toDirQ.eulerAngles;
-		DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
-		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
-		
-	}
 
+	}
+	
 	// Update is called once per frame
 	void FixedUpdate () {
 

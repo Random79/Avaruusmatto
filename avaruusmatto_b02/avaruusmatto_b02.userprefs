@@ -1,17 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Gamelogic.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SpaceShip.cs">
     <Files>
-      <File FileName="Assets\KeyboardHander.cs" Line="21" Column="32" />
-      <File FileName="Assets\SpaceShip.cs" Line="101" Column="36" />
-      <File FileName="Assets\SpaceObject.cs" Line="16" Column="25" />
-      <File FileName="Assets\Gamelogic.cs" Line="48" Column="32" />
-      <File FileName="Assets\SSAurora.cs" Line="57" Column="3" />
+      <File FileName="Assets\helmPanelScript.cs" Line="84" Column="52" />
+      <File FileName="Assets\KeyboardHander.cs" Line="143" Column="1" />
+      <File FileName="Assets\SpaceShip.cs" Line="151" Column="3" />
+      <File FileName="Assets\SpaceObject.cs" Line="100" Column="1" />
+      <File FileName="Assets\Gamelogic.cs" Line="121" Column="1" />
+      <File FileName="Assets\SSAurora.cs" Line="61" Column="1" />
+      <File FileName="Assets\Starfield.cs" Line="16" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Tomi\Documents\githubrepository\Avaruusmatto\avaruusmatto_b02\Assets\SSAurora.cs" line="61" />
+      <Breakpoint file="C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\Assets\Starfield.cs" line="17" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
