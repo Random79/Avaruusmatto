@@ -65,6 +65,7 @@ public class SpaceShip : SpaceObject {
 
 	public bool turnXToPos = true;
 	public bool turnYToPos = true;
+	public bool turnZToPos = true;
 
 	Waypoint deltaVector;
 	public Quaternion deltaRotation;
@@ -125,7 +126,7 @@ public class SpaceShip : SpaceObject {
 	{
 		//Debug.Log("SetRotation: "+ x.ToString() + "," + y.ToString() + "," +z.ToString());
 
-		// Tähän laitetaan Bearing käännös. elikkäs ny on väärä...
+		// Tähän laitetaan Bearing käännös. 
 
 		Vector3 to = new Vector3(x, y, z);
 
@@ -137,9 +138,11 @@ public class SpaceShip : SpaceObject {
 		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
 		DeltadirZ = toDir.z - transform.rotation.eulerAngles.z;
 
-		float vax = GetComponent<Rigidbody>().angularVelocity.x;
-		float vay = GetComponent<Rigidbody>().angularVelocity.y;
-		float vaz = GetComponent<Rigidbody>().angularVelocity.z;
+		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
+		float vax = localAngularVelocity.x;
+		float vay = localAngularVelocity.y;
+		float vaz = localAngularVelocity.z;
 		
 		stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
 		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vay, 2) ) / (2 * torq),
@@ -147,7 +150,12 @@ public class SpaceShip : SpaceObject {
 
 		if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
 		if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
+		if (DeltadirZ < 0) turnZToPos = false; else turnZToPos = true;
 
+		// pseudoa
+		// sitten, kun stopRotAngDist.x == bearing.x. 
+		//		aloitetaan jarrutus.x
+		// sama kaikille akseleille.
 
 
 	}

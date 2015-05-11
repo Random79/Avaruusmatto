@@ -201,6 +201,27 @@ public class SSAurora : SpaceShip {
 			{
 				GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			}
+			else if (localAngularVelocity.magnitude < 0.1)
+			{
+				if (localAngularVelocity.x < 0) {
+					retValue += new Vector3 (10000, 0, 0); 
+				}
+				if (localAngularVelocity.x > 0) {
+					retValue += new Vector3 (-10000, 0, 0); 
+				}
+				if (localAngularVelocity.y < 0) {
+					retValue += new Vector3 (0, 10000, 0); 
+				}
+				if (localAngularVelocity.y > 0) {
+					retValue += new Vector3 (0, -10000, 0); 
+				}
+				if (localAngularVelocity.z < 0) {
+					retValue += new Vector3 (0, 0, 10000); 
+				}
+				if (localAngularVelocity.z > 0) {
+					retValue += new Vector3 (0, 0, -10000); 
+				}
+			}
 			else
 			{
 				if (localAngularVelocity.x < 0) {
