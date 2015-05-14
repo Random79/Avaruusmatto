@@ -34,7 +34,7 @@ public class Starfield : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		transform.position = tx.transform.position + tx.transform.forward *5;
 		for(int i =0 ; i<StarAmount;i++)
 		{
 			if(points[i].position.sqrMagnitude > StarDistanceSqr
