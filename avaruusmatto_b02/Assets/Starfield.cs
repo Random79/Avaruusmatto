@@ -25,7 +25,7 @@ public class Starfield : MonoBehaviour {
 			points[i].size = StarSize;
 		}
 
-		var p = GameObject.Find("Player");
+		var p = GameObject.Find("Vessel");
 		if(p!=null)
 		{
 			player = (SSAurora) p.GetComponent(typeof(SSAurora));

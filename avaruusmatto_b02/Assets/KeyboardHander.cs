@@ -7,7 +7,7 @@ public class KeyboardHander : MonoBehaviour {
 	//GameObject active;
 	// Use this for initialization
 	void Start () {
-		var gameObject = GameObject.Find("_Game");
+		var gameObject = GameObject.Find("Core");
 		game = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
 	//	active = game.activeKeyHandler;
 

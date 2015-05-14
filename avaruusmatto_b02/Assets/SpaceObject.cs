@@ -10,8 +10,11 @@ public class SpaceObject : MonoBehaviour {
 	public double myZ = 0;
 	public float radius = 1;
 	
+	private GameObject coreObject;
+	
 	// Use this for initialization
 	void Start () {
+		coreObject = GameObject.Find("Core");
 		RegisterToGame(false);
 		DontDestroyOnLoad(this.gameObject);
 	}
@@ -24,10 +27,10 @@ public class SpaceObject : MonoBehaviour {
 
 	public void RegisterToGame(bool remove)
 	{
-		var gameObject = GameObject.Find("_Game");
-		if(gameObject== null) return;
+		coreObject = GameObject.Find("Core");
+		if(coreObject== null) return;
 
-		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
+		Gamelogic gl = (Gamelogic) coreObject.GetComponent(typeof(Gamelogic));
 		if(remove) gl.DeregisterSpaceObject(this);
 		else gl.RegisterSpaceObject(this);
 	}
@@ -39,8 +42,8 @@ public class SpaceObject : MonoBehaviour {
 
 	public void UpdatePosition()
 	{
-		var gameObject = GameObject.Find("_Game");
-		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
+
+		Gamelogic gl = (Gamelogic) coreObject.GetComponent(typeof(Gamelogic));
 		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);
 		if(newcoordinates != lastCoordinates) 
 			CheckCollision();
@@ -72,8 +75,7 @@ public class SpaceObject : MonoBehaviour {
 
 	void CheckCollision()
 	{
-		var gameObject = GameObject.Find("_Game");
-		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
+		Gamelogic gl = (Gamelogic) coreObject.GetComponent(typeof(Gamelogic));
 		var myPos = gl.GetMyCoordinates(myX,myY,myZ); 
 		//var myPos = new Vector3(0,0,0);
 		// space objecet listaa vois pitää vaikka gamelogic niin ei tarttis aina hakee

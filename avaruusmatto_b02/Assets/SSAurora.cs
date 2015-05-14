@@ -40,7 +40,7 @@ public class SSAurora : SpaceShip {
 		ghost.name = "Ghost";
 		ghost.transform.parent = gameObject.transform;
 	*/	
-		game = GameObject.Find ("_Game");
+		game = GameObject.Find ("Core");
 		RegisterToGame(false);
 
 	//Time.fixedTime

@@ -57,7 +57,8 @@ public class SpaceShip : SpaceObject {
 		idle = 0,
 		setDirection,
 		prograde,
-		retrograde
+		retrograde,
+		bearingTurn
 	}
 
 	public autoPilotStates autopilotState = autoPilotStates.idle;
@@ -106,7 +107,7 @@ public class SpaceShip : SpaceObject {
 	/*	myX = 0;
 		myY = 0;
 		myZ = 10;
-*/
+*/		
 		RegisterToGame(false);
 		DontDestroyOnLoad(this.gameObject);
 
@@ -126,7 +127,10 @@ public class SpaceShip : SpaceObject {
 	{
 		//Debug.Log("SetRotation: "+ x.ToString() + "," + y.ToString() + "," +z.ToString());
 
-		// Tähän laitetaan Bearing käännös. 
+		//TODO: alusta bearing parametrit.
+		// fixedupdaten autopilotstate.bearingTurn caseen suoritetaan kääntörutiin.
+
+		autopilotState = autoPilotStates.bearingTurn;
 
 		Vector3 to = new Vector3(x, y, z);
 
@@ -230,6 +234,11 @@ public class SpaceShip : SpaceObject {
 			{
 				autopilotState = autoPilotStates.idle;
 			}
+			break;
+
+		case autoPilotStates.bearingTurn:
+
+
 			break;
 
 		case autoPilotStates.idle:

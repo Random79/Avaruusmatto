@@ -17,7 +17,7 @@ public class Tykinruoka : MonoBehaviour {
 	void FixedUpdate () {
 
 		// haetaan pelin koordinaatiston paikkatieto pelilogiikalta.
-		var gameObject = GameObject.Find("_Game");
+		var gameObject = GameObject.Find("Core");
 		Gamelogic gl = (Gamelogic) gameObject.GetComponent(typeof(Gamelogic));
 		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);
 		transform.position=newcoordinates;

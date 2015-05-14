@@ -16,7 +16,7 @@ public class Gamelogic : MonoBehaviour {
 	public GameObject Helm;
 	public GameObject Science;
 
-	public Rigidbody droneShip;
+
 	private static bool created=false;
 	void Awake()
 	{
@@ -31,46 +31,6 @@ public class Gamelogic : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-/*		var dynObject = GameObject.Find("DynamicObjects");
-		for (int x = 0; x<100;x++)
-		{
-			var kap = Resources.Load ("PalavaKapsuli") as GameObject;
-			var kapsuli = Instantiate (kap) as GameObject;
-			kapsulit.Add(kapsuli);
-
-			var kapso = kapsuli.GetComponent<SpaceObject>();
-			kapso.transform.parent = dynObject.transform;
-			//kapso.SetPosition(4,2,8);
-      		kapso.SetPosition(MyRandom(40,2),MyRandom(40,2),MyRandom(40,2));
-		}
-*/		
-		var dynObject =  new GameObject("Drones");
-		DontDestroyOnLoad(dynObject);
-		var rb = Instantiate(droneShip) as Rigidbody;
-		if(rb!=null)
-		{ 
-			rb.transform.parent = dynObject.transform;
-			var ss = rb.gameObject.GetComponentInChildren(typeof(SpaceShip)) as SpaceShip;
-
-			if(ss!=null)
-			{
-				ss.SetPosition(0,0,15);
-				ss.Waypoints.Add(new Waypoint(ss.myX,ss.myY,ss.myZ));
-				ss.Waypoints.Add(new Waypoint(-100,-100,-500));
-				ss.Waypoints.Add(new Waypoint(0,0,15));
-				//ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
-			}
-		}
-	}
-
-
-	float MyRandom(float range, float ExcludeRadius)
-	{
-		float r =0;
-		do{
-			r = Random.Range(0-range,range);
-		}while (r>(0-ExcludeRadius) && r<ExcludeRadius);
-		return r;
 	}
 
 
