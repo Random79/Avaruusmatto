@@ -23,12 +23,14 @@ public class ObjectLabel : MonoBehaviour {
 		else
 			cam = cameraToUse;
 		camTransform = cam.transform;
+		var guitext = GetComponentInParent (typeof(GUIText)) as GUIText;
+		guitext.text = target.name;
 	}
 	
 	
 	void Update()
 	{
-		
+	
 		if (clampToScreen)
 		{
 			Vector3 relativePosition = camTransform.InverseTransformPoint(target.position + offset);
@@ -46,6 +48,7 @@ public class ObjectLabel : MonoBehaviour {
 
 //		thisTransform.position = cam.WorldToViewportPoint(target.position + offset);
 //		var distance = Vector3.Distance(target.position, camTransform.position);
-//		if( distance > 5) thisTransform.position = Vector3.Normalize(thisTransform.position)*5;
+//		if( distance >=10) thisTransform.position = Vector3.Normalize(thisTransform.position)*10;
+//		thisTransform.transform.LookAt(camTransform);
 	}
 }
