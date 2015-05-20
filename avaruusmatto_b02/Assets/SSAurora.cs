@@ -201,7 +201,7 @@ public class SSAurora : SpaceShip {
 			{
 				GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			}
-			else if (localAngularVelocity.magnitude < 0.1)
+			else if (localAngularVelocity.magnitude < 0.01)
 			{
 				if (localAngularVelocity.x < 0) {
 					retValue += new Vector3 (10000, 0, 0); 

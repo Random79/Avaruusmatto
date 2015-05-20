@@ -51,6 +51,8 @@ public class SpaceShip : SpaceObject {
 	public float maxAngularVel = 10f;
 	
 	public Vector3 myLocalVel;
+
+	public Vector3 to;
 	
 	public enum autoPilotStates
 	{
@@ -75,10 +77,10 @@ public class SpaceShip : SpaceObject {
 
 
 
-	Vector3 stopRotAngDist;
+	public Vector3 stopRotAngDist;
 	// rotaation thrustereiden maximivoima
-	private float torq = 100;
-
+	private float torq = 100f;
+	public float mass = 550000f;
 
 	public float DeltadirX;
 	public float accX;
@@ -135,37 +137,17 @@ public class SpaceShip : SpaceObject {
 		Vector3 to = new Vector3(x, y, z);
 
 
-		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
-		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
-		toDir = toDirQ.eulerAngles;
-		DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
-		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
-		DeltadirZ = toDir.z - transform.rotation.eulerAngles.z;
 
-		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
-
-		float vax = localAngularVelocity.x;
-		float vay = localAngularVelocity.y;
-		float vaz = localAngularVelocity.z;
-		
-		stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
-		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vay, 2) ) / (2 * torq),
-		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vaz, 2) ) / (2 * torq));
-
-		if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
-		if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
-		if (DeltadirZ < 0) turnZToPos = false; else turnZToPos = true;
-
-		// pseudoa
-		// sitten, kun stopRotAngDist.x == bearing.x. 
-		//		aloitetaan jarrutus.x
-		// sama kaikille akseleille.
 
 
 	}
 
 
 	void FixedUpdate() {
+		//mass = GetComponent<Rigidbody>().mass;
+		stopRotAngDist = new Vector3 ((mass * Mathf.Pow(localAngularVelocity.x, 2) ) / (2 * torq),
+		                              (mass * Mathf.Pow(localAngularVelocity.y, 2) ) / (2 * torq),
+		                              (mass * Mathf.Pow(localAngularVelocity.z, 2) ) / (2 * torq));
 
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
@@ -238,8 +220,31 @@ public class SpaceShip : SpaceObject {
 
 		case autoPilotStates.bearingTurn:
 
+			deltaRotation = Quaternion.FromToRotation(transform.forward, to);
+			toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
+			toDir = toDirQ.eulerAngles;
+			DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
+			DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
+			DeltadirZ = toDir.z - transform.rotation.eulerAngles.z;
+			
+			localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
+			
+			stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(localAngularVelocity.x, 2) ) / (2 * torq),
+			                              (GetComponent<Rigidbody>().mass * Mathf.Pow(localAngularVelocity.y, 2) ) / (2 * torq),
+			                              (GetComponent<Rigidbody>().mass * Mathf.Pow(localAngularVelocity.z, 2) ) / (2 * torq));
+			
+			if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
+			if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
+			if (DeltadirZ < 0) turnZToPos = false; else turnZToPos = true;
+			
+			// pseudoa
+			// sitten, kun stopRotAngDist.x == bearing.x. 
+			//		aloitetaan jarrutus.x
+			// sama kaikille akseleille.
 
 			break;
+
 
 		case autoPilotStates.idle:
 		default:
