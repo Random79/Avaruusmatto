@@ -80,7 +80,7 @@ public class SpaceShip : SpaceObject {
 	public Vector3 stopRotAngDist;
 	// rotaation thrustereiden maximivoima
 	private float torq = 100f;
-	public float mass = 550000f;
+	public float mass;
 
 	public float DeltadirX;
 	public float accX;
@@ -122,6 +122,7 @@ public class SpaceShip : SpaceObject {
 		if(Waypoints.Count>0)
 			SetDirection(Waypoints[0]);
 		//StopX(); StopY(); StopZ();
+		mass = GetComponent<Rigidbody>().mass;
 
 	}
 
@@ -144,7 +145,8 @@ public class SpaceShip : SpaceObject {
 
 
 	void FixedUpdate() {
-		//mass = GetComponent<Rigidbody>().mass;
+
+		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 		stopRotAngDist = new Vector3 ((mass * Mathf.Pow(localAngularVelocity.x, 2) ) / (2 * torq),
 		                              (mass * Mathf.Pow(localAngularVelocity.y, 2) ) / (2 * torq),
 		                              (mass * Mathf.Pow(localAngularVelocity.z, 2) ) / (2 * torq));
@@ -152,7 +154,7 @@ public class SpaceShip : SpaceObject {
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
-		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
 
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
 		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) 
