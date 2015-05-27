@@ -64,7 +64,19 @@ public class SSAurora : SpaceShip {
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
 		//System.Windows.Media.Matrix
-
+		if(WarpFactor >0)
+		{
+			myVelocity = WarpFactor * 300000000;
+			var warpVector = new Vector3(myVelX,myVelY,myVelZ) ;
+			warpVector.Normalize();
+			warpVector *= myVelocity;
+			myX += warpVector.x *Time.fixedDeltaTime;
+			myY += warpVector.y*Time.fixedDeltaTime;
+			myZ += warpVector.z*Time.fixedDeltaTime;
+			
+			UpdatePosition();
+			return;
+		}
 
 		// My velocity lasketaan joka updatella. kalle 16.2.2015.
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
@@ -152,8 +164,9 @@ public class SSAurora : SpaceShip {
 			}
 		}
 
-		if (p.axis == KeyAxis.lightSpeed) {	
-			retValue += new Vector3(0, 0, 300000000);
+		if (p.axis == KeyAxis.lightSpeed) {
+			//TODO: enable / disable warp panel
+			//retValue += new Vector3(0, 0, 300000000);
 		}
 		if (p.axis == KeyAxis.stop) {	
 			myVelX = 0;
@@ -201,7 +214,7 @@ public class SSAurora : SpaceShip {
 			{
 				GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			}
-			else if (localAngularVelocity.magnitude < 0.01)
+			else if (localAngularVelocity.magnitude < 0.1)
 			{
 				if (localAngularVelocity.x < 0) {
 					retValue += new Vector3 (10000, 0, 0); 
