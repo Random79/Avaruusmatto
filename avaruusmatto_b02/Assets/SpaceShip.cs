@@ -99,8 +99,12 @@ public class SpaceShip : SpaceObject {
 	public float DeltadirZ;
 
 	public Vector3 localAngularVelocity;
+	public float InertiaMass;
+	public float angAcc;
 
 	protected float WarpFactor =0;
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -121,6 +125,8 @@ public class SpaceShip : SpaceObject {
 			SetDirection(Waypoints[0]);
 		//StopX(); StopY(); StopZ();
 
+
+
 	}
 
 	public void SetBearing(float x, float y, float z)
@@ -133,7 +139,6 @@ public class SpaceShip : SpaceObject {
 		autopilotState = autoPilotStates.bearingTurn;
 
 		Vector3 to = new Vector3(x, y, z);
-
 
 		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
 		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
@@ -148,9 +153,15 @@ public class SpaceShip : SpaceObject {
 		float vay = localAngularVelocity.y;
 		float vaz = localAngularVelocity.z;
 		
-		stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
+		/*stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
 		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vay, 2) ) / (2 * torq),
 		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vaz, 2) ) / (2 * torq));
+*/
+
+
+		stopRotAngDist = new Vector3 ((Mathf.Pow(localAngularVelocity.x,2) * InertiaMass) / (2 * torq),
+		                              (Mathf.Pow(localAngularVelocity.y,2) * InertiaMass) / (2 * torq),
+		                              (Mathf.Pow(localAngularVelocity.z,2) * InertiaMass) / (2 * torq));
 
 		if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
 		if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
@@ -186,6 +197,13 @@ public class SpaceShip : SpaceObject {
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
+		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
+		angAcc = torq / InertiaMass;
+
+		stopRotAngDist = new Vector3 (Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
+		                              Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
+		                              Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc));
 
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
 		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) 
