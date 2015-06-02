@@ -75,9 +75,9 @@ public class SpaceShip : SpaceObject {
 
 
 
-	Vector3 stopRotAngDist;
+	public Vector3 stopRotAngDist;
 	// rotaation thrustereiden maximivoima
-	private float torq = 100;
+	public float torq = 100;
 
 
 	public float DeltadirX;
@@ -102,6 +102,7 @@ public class SpaceShip : SpaceObject {
 	public float InertiaMass;
 	public float angAcc;
 
+	public float MaxWarpFactor = 1;
 	protected float WarpFactor =0;
 
 
@@ -178,32 +179,12 @@ public class SpaceShip : SpaceObject {
 
 	void FixedUpdate() {
 
-		// warp physics, ignore others
-		if(WarpFactor >0)
-		{
-			myVelocity = WarpFactor * 300000000;
-			var warpVector = new Vector3(myVelX,myVelY,myVelZ) ;
-			warpVector.Normalize();
-			warpVector *= myVelocity;
-			myX += warpVector.x *Time.fixedDeltaTime;
-			myY += warpVector.y*Time.fixedDeltaTime;
-			myZ += warpVector.z*Time.fixedDeltaTime;
-			
-			UpdatePosition();
-			return;
-		}
-
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
-		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
-		angAcc = torq / InertiaMass;
 
-		stopRotAngDist = new Vector3 (Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
-		                              Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
-		                              Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc));
 
 		// Jos ollaan jo nykyisessä waypointissa, niin suunnataan nokka seuraavaan
 		if(isAtWaypoint(Waypoints[currentWaypoint]) && myVelocity < 0.1) 
@@ -293,13 +274,41 @@ public class SpaceShip : SpaceObject {
 		myZ += myVelZ*Time.fixedDeltaTime;
 
 		UpdatePosition();
-
 	}
 
-	
+	float preWarpVelx=0,preWarpVely=0,preWarpVelz=0;
 	public void SetWarpFactor(float warp)
 	{
-		WarpFactor = warp;
+		if(warp==0)
+		{
+			myVelX = preWarpVelx;
+			myVelY = preWarpVely;
+			myVelZ = preWarpVelz;
+			preWarpVelx = preWarpVely = preWarpVelz = 0;
+			WarpFactor = 0;
+		}
+		if(warp!=0 && preWarpVelx == 0 && preWarpVely == 0 && preWarpVelz == 0)
+		{
+			if(MaxWarpFactor > warp) WarpFactor = warp;
+			else WarpFactor = MaxWarpFactor;
+
+			preWarpVelx = myVelX;
+			preWarpVely = myVelY;
+			preWarpVelz = myVelZ;
+			AddWarpSpeed(WarpFactor);
+		}
+	}
+
+	protected void AddWarpSpeed(float warpspeed)
+	{
+		var warpVector = new Vector3(0,0,warpspeed * 300000000) ;
+		
+		Quaternion rotations = GetComponent<Rigidbody>().rotation;
+		Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, rotations, Vector3.one);
+		Vector3 deltaVelRotated = m.MultiplyPoint3x4(warpVector);
+		myVelX += deltaVelRotated.x;
+		myVelY += deltaVelRotated.y;
+		myVelZ += deltaVelRotated.z;
 	}
 
 	bool isAtWaypoint(Waypoint w)
@@ -333,6 +342,8 @@ public class SpaceShip : SpaceObject {
 	//TODO pitääkö tällanen voidi olla fixedupdatessa, vai toimiiko ilman?
 	bool SetDirection(Waypoint w)
 	{
+		if(WarpFactor>0) return false;
+
 		//pysäytetään rotaatio
 		if( turningState==0 && localAngularVelocity.magnitude > 0.01) 
 		{

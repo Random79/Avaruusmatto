@@ -63,20 +63,13 @@ public class SSAurora : SpaceShip {
 
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
-		//System.Windows.Media.Matrix
-		if(WarpFactor >0)
-		{
-			myVelocity = WarpFactor * 300000000;
-			var warpVector = new Vector3(myVelX,myVelY,myVelZ) ;
-			warpVector.Normalize();
-			warpVector *= myVelocity;
-			myX += warpVector.x *Time.fixedDeltaTime;
-			myY += warpVector.y*Time.fixedDeltaTime;
-			myZ += warpVector.z*Time.fixedDeltaTime;
-			
-			UpdatePosition();
-			return;
-		}
+
+		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
+		angAcc = torq / InertiaMass;
+
+		stopRotAngDist = new Vector3 (Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
+		                              Mathf.Pow(localAngularVelocity.y,2) / (2 * angAcc),
+		                              Mathf.Pow(localAngularVelocity.z,2) / (2 * angAcc));
 
 		// My velocity lasketaan joka updatella. kalle 16.2.2015.
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
@@ -119,6 +112,7 @@ public class SSAurora : SpaceShip {
 
 	public void HandleAxis(AxisEventParam p)
 	{
+		if(WarpFactor!=0) return;
 
 		Vector3 deltaVel = GetDirection(p);
 		
@@ -128,7 +122,6 @@ public class SSAurora : SpaceShip {
 		myVelX += deltaVelRotated.x;
 		myVelY += deltaVelRotated.y;
 		myVelZ += deltaVelRotated.z;
-		
 
 		
 		var dir = GetRotation(p);
@@ -180,6 +173,7 @@ public class SSAurora : SpaceShip {
 	public Vector3 GetRotation(AxisEventParam p)
 	{
 		var retValue = new Vector3(0,0,0);
+		//if(WarpFactor > 0) return retValue;
 
 		if(p.axis == KeyAxis.vertical)
 		{
