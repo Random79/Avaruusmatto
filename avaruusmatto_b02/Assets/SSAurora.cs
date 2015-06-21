@@ -64,18 +64,23 @@ public class SSAurora : SpaceShip {
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
 
+		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
+		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
 		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
 		angAcc = torq / InertiaMass;
 
-		stopRotAngDist = new Vector3 (Mathf.Pow(localAngularVelocity.x,2) / (2 * angAcc),
-		                              Mathf.Pow(localAngularVelocity.y,2) / (2 * angAcc),
-		                              Mathf.Pow(localAngularVelocity.z,2) / (2 * angAcc));
+		stopRotAngDist = new Vector3 (Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.x,2) 
+		                                               / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.x),
+		                              Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.y,2) 
+		                 							   / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.y),
+		                              Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.z,2) 
+		                 							   / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.z));
 
 		// My velocity lasketaan joka updatella. kalle 16.2.2015.
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));
 
-		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
-		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
+
 
 		//ghost.transform.rotation = gameObject.transform.rotation;
 
@@ -204,11 +209,13 @@ public class SSAurora : SpaceShip {
 			}
 		}
 		if(p.axis == KeyAxis.stopRot)
-			if (localAngularVelocity.magnitude < 0.001)
+
+			// tää pitää tehdä jokaiselle akselille erikseen!
+			if (localAngularVelocity.magnitude < 0.005)
 			{
 				GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 			}
-			else if (localAngularVelocity.magnitude < 0.1)
+			/*else if (localAngularVelocity.magnitude < 0.1)
 			{
 				if (localAngularVelocity.x < 0) {
 					retValue += new Vector3 (10000, 0, 0); 
@@ -228,7 +235,7 @@ public class SSAurora : SpaceShip {
 				if (localAngularVelocity.z > 0) {
 					retValue += new Vector3 (0, 0, -10000); 
 				}
-			}
+			}*/
 			else
 			{
 				if (localAngularVelocity.x < 0) {
