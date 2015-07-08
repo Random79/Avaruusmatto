@@ -85,11 +85,12 @@ public class AIControl : MonoBehaviour {
 						var wpy = double.Parse(wp.Attributes["y"].Value);
 						var wpz = double.Parse(wp.Attributes["z"].Value);
 						ss.Waypoints.Add(new Waypoint(wpx,wpy,wpz));
+						ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
 					}
 				/*	ss.Waypoints.Add(new Waypoint(ss.myX,ss.myY,ss.myZ));
 					ss.Waypoints.Add(new Waypoint(-100,-100,-500));
 					ss.Waypoints.Add(new Waypoint(0,0,15));
-					//ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
+					//
 					*/
 					var dt = Instantiate(droneText) as GameObject;
 					//var dt = GameObject.Find("targetText");
