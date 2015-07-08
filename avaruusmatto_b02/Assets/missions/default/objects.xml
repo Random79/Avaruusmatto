@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<objects>
+	<spaceships>
+		<spaceship name='ship1' x='122' y='122' z='122'>
+			<waypoints>
+				<waypoint x='1' y='1' z='1'/>
+				<waypoint x='1000' y='1000' z='1000'/>
+				<waypoint x='100' y='100' z='100'/>
+			</waypoints>
+		</spaceship>
+		<spaceship name="ship" x="11" y="11" z="11" />
+	</spaceships>
+</objects>
+

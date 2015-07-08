@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 
 
 public class Gamelogic : MonoBehaviour {
@@ -31,7 +32,10 @@ public class Gamelogic : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		
+		
 	}
+
 
 
 	public Vector3 GetMyCoordinates(double x, double y,double z)
