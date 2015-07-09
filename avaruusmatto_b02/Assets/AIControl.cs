@@ -52,6 +52,13 @@ public class AIControl : MonoBehaviour {
 				}
 			}
 		}
+		// todo: mihin kuuluu?
+		string[] args = System.Environment.GetCommandLineArgs();
+		foreach(var a in args)
+		{
+			Debug.Log (a);
+		}
+
 
 		var apppath = UnityEngine.Application.dataPath + "/missions/default";
 		ParseObjects(apppath,dynObject, textsObject);

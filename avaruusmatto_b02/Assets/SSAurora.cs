@@ -64,18 +64,17 @@ public class SSAurora : SpaceShip {
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
 
+		if (autopilotState == autoPilotStates.bearingTurn)
+		{
+			if (HandleBearingTurn() == true)
+			{
+				autopilotState = autoPilotStates.idle;
+			}
+			return;
+		}
 		// vector3:n tallennettu pyörimisnopeus (localAngularVelocity.x, localAngularVelocity.y, localAngularVelocity.z)
 		localAngularVelocity = GetComponent<Rigidbody>().transform.InverseTransformDirection(GetComponent<Rigidbody>().angularVelocity);
 
-		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
-		angAcc = torq / InertiaMass;
-
-		stopRotAngDist = new Vector3 (Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.x,2) 
-		                                               / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.x),
-		                              Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.y,2) 
-		                 							   / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.y),
-		                              Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.z,2) 
-		                 							   / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.z));
 
 		// My velocity lasketaan joka updatella. kalle 16.2.2015.
 		myVelocity = Mathf.Sqrt (Mathf.Pow (myVelX,2) + Mathf.Pow (myVelY,2) + Mathf.Pow (myVelZ,2));

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SpaceObject))]
 /**
@@ -105,6 +108,8 @@ public class SpaceShip : SpaceObject {
 	public float MaxWarpFactor = 1;
 	protected float WarpFactor =0;
 
+	private Vector3 targetBearing;
+
 
 	// Use this for initialization
 	void Start () {
@@ -137,12 +142,20 @@ public class SpaceShip : SpaceObject {
 		//TODO: alusta bearing parametrit.
 		// fixedupdaten autopilotstate.bearingTurn caseen suoritetaan kääntörutiin.
 
+		//var xDeg = SDegree(x);
+
 		autopilotState = autoPilotStates.bearingTurn;
 
-		Vector3 to = new Vector3(x, y, z);
+		//targetBearing = new Vector3(x, y, z);
 
-		deltaRotation = Quaternion.FromToRotation(transform.forward, to);
-		toDirQ =  Quaternion.FromToRotation(Vector3.forward, to);
+		//SDegree toX = x - transform.rotation.eulerAngles.x;
+
+		//var targetDir = transform.rotation.eulerAngles + targetBearing;
+
+
+
+		deltaRotation = Quaternion.FromToRotation(transform.forward, targetBearing);
+		toDirQ =  Quaternion.FromToRotation(Vector3.forward, targetBearing);
 		toDir = toDirQ.eulerAngles;
 		DeltadirX = toDir.x - transform.rotation.eulerAngles.x;
 		DeltadirY = toDir.y - transform.rotation.eulerAngles.y;
@@ -153,27 +166,55 @@ public class SpaceShip : SpaceObject {
 		float vax = localAngularVelocity.x;
 		float vay = localAngularVelocity.y;
 		float vaz = localAngularVelocity.z;
+	}
+
+	protected bool HandleBearingTurn()
+	{
+		const int MAX_THRUST_ROT =100;
+
+		//palauttaa true, jos käännös valmis
+		if (Vector3.Distance( targetBearing,  transform.rotation.eulerAngles)<0.01)
+		{
+			localAngularVelocity.x = localAngularVelocity.y = localAngularVelocity.z = 0;
+			transform.Rotate(targetBearing);
+			
+			return true;
+		}
+
+		InertiaMass = (2 * GetComponent<Rigidbody>().mass * Mathf.Pow(1, 2)) / 5;
+		angAcc = torq / InertiaMass;
 		
-		/*stopRotAngDist = new Vector3 ((GetComponent<Rigidbody>().mass * Mathf.Pow(vax, 2) ) / (2 * torq),
-		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vay, 2) ) / (2 * torq),
-		                              (GetComponent<Rigidbody>().mass * Mathf.Pow(vaz, 2) ) / (2 * torq));
-*/
-
-
-		stopRotAngDist = new Vector3 ((Mathf.Pow(localAngularVelocity.x,2) * InertiaMass) / (2 * torq),
-		                              (Mathf.Pow(localAngularVelocity.y,2) * InertiaMass) / (2 * torq),
-		                              (Mathf.Pow(localAngularVelocity.z,2) * InertiaMass) / (2 * torq));
-
+		stopRotAngDist = new Vector3 (Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.x,2) 
+		                 / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.x),
+		                 Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.y,2) 
+		                 / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.y),
+		                 Mathf.Rad2Deg * (Mathf.Pow(Mathf.Deg2Rad*localAngularVelocity.z,2) 
+		                 / (2 * angAcc) + Mathf.Deg2Rad*transform.rotation.eulerAngles.z));
+		
 		if (DeltadirX < 0) turnXToPos = false; else turnXToPos = true;
 		if (DeltadirY < 0) turnYToPos = false; else turnYToPos = true;
 		if (DeltadirZ < 0) turnZToPos = false; else turnZToPos = true;
 
-		// pseudoa
-		// sitten, kun stopRotAngDist.x == bearing.x. 
-		//		aloitetaan jarrutus.x
-		// sama kaikille akseleille.
+		var targetDir = targetBearing - transform.rotation.eulerAngles;
+		int ThrustX, ThrustY, ThrustZ;
 
 
+
+		if(Math.Abs(stopRotAngDist.x-targetDir.x)>0.1)
+		{// kiihdytys 
+			//todo, jos nopeus ei ole liikaa, niin kiihdytä
+			ThrustX = MAX_THRUST_ROT;
+		}
+		else
+		{ // jarruta
+			ThrustX = -MAX_THRUST_ROT;
+		}
+
+	
+
+		//GetComponent<Rigidbody>().AddRelativeTorque (ThrustX, ThrustY, ThrustZ);
+
+		return false;
 	}
 
 
@@ -540,7 +581,6 @@ public class SpaceShip : SpaceObject {
 				subState2Y=0;
 			}
 		}
-
 		// pysäytetään rotaatio vielä varmuuden vuoksi
 		else if (turningState == 3 && localAngularVelocity.magnitude >= 0.01)
 		{
