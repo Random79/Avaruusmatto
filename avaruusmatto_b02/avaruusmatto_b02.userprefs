@@ -1,10 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AIControl.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SpaceShip.cs">
     <Files>
-      <File FileName="Assets\Gamelogic.cs" Line="38" Column="2" />
-      <File FileName="Assets\Starfield.cs" Line="37" Column="27" />
-      <File FileName="Assets\AIControl.cs" Line="88" Column="66" />
+      <File FileName="Assets\WarpPanelScript.cs" Line="42" Column="3" />
+      <File FileName="Assets\Gamelogic.cs" Line="1" Column="1" />
+      <File FileName="Assets\Starfield.cs" Line="1" Column="1" />
+      <File FileName="Assets\AIControl.cs" Line="89" Column="31" />
+      <File FileName="Assets\SpaceShip.cs" Line="147" Column="48" />
+      <File FileName="Assets\Utilities.cs" Line="95" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -92,6 +92,7 @@ public class SDegree {
 	public SDegree(float a)
 	{
 		this.Angle = a;
+		normalize();
 	}
 	
 	private void normalize()

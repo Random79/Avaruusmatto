@@ -54,6 +54,7 @@ public class WarpPanelScript : MonoBehaviour {
 			if(c!=null )
 			{
 				c.CountFrom = 5;
+				c.moveAway = false;
 				c.originalPosition = co.transform;
 				
 			}
@@ -70,7 +71,7 @@ public class WarpPanelScript : MonoBehaviour {
 			{
 				c2.CountFrom = time;
 				c2.originalPosition = co.transform;
-				c2.shake = true;
+				c2.shake = false;
 				c2.moveAway = false;
 				c2.prefix ="WARP:\n";
 				c2.numberFormat = "#.#";

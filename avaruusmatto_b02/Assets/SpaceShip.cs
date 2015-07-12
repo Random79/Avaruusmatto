@@ -148,7 +148,7 @@ public class SpaceShip : SpaceObject {
 
 		//targetBearing = new Vector3(x, y, z);
 
-		//SDegree toX = x - transform.rotation.eulerAngles.x;
+		SDegree toX = new SDegree(x - transform.rotation.eulerAngles.x);
 
 		//var targetDir = transform.rotation.eulerAngles + targetBearing;
 
