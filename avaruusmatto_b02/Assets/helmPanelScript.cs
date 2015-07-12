@@ -6,9 +6,15 @@ public class helmPanelScript : MonoBehaviour {
 	public GameObject sourceObject;
 	private SpaceShip sourceShip;
 
-	private Text headingText;
+	private Text yawText;
+	private Text pitchText;
+	private Text rollText;
+
+	private Text myXText;
+	private Text myYText;
+	private Text myZText;
+
 	private Text spdText;
-	private Text positionText;
 
 	private InputField setBearingXText, setBearingYText, setBearingZText;
 
@@ -18,22 +24,46 @@ public class helmPanelScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		sourceShip = (SpaceShip) sourceObject.GetComponent( typeof(SpaceShip));
-		var spdMeter = GameObject.Find("helmPanel/velocityValue");
+		var spdMeter = GameObject.Find("pilotInfoPanel/velocityValue");
 		if(spdMeter!= null)
 		{
 			spdText= (Text) spdMeter.GetComponent(typeof(Text));
 		}
 
-		var helmMeter = GameObject.Find("helmPanel/headingMeter");
-		if(helmMeter!= null)
+		var temp = GameObject.Find("attitudevalues/yawValue");
+		if(temp!= null)
 		{
-			headingText = (Text) helmMeter.GetComponent(typeof(Text));
+			yawText = (Text) temp.GetComponent(typeof(Text));
 		}
 
-		var posMeter = GameObject.Find("helmPanel/positionMeter");
-		if(posMeter!= null)
+		temp = GameObject.Find("attitudevalues/pitchValue");
+		if(temp!= null)
 		{
-			positionText = (Text) posMeter.GetComponent(typeof(Text));
+			pitchText = (Text) temp.GetComponent(typeof(Text));
+		}
+
+		temp = GameObject.Find("attitudevalues/rollValue");
+		if(temp!= null)
+		{
+			rollText = (Text) temp.GetComponent(typeof(Text));
+		}
+
+		temp = GameObject.Find("positionValues/xValue");
+		if(temp!= null)
+		{
+			myXText = (Text) temp.GetComponent(typeof(Text));
+		}
+
+		temp = GameObject.Find("positionValues/yValue");
+		if(temp!= null)
+		{
+			myYText = (Text) temp.GetComponent(typeof(Text));
+		}
+
+		temp = GameObject.Find("positionValues/zValue");
+		if(temp!= null)
+		{
+			myZText = (Text) temp.GetComponent(typeof(Text));
 		}
 		
 		var srotxt = GameObject.Find("helmPanel/setRotationXText");
@@ -84,20 +114,35 @@ public class helmPanelScript : MonoBehaviour {
 			spdText.text = sourceShip.myVelocity.ToString("F2");
 		}
 
-		if(headingText!=null)
+		if(yawText!=null)
 		{
-			headingText.text = "\n" + sourceShip.transform.rotation.eulerAngles.x.ToString("00.000") + "\n"
-				+ sourceShip.transform.rotation.eulerAngles.y.ToString("00.000") + "\n"
-					+ sourceShip.transform.rotation.eulerAngles.z.ToString("00.000");
+			yawText.text =  sourceShip.transform.rotation.eulerAngles.y.ToString("00.000");
 		}
 
-		if(positionText!=null)
+		if(pitchText!=null)
 		{
-			positionText.text = "\n" + sourceShip.myX.ToString("#,##0") + "\n"
-				+ sourceShip.myY.ToString("#,##0") + "\n"
-					+ sourceShip.myZ.ToString("#,##0");
+			pitchText.text =  sourceShip.transform.rotation.eulerAngles.x.ToString("00.000");
 		}
 
+		if(rollText!=null)
+		{
+			rollText.text =  sourceShip.transform.rotation.eulerAngles.z.ToString("00.000");
+		}
+
+		if(myXText!=null)
+		{
+			myXText.text = sourceShip.myX.ToString("#,##0");
+		}
+
+		if(myYText!=null)
+		{
+			myYText.text = sourceShip.myY.ToString("#,##0");
+		}
+
+		if(myZText!=null)
+		{
+			myZText.text = sourceShip.myZ.ToString("#,##0");
+		}
 
 	}
 }
