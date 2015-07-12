@@ -34,6 +34,7 @@ public class Starfield : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Network.isServer) return;
 		if(points==null) return;
 		transform.position = tx.transform.position + tx.transform.forward *5;
 		for(int i =0 ; i<StarAmount;i++)

@@ -1,0 +1,61 @@
+Mono path[0] = 'C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/avaruusmatto_Data/Managed'
+Mono path[1] = 'C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/avaruusmatto_Data/Mono'
+Mono config path = 'C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/avaruusmatto_Data/Mono/etc'
+PlayerConnection initialized from C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/avaruusmatto_Data (debug = 0)
+PlayerConnection initialized network socket : 0.0.0.0 55050
+Multi-casting "[IP] 192.168.1.38 [Port] 55050 [Flags] 2 [Guid] 1664313403 [EditorId] 1510577449 [Version] 1048832 [Id] WindowsPlayer(RANDOM-PC) [Debug] 0" to [225.0.0.222:54997]...
+PlayerConnection already initialized - listening to [192.168.1.38:55050]
+Initialize engine version: 5.1.1f1 (2046fc06d4d8)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon HD 7800 Series (ID=0x6819)
+    Vendor:   ATI
+    VRAM:     2022 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\MathNet.Numerics.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\MathNet.Numerics.dll into Unity Child Domain
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\System.Threading.dll (this message is harmless)
+Loading C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\System.Threading.dll into Unity Child Domain
+- Completed reload, in  0.087 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto_Data\Managed\System.Xml.dll (this message is harmless)
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1c28 -> priority: 1 
+C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\avaruusmatto.exe
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIControl:Start() (at C:\Users\RANDOM\Documents\GitHub\Avaruusmatto\avaruusmatto_b02\Assets\AIControl.cs:61)
+ 
+(Filename: C:/Users/RANDOM/Documents/GitHub/Avaruusmatto/avaruusmatto_b02/Assets/AIControl.cs Line: 61)
+
+Log: connection {1} has been disconnected by timeout; address {::ffff:127.0.0.1:58779}
+Empty player list given to NetworkServer.Destroy(), nothing to do.
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:LogWarning(Object)
+UnityEngine.Networking.NetworkServer:DestroyPlayersForConnection(NetworkConnection) (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkServer.cs:1335)
+UnityEngine.Networking.NetworkManager:OnServerDisconnect(NetworkConnection) (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkManager.cs:687)
+UnityEngine.Networking.NetworkManager:OnServerDisconnectInternal(NetworkMessage) (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkManager.cs:581)
+UnityEngine.Networking.NetworkMessageHandlers:InvokeHandler(Int16, NetworkConnection, NetworkReader, Int32) (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkMessageHandlers.cs:73)
+UnityEngine.Networking.NetworkMessageHandlers:InvokeHandlerNoData(Int16, NetworkConnection) (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkMessageHandlers.cs:60)
+UnityEngine.Networking.NetworkServer:InternalUpdate() (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkServer.cs:681)
+UnityEngine.Networking.NetworkServer:Update() (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkServer.cs:514)
+UnityEngine.Networking.NetworkIdentity:UNetStaticUpdate() (at C:\buildslave\unity\build\Extensions\Networking\Runtime\NetworkIdentity.cs:706)
+ 
+(Filename: C:/buildslave/unity/build/Extensions/Networking/Runtime/NetworkServer.cs Line: 1335)
+

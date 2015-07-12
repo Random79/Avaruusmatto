@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpaceObject : MonoBehaviour {
+public class SpaceObject : NetworkBehaviour {
 
+	[SyncVar]
 	Vector3 lastCoordinates=new Vector3(0,0,0);
+	[SyncVar]
 	public double myX = 0;
+	[SyncVar]
 	public double myY = 0;
+	[SyncVar]
 	public double myZ = 0;
 	public float radius = 1;
-	
+
 	private GameObject coreObject;
 	
 	// Use this for initialization
@@ -42,6 +47,7 @@ public class SpaceObject : MonoBehaviour {
 
 	public void UpdatePosition()
 	{
+		return;
 
 		Gamelogic gl = (Gamelogic) coreObject.GetComponent(typeof(Gamelogic));
 		var newcoordinates = gl.GetMyCoordinates(myX,myY,myZ);

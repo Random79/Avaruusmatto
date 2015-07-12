@@ -36,7 +36,18 @@ public class Gamelogic : MonoBehaviour {
 		
 	}
 
-
+	void FixedUpdate ()
+	{
+		foreach (var obj in SpaceObjects)
+		{
+			if(obj is SSAurora) continue;
+			var newcoordinates = GetMyCoordinates(obj.myX,obj.myY,obj.myZ);
+			// todo check collision
+			//if(newcoordinates != lastCoordinates) 
+			//	CheckCollision();
+			obj.transform.position=newcoordinates;
+		}
+	}
 
 	public Vector3 GetMyCoordinates(double x, double y,double z)
 	{

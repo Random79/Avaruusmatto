@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Xml;
+using UnityEngine.Networking;
 
-public class AIControl : MonoBehaviour {
+public class AIControl : NetworkBehaviour {
 
 	static bool created = false;
 	public Rigidbody droneShip;
@@ -25,7 +26,7 @@ public class AIControl : MonoBehaviour {
 		DontDestroyOnLoad(dynObject);
 		var textsObject =  new GameObject("3DTexts");
 		DontDestroyOnLoad(textsObject);
-		var rb = Instantiate(droneShip) as Rigidbody;
+		/*var rb = Instantiate(droneShip) as Rigidbody;
 		if(rb!=null)
 		{ 
 			rb.transform.parent = dynObject.transform;
@@ -52,6 +53,7 @@ public class AIControl : MonoBehaviour {
 				}
 			}
 		}
+		*/
 		// todo: mihin kuuluu?
 		string[] args = System.Environment.GetCommandLineArgs();
 		foreach(var a in args)
@@ -73,47 +75,56 @@ public class AIControl : MonoBehaviour {
 		var ships = doc.SelectNodes("//spaceships/spaceship");
 		foreach (XmlNode ship in ships)
 		{
-			var rb = Instantiate(droneShip) as Rigidbody;
-			if(rb!=null)
-			{ 
-				rb.transform.parent = parent.transform;
-				var ss = rb.gameObject.GetComponentInChildren(typeof(SpaceShip)) as SpaceShip;
-				rb.name = ship.Attributes["name"].Value;
-				if(ss!=null)
+			CmdSpawnDrone(ship, parent);
+		}
+	}
+
+	[Command]
+	void CmdSpawnDrone(XmlNode ship,GameObject parent)
+	{
+		var rb = Instantiate(droneShip) as Rigidbody;
+		if(rb!=null)
+		{ 
+			rb.transform.parent = parent.transform;
+			var ss = rb.gameObject.GetComponentInChildren(typeof(SpaceShip)) as SpaceShip;
+			rb.name = ship.Attributes["name"].Value;
+			if(ss!=null)
+			{
+				var x = double.Parse(ship.Attributes["x"].Value);
+				var y = double.Parse(ship.Attributes["y"].Value);
+				var z = double.Parse (ship.Attributes["z"].Value);
+				ss.SetPosition(x,y,z);
+				var waypoints = ship.SelectNodes("waypoints/waypoint");
+				foreach (XmlNode wp in waypoints)
 				{
-					var x = double.Parse(ship.Attributes["x"].Value);
-					var y = double.Parse(ship.Attributes["y"].Value);
-					var z = double.Parse (ship.Attributes["z"].Value);
-					ss.SetPosition(x,y,z);
-					var waypoints = ship.SelectNodes("waypoints/waypoint");
-					foreach (XmlNode wp in waypoints)
-					{
-						var wpx = double.Parse(wp.Attributes["x"].Value);
-						var wpy = double.Parse(wp.Attributes["y"].Value);
-						var wpz = double.Parse(wp.Attributes["z"].Value);
-						ss.Waypoints.Add(new Waypoint(wpx,wpy,wpz));
-						ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
-					}
+					var wpx = double.Parse(wp.Attributes["x"].Value);
+					var wpy = double.Parse(wp.Attributes["y"].Value);
+					var wpz = double.Parse(wp.Attributes["z"].Value);
+					ss.Waypoints.Add(new Waypoint(wpx,wpy,wpz));
+					ss.autopilotState = SpaceShip.autoPilotStates.setDirection;
+				}
 				/*	ss.Waypoints.Add(new Waypoint(ss.myX,ss.myY,ss.myZ));
 					ss.Waypoints.Add(new Waypoint(-100,-100,-500));
 					ss.Waypoints.Add(new Waypoint(0,0,15));
 					//
 					*/
-					var dt = Instantiate(droneText) as GameObject;
-					//var dt = GameObject.Find("targetText");
-
-					if(dt!=null)
+				/*
+				var dt = Instantiate(droneText) as GameObject;
+				//var dt = GameObject.Find("targetText");
+			
+				if(dt!=null)
+				{
+					var ol = dt.GetComponentInChildren(typeof(ObjectLabel)) as ObjectLabel;
+					dt.transform.parent = textParent.transform;
+					if(ol!=null)
 					{
-						var ol = dt.GetComponentInChildren(typeof(ObjectLabel)) as ObjectLabel;
-						dt.transform.parent = textParent.transform;
-						if(ol!=null)
-						{
-							ol.target = ss.transform;
-							//ol.transform.parent= ss.transform;
-						}
+						ol.target = ss.transform;
+						//ol.transform.parent= ss.transform;
 					}
 				}
+				*/
 			}
+			NetworkServer.Spawn(rb.gameObject);
 		}
 	}
 

@@ -30,7 +30,7 @@ public class ObjectLabel : MonoBehaviour {
 	
 	void Update()
 	{
-	
+		if(Network.isServer) return;
 		if (clampToScreen)
 		{
 			Vector3 relativePosition = camTransform.InverseTransformPoint(target.position + offset);

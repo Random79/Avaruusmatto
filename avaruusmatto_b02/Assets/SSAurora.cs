@@ -63,6 +63,7 @@ public class SSAurora : SpaceShip {
 
 	// Update is called once per frame //pitäiskö tähän laittaa void FixedUpdate?  sit vois käyttää Time.deltaTime -käskyä.
 	void FixedUpdate () {
+		if(!isServer) return;
 
 		if (autopilotState == autoPilotStates.bearingTurn)
 		{
